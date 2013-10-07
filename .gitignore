@@ -1,0 +1,9 @@
+AzureLogViewer/bin
+AzureLogViewer/obj
+AzureLogViewerGui/bin
+AzureLogViewerGui/obj
+Ms.Azure.Logging.Fetcher/bin
+Ms.Azure.Logging.Fetcher/obj
+**/*.suo
+**/*.user
+**/*.pfx
