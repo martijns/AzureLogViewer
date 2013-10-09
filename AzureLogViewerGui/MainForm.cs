@@ -138,7 +138,7 @@ namespace AzureLogViewerGui
             var row = dataGridView1.SelectedRows.Cast<DataGridViewRow>().FirstOrDefault();
             if (row == null)
                 return;
-            var cell = row.Cells.Cast<DataGridViewCell>().LastOrDefault();
+            var cell = row.Cells[e.ColumnIndex];
             if (cell == null || cell.Value == null)
                 return;
             MessageBox.Show(this, cell.Value.ToString().Replace("\\r", "").Replace("\\n", Environment.NewLine), "Logmessage");
