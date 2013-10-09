@@ -3,6 +3,7 @@ using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
+using System.Diagnostics;
 using System.Drawing;
 using System.Dynamic;
 using System.Linq;
@@ -24,6 +25,10 @@ namespace AzureLogViewerGui
     public partial class MainForm : BaseForm
     {
         private static readonly string Version = "v" + AzureLogViewerGui.Version.GetVersion();
+
+        private string[] _loadedColumns = null;
+        private string[][] _loadedRows = null;
+        private string[][] _filteredRows = null;
 
         public MainForm()
         {
@@ -99,36 +104,33 @@ namespace AzureLogViewerGui
 
             // Get the selected filter text
             string filterText = GetFilterText();
+            if (filterText != null)
+                filterText = filterText.ToLower();
 
-            // Temporarily suspend datasource binding, preventing this exception:
-            // "Row associated with the currency manager's position cannot be made invisible"
-            CurrencyManager cm = (CurrencyManager)dataGridView1.BindingContext[dataGridView1.DataSource];
-            cm.SuspendBinding();
-            foreach (var row in dataGridView1.Rows.OfType<DataGridViewRow>())
+            // Determine the filteredrows
+            if (filterText == null)
             {
-                // If there's no filtertext, make every row visible
-                if (filterText == null)
-                {
-                    if (!row.Visible)
-                        row.Visible = true;
-                }
-                // Otherwise we check each cell, and if we don't find a match, we hide the row
-                else
-                {
-                    var found = false;
-                    foreach (var cell in row.Cells.OfType<DataGridViewCell>())
-                    {
-                        if ((cell.Value + "").ToLower().Contains(filterText.ToLower()))
-                        {
-                            found = true;
-                            break;
-                        }
-                    }
-                    if (row.Visible != found)
-                        row.Visible = found;
-                }
+                _filteredRows = _loadedRows;
             }
-            cm.ResumeBinding();
+            else
+            {
+                _filteredRows = (from row in _loadedRows
+                                 from item in row
+                                 where item != null && item.ToLower().Contains(filterText)
+                                 select row).ToArray();
+            }
+
+            // Always show at least one record. When there are no results, add a dummy. If we don't do this, the
+            // grid won't be usable anymore.
+            if (_filteredRows.Length == 0)
+                _filteredRows = new string[][] { Enumerable.Repeat("No result", _loadedColumns.Length).ToArray() };
+
+            // Only update the rowcount if it changes, as this is a fairly expensive operation
+            if (_filteredRows.Length != dataGridView1.RowCount)
+            {
+                dataGridView1.Rows.Clear();
+                dataGridView1.RowCount = _filteredRows.Length;
+            }
         }
 
         #endregion
@@ -138,6 +140,7 @@ namespace AzureLogViewerGui
             var row = dataGridView1.SelectedRows.Cast<DataGridViewRow>().FirstOrDefault();
             if (row == null)
                 return;
+            //var cell = row.Cells.Cast<DataGridViewCell>().LastOrDefault();
             var cell = row.Cells[e.ColumnIndex];
             if (cell == null || cell.Value == null)
                 return;
@@ -165,7 +168,6 @@ namespace AzureLogViewerGui
             OrderBy order = (OrderBy)Enum.Parse(typeof(OrderBy), orderByCombo.SelectedItem + "");
 
             IList<WadTableEntity> entities = null;
-            object datasource = null;
             PerformBG(this, () =>
             {
                 // Find results for this period in time
@@ -200,56 +202,91 @@ namespace AzureLogViewerGui
                     propertyNames.Contains("Level") &&
                     propertyNames.Contains("Message"))
                 {
-                    datasource = (from i in entities select new { RoleInstance = i.RoleInstance, Message = i.Message }).ToArray();
+                    _loadedColumns = new string[] { "RoleInstance", "Message" };
+                    _loadedRows = (from i in entities select new[] { i.RoleInstance, i.Message }).ToArray();
+                    _filteredRows = _loadedRows;
                     return;
                 }
                 else
                 {
-                    // Make a custom table with the properties as columns and values in the correct rows
-                    DataTable dt = new DataTable();
-                    foreach (var propname in propertyNames)
-                    {
-                        DataColumn dc = new DataColumn();
-                        dc.ColumnName = propname;
-                        dc.Caption = propname;
-                        dc.DataType = typeof(string);
-                        dt.Columns.Add(dc);
-                    }
-
-                    foreach (var entity in entities)
-                    {
-                        DataRow row = dt.NewRow();
-                        foreach (var property in entity.Properties)
-                        {
-                            row[property.Key] = property.Value;
-                        }
-                        dt.Rows.Add(row);
-                    }
-                    datasource = dt;
+                    _loadedColumns = (from propname in propertyNames select propname).ToArray();
+                    _loadedRows = (from entity in entities
+                                   select (from prop in entity.Properties select prop.Value).ToArray()).ToArray();
+                    _filteredRows = _loadedRows;
                 }
             },
             () =>
             {
                 dataGridView1.ReadOnly = true;
-                dataGridView1.SuspendLayout();
+                if (!dataGridView1.VirtualMode)
+                {
+                    dataGridView1.VirtualMode = true;
+                    dataGridView1.CellValueNeeded += HandleCellValueNeeded;
+                }
+                dataGridView1.AllowUserToAddRows = false;
+                dataGridView1.AllowUserToDeleteRows = false;
+                dataGridView1.AllowUserToResizeColumns = true; // Resizen mag wel
+                dataGridView1.AllowUserToResizeRows = false;
+                dataGridView1.AllowUserToOrderColumns = false;
+                dataGridView1.Columns.Clear();
+                dataGridView1.Rows.Clear();
+                foreach (var column in _loadedColumns)
+                {
+                    dataGridView1.Columns.Add(column, column);
+                }
+
+                // Vind van elke kolom de langste waarde
+                string[] dummyvals = Enumerable.Repeat("", _loadedColumns.Length).ToArray();
+                for (int i = 0; i < _loadedColumns.Length; i++)
+                {
+                    string longest = (from item in _loadedRows select item[i]).Aggregate("", (max, cur) => max.Length > cur.Length ? max : cur);
+                    //longest = new string('#', longest.Length);
+                    dummyvals[i] = longest;
+                }
+
+                // Voeg een dummy record toe
+                dataGridView1.VirtualMode = false;
+                dataGridView1.Rows.Add(dummyvals);
+
+                // Autosize alle kolommen
                 dataGridView1.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.AllCells;
-                dataGridView1.DataSource = datasource;
+
+                // Breedtes van kolommen vastzetten
                 foreach (DataGridViewColumn column in dataGridView1.Columns)
                 {
-                    if (column.Name != "Message")
-                    {
-                        column.AutoSizeMode = DataGridViewAutoSizeColumnMode.AllCells;
-                    }
-                    else
-                    {
-                        column.AutoSizeMode = DataGridViewAutoSizeColumnMode.Fill;
-                    }
+                    int width = column.Width + 15; // Compensate character width a little, so we don't get "..." on the slightest difference
+                    column.AutoSizeMode = DataGridViewAutoSizeColumnMode.None;
+                    column.Width = width;
                 }
-                dataGridView1.ResumeLayout();
 
+                // Haal de autosize weer weg
+                dataGridView1.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.None;
+
+                // Rowcount goed zetten
+                dataGridView1.Rows.Clear();
+                dataGridView1.VirtualMode = true;
+                dataGridView1.RowCount = _loadedRows.Length;
+
+                // Als er een filter is, pas het filter toe...
                 if (GetFilterText() != null)
                     HandleFilterKeyup(this, EventArgs.Empty);
             });
+        }
+
+        void HandleCellValueNeeded(object sender, DataGridViewCellValueEventArgs e)
+        {
+            e.Value = "";
+
+            if (_filteredRows == null || _loadedColumns == null)
+                return;
+
+            if (e.ColumnIndex < 0 || e.ColumnIndex >= _loadedColumns.Length)
+                return;
+
+            if (e.RowIndex < 0 || e.RowIndex >= _filteredRows.Length)
+                return;
+
+            e.Value = _filteredRows[e.RowIndex][e.ColumnIndex];
         }
 
         private void HandleAccountAdd(object sender, EventArgs e)
