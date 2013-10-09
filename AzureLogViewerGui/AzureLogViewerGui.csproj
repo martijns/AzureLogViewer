@@ -12,7 +12,7 @@
     <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <IsWebBootstrapper>true</IsWebBootstrapper>
-    <PublishUrl>ftp://tikkie.net/httpdocs/apps/</PublishUrl>
+    <PublishUrl>ftp://martijn.tikkie.net/apps/AzureLogViewer/</PublishUrl>
     <Install>true</Install>
     <InstallFrom>Web</InstallFrom>
     <UpdateEnabled>true</UpdateEnabled>
@@ -22,12 +22,12 @@
     <UpdatePeriodically>false</UpdatePeriodically>
     <UpdateRequired>false</UpdateRequired>
     <MapFileExtensions>true</MapFileExtensions>
-    <InstallUrl>http://www.tikkie.net/apps/</InstallUrl>
+    <InstallUrl>http://martijn.tikkie.net/apps/AzureLogViewer/</InstallUrl>
     <SupportUrl>http://www.netripper.nl</SupportUrl>
     <ProductName>AzureLogViewer</ProductName>
     <PublisherName>Martijn Stolk</PublisherName>
     <SuiteName>Tikkie</SuiteName>
-    <ApplicationRevision>9</ApplicationRevision>
+    <ApplicationRevision>11</ApplicationRevision>
     <ApplicationVersion>1.0.0.%2a</ApplicationVersion>
     <UseApplicationTrust>false</UseApplicationTrust>
     <CreateDesktopShortcut>true</CreateDesktopShortcut>
