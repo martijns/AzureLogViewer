@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Drawing;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -43,17 +44,29 @@ namespace AzureLogViewerGui
         {
             isBusy = true;
             controlState.Clear();
-            foreach (Control c in this.Controls)
-                SaveControlStateAndDisable(c);
+            RecursiveDisable(this);
             Cursor.Current = Cursors.WaitCursor;
+        }
+
+        private void RecursiveDisable(Control c)
+        {
+            foreach (Control inner in c.Controls)
+                RecursiveDisable(inner);
+            SaveControlStateAndDisable(c);
         }
 
         private void DisableBusy()
         {
             isBusy = false;
-            foreach (Control c in this.Controls)
-                RestoreControlState(c);
+            RecursiveRestore(this);
             Cursor.Current = Cursors.Default;
+        }
+
+        private void RecursiveRestore(Control c)
+        {
+            foreach (Control inner in c.Controls)
+                RecursiveRestore(inner);
+            RestoreControlState(c);
         }
 
         #region ControlState
@@ -61,11 +74,13 @@ namespace AzureLogViewerGui
         private void SaveControlStateAndDisable(Control control)
         {
             controlState.Add(control, control.Enabled);
-            //foreach (Control c in control.Controls)
-            //{
-            //    SaveControlStateAndDisable(c);
-            //}
             control.Enabled = false;
+            if (control is DataGridView)
+            {
+                var dgv = (DataGridView)control;
+                dgv.ForeColor = Color.Gray;
+                dgv.ColumnHeadersDefaultCellStyle.ForeColor = Color.Gray;
+            }
         }
         
         private void RestoreControlState(Control control)
@@ -73,11 +88,13 @@ namespace AzureLogViewerGui
             if (controlState.ContainsKey(control))
             {
                 control.Enabled = controlState[control];
+                if (control is DataGridView)
+                {
+                    var dgv = (DataGridView)control;
+                    dgv.ForeColor = Control.DefaultForeColor;
+                    dgv.ColumnHeadersDefaultCellStyle.ForeColor = Control.DefaultForeColor;
+                }
             }
-            //foreach (Control c in control.Controls)
-            //{
-            //    RestoreControlState(c);
-            //}
         }
 
         #endregion
