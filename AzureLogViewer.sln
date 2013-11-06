@@ -1,8 +1,6 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 2012
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AzureLogViewer", "AzureLogViewer\AzureLogViewer.csproj", "{7B31DD65-0B55-418A-9B4E-7853B01499DB}"
-EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Ms.Azure.Logging.Fetcher", "Ms.Azure.Logging.Fetcher\Ms.Azure.Logging.Fetcher.csproj", "{552E0640-57CF-4BE8-8168-F4A8FED14E01}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AzureLogViewerGui", "AzureLogViewerGui\AzureLogViewerGui.csproj", "{535761EF-E390-4E58-A200-7DEFAD4C5B8F}"
@@ -13,10 +11,6 @@ Global
 		Release|Any CPU = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
-		{7B31DD65-0B55-418A-9B4E-7853B01499DB}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{7B31DD65-0B55-418A-9B4E-7853B01499DB}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{7B31DD65-0B55-418A-9B4E-7853B01499DB}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{7B31DD65-0B55-418A-9B4E-7853B01499DB}.Release|Any CPU.Build.0 = Release|Any CPU
 		{552E0640-57CF-4BE8-8168-F4A8FED14E01}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{552E0640-57CF-4BE8-8168-F4A8FED14E01}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{552E0640-57CF-4BE8-8168-F4A8FED14E01}.Release|Any CPU.ActiveCfg = Release|Any CPU
