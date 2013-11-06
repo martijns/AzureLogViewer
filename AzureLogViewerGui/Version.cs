@@ -38,6 +38,8 @@ namespace AzureLogViewerGui
                 sb.AppendLine("Current version: " + GetVersion());
                 sb.AppendLine("New version: " + ToVersionString(e.AvailableVersion));
                 sb.AppendLine("Update size: " + e.UpdateSizeBytes + " bytes");
+                sb.AppendLine();
+                sb.AppendLine("Do you want to restart the application now?");
 
                 // Get a form so we can invoke on the thread
                 Form form = Application.OpenForms.Count > 0 ? Application.OpenForms[0] : null;
@@ -45,7 +47,8 @@ namespace AzureLogViewerGui
                 {
                     form.Invoke((Action)(() =>
                     {
-                        MessageBox.Show(form, sb.ToString(), "Update available!");
+                        if (MessageBox.Show(form, sb.ToString(), "Update available!", MessageBoxButtons.YesNo) == DialogResult.Yes)
+                            Application.Restart();
                     }));
                 }
             }

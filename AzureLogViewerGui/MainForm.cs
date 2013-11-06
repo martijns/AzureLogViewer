@@ -1,4 +1,6 @@
-﻿using Ms.Azure.Logging.Fetcher;
+﻿using AzureLogViewerGui.Adapters;
+using AzureLogViewerGui.Scrapers;
+using Ms.Azure.Logging.Fetcher;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -202,8 +204,8 @@ namespace AzureLogViewerGui
                     propertyNames.Contains("Level") &&
                     propertyNames.Contains("Message"))
                 {
-                    _loadedColumns = new string[] { "RoleInstance", "Message" };
-                    _loadedRows = (from i in entities select new[] { i.RoleInstance, i.Message }).ToArray();
+                    _loadedColumns = new string[] { "RoleInstance", "Timestamp", "Message" };
+                    _loadedRows = (from i in entities select new[] { i.RoleInstance, i.Timestamp.ToString(), i.Message }).ToArray();
                     _filteredRows = _loadedRows;
                     return;
                 }
@@ -481,6 +483,27 @@ namespace AzureLogViewerGui
                     }
                 }));
             }).Start();
+        }
+
+        private void HandleScrapeForStorageAccountsClicked(object sender, EventArgs e)
+        {
+            var form = new StorageAccountScraperForm();
+            form.ShowDialog(this);
+            UpdateAccountSelection();
+        }
+
+        private void HandleExportToAzureStorageExplorerClicked(object sender, EventArgs e)
+        {
+            var adapter = new AzureStorageExplorerAdapter();
+            try
+            {
+                int count = adapter.Export();
+                MessageBox.Show(this, "Successfully exported " + count + " (new) accounts to Azure Storage Explorer.");
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(this, "Failed to export accounts: " + ex.ToString(), "Export failed!");
+            }
         }
     }
 }

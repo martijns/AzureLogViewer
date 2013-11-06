@@ -41,7 +41,7 @@ namespace AzureLogViewerGui
 
             string[] locations = new string[]
             {
-                Path.Combine(Path.GetDirectoryName(Assembly.GetEntryAssembly().Location), "AzureLogViewer.xml"),
+                //Path.Combine(Path.GetDirectoryName(Assembly.GetEntryAssembly().Location), "AzureLogViewer.xml"),
                 Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData, Environment.SpecialFolderOption.Create), "AzureLogViewer.xml"),
                 Path.Combine(Path.GetTempPath(), "AzureLogViewer.xml")
             };

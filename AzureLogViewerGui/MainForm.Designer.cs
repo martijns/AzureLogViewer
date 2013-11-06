@@ -47,8 +47,11 @@
             this.addMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.editMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.removeMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.toolStripSeparator1 = new System.Windows.Forms.ToolStripSeparator();
+            this.scrapeForStorageAccountsToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.helpToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.aboutToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.exportToAzureStorageExplorerToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.mainPanel.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.dataGridView1)).BeginInit();
             this.flowLayoutPanel1.SuspendLayout();
@@ -232,7 +235,10 @@
             this.accountsToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.addMenuItem,
             this.editMenuItem,
-            this.removeMenuItem});
+            this.removeMenuItem,
+            this.toolStripSeparator1,
+            this.scrapeForStorageAccountsToolStripMenuItem,
+            this.exportToAzureStorageExplorerToolStripMenuItem});
             this.accountsToolStripMenuItem.Name = "accountsToolStripMenuItem";
             this.accountsToolStripMenuItem.Size = new System.Drawing.Size(69, 20);
             this.accountsToolStripMenuItem.Text = "Accounts";
@@ -240,23 +246,35 @@
             // addMenuItem
             // 
             this.addMenuItem.Name = "addMenuItem";
-            this.addMenuItem.Size = new System.Drawing.Size(126, 22);
+            this.addMenuItem.Size = new System.Drawing.Size(251, 22);
             this.addMenuItem.Text = "Add...";
             this.addMenuItem.Click += new System.EventHandler(this.HandleAccountAdd);
             // 
             // editMenuItem
             // 
             this.editMenuItem.Name = "editMenuItem";
-            this.editMenuItem.Size = new System.Drawing.Size(126, 22);
+            this.editMenuItem.Size = new System.Drawing.Size(251, 22);
             this.editMenuItem.Text = "Edit...";
             this.editMenuItem.Click += new System.EventHandler(this.HandleAccountEdit);
             // 
             // removeMenuItem
             // 
             this.removeMenuItem.Name = "removeMenuItem";
-            this.removeMenuItem.Size = new System.Drawing.Size(126, 22);
+            this.removeMenuItem.Size = new System.Drawing.Size(251, 22);
             this.removeMenuItem.Text = "Remove...";
             this.removeMenuItem.Click += new System.EventHandler(this.HandleAccountRemove);
+            // 
+            // toolStripSeparator1
+            // 
+            this.toolStripSeparator1.Name = "toolStripSeparator1";
+            this.toolStripSeparator1.Size = new System.Drawing.Size(248, 6);
+            // 
+            // scrapeForStorageAccountsToolStripMenuItem
+            // 
+            this.scrapeForStorageAccountsToolStripMenuItem.Name = "scrapeForStorageAccountsToolStripMenuItem";
+            this.scrapeForStorageAccountsToolStripMenuItem.Size = new System.Drawing.Size(251, 22);
+            this.scrapeForStorageAccountsToolStripMenuItem.Text = "Scrape for storage accounts...";
+            this.scrapeForStorageAccountsToolStripMenuItem.Click += new System.EventHandler(this.HandleScrapeForStorageAccountsClicked);
             // 
             // helpToolStripMenuItem
             // 
@@ -272,6 +290,13 @@
             this.aboutToolStripMenuItem.Size = new System.Drawing.Size(107, 22);
             this.aboutToolStripMenuItem.Text = "About";
             this.aboutToolStripMenuItem.Click += new System.EventHandler(this.HandleAboutClick);
+            // 
+            // exportToAzureStorageExplorerToolStripMenuItem
+            // 
+            this.exportToAzureStorageExplorerToolStripMenuItem.Name = "exportToAzureStorageExplorerToolStripMenuItem";
+            this.exportToAzureStorageExplorerToolStripMenuItem.Size = new System.Drawing.Size(251, 22);
+            this.exportToAzureStorageExplorerToolStripMenuItem.Text = "Export to Azure Storage Explorer...";
+            this.exportToAzureStorageExplorerToolStripMenuItem.Click += new System.EventHandler(this.HandleExportToAzureStorageExplorerClicked);
             // 
             // MainForm
             // 
@@ -319,6 +344,9 @@
         private System.Windows.Forms.ComboBox tableSelection;
         private System.Windows.Forms.ComboBox orderByCombo;
         private System.Windows.Forms.TextBox filterTextBox;
+        private System.Windows.Forms.ToolStripSeparator toolStripSeparator1;
+        private System.Windows.Forms.ToolStripMenuItem scrapeForStorageAccountsToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem exportToAzureStorageExplorerToolStripMenuItem;
     }
 }
 
