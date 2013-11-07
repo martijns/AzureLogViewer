@@ -15,6 +15,7 @@ using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 using System.Windows.Forms;
+using System.IO;
 
 namespace AzureLogViewerGui
 {
@@ -44,6 +45,8 @@ namespace AzureLogViewerGui
                 if (toDate.Value < fromDate.Value)
                     toDate.Value = fromDate.Value.AddDays(1);
             };
+            dataGridView1.ClipboardCopyMode = DataGridViewClipboardCopyMode.EnableWithAutoHeaderText;
+            dataGridView1.MultiSelect = true;
             dataGridView1.CellDoubleClick += HandleCellDoubleClick;
             typeof(DataGridView).InvokeMember(
                "DoubleBuffered",
@@ -504,6 +507,95 @@ namespace AzureLogViewerGui
             {
                 MessageBox.Show(this, "Failed to export accounts: " + ex.ToString(), "Export failed!");
             }
+        }
+
+        private void contextMenuStrip1_Opening(object sender, CancelEventArgs e)
+        {
+
+        }
+
+        private void CopyAllToClip()
+        {
+             dataGridView1.SelectAll();
+             DataObject dataObj = dataGridView1.GetClipboardContent();
+             Clipboard.SetDataObject(dataObj, true);
+        }
+
+        private void CopySelectionToClip()
+        {
+            DataObject dataObj = dataGridView1.GetClipboardContent();
+            Clipboard.SetDataObject(dataObj, true);
+        }
+
+        private void exportToCsvToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            ExportToCsv();
+        }
+
+        private void copyAllToClipboardToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            CopyAllToClip();
+        }
+
+        private void copySelectionToClipboardToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            CopySelectionToClip();
+        }
+
+        private void exportSelectionToCsvToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            ExportToCsv(true);
+        }
+
+        private void ExportToCsv(Boolean selected = false)
+        {
+            String fileName = OpenSaveAsDialog();
+            if (fileName == null)
+                return;
+ 
+            var sb = new StringBuilder();
+            var headers = dataGridView1.Columns.Cast<DataGridViewColumn>();
+            sb.Append(string.Join(",", headers.Select(column => "\"" + column.HeaderText + "\"")));
+            sb.AppendLine();
+            if (selected == true)
+            {
+                foreach (DataGridViewRow row in dataGridView1.SelectedRows)
+                {
+                    var cells = row.Cells.Cast<DataGridViewCell>();
+                    sb.Append(string.Join(",", cells.Select(cell => "\"" + cell.Value + "\"")));
+                    sb.AppendLine();
+                }
+            }
+            else
+            {
+                foreach (DataGridViewRow row in dataGridView1.Rows)
+                {
+                    var cells = row.Cells.Cast<DataGridViewCell>();
+                    sb.Append(string.Join(",", cells.Select(cell => "\"" + cell.Value + "\"")));
+                    sb.AppendLine();
+                }
+            }
+             
+
+           
+
+            using (StreamWriter outfile = new StreamWriter(fileName))
+            {
+                outfile.Write(sb.ToString());
+            }
+        }
+
+        private static String OpenSaveAsDialog()
+        {
+            SaveFileDialog fdSaveAs = new SaveFileDialog();
+            fdSaveAs.InitialDirectory = "c:\\";
+            fdSaveAs.Filter = "txt files (*.csv)|*.csv|All files (*.*)|*.*";
+            fdSaveAs.FilterIndex = 2;
+            fdSaveAs.RestoreDirectory = true;
+            if (fdSaveAs.ShowDialog() == DialogResult.OK)
+                return fdSaveAs.FileName;
+            else
+                return null;
         }
     }
 }
