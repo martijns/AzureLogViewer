@@ -509,11 +509,6 @@ namespace AzureLogViewerGui
             }
         }
 
-        private void contextMenuStrip1_Opening(object sender, CancelEventArgs e)
-        {
-
-        }
-
         private void CopyAllToClip()
         {
              dataGridView1.SelectAll();
@@ -575,9 +570,6 @@ namespace AzureLogViewerGui
                     sb.AppendLine();
                 }
             }
-             
-
-           
 
             using (StreamWriter outfile = new StreamWriter(fileName))
             {

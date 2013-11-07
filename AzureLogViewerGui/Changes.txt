@@ -1,4 +1,8 @@
-﻿2013-11-06:
+﻿2013-11-07:
+- Copy to clipboard (fdepijper)
+- Export to CSV (fdepijper)
+
+2013-11-06:
 - Export accounts to Azure Storage Explorer
 
 2013-10-30:

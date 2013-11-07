@@ -348,7 +348,6 @@
             this.pasteToolStripMenuItem});
             this.ctxMenuPopup.Name = "ctxMenuPopup";
             this.ctxMenuPopup.Size = new System.Drawing.Size(103, 70);
-            this.ctxMenuPopup.Opening += new System.ComponentModel.CancelEventHandler(this.contextMenuStrip1_Opening);
             // 
             // cutToolStripMenuItem
             // 
