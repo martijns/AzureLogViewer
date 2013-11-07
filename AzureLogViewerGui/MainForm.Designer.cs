@@ -28,6 +28,7 @@
         /// </summary>
         private void InitializeComponent()
         {
+            this.components = new System.ComponentModel.Container();
             this.mainPanel = new System.Windows.Forms.Panel();
             this.dataGridView1 = new System.Windows.Forms.DataGridView();
             this.flowLayoutPanel1 = new System.Windows.Forms.FlowLayoutPanel();
@@ -42,6 +43,10 @@
             this.fetchButton = new System.Windows.Forms.Button();
             this.menuStrip1 = new System.Windows.Forms.MenuStrip();
             this.fileToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.exportToCsvToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.exportSelectionToCsvToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.copyAllToClipboardToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.copySelectionToClipboardToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.exitToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.accountsToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.addMenuItem = new System.Windows.Forms.ToolStripMenuItem();
@@ -49,13 +54,18 @@
             this.removeMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.toolStripSeparator1 = new System.Windows.Forms.ToolStripSeparator();
             this.scrapeForStorageAccountsToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.exportToAzureStorageExplorerToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.helpToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.aboutToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.exportToAzureStorageExplorerToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.ctxMenuPopup = new System.Windows.Forms.ContextMenuStrip(this.components);
+            this.cutToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.copyToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.pasteToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.mainPanel.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.dataGridView1)).BeginInit();
             this.flowLayoutPanel1.SuspendLayout();
             this.menuStrip1.SuspendLayout();
+            this.ctxMenuPopup.SuspendLayout();
             this.SuspendLayout();
             // 
             // mainPanel
@@ -218,15 +228,47 @@
             // fileToolStripMenuItem
             // 
             this.fileToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.exportToCsvToolStripMenuItem,
+            this.exportSelectionToCsvToolStripMenuItem,
+            this.copyAllToClipboardToolStripMenuItem,
+            this.copySelectionToClipboardToolStripMenuItem,
             this.exitToolStripMenuItem});
             this.fileToolStripMenuItem.Name = "fileToolStripMenuItem";
             this.fileToolStripMenuItem.Size = new System.Drawing.Size(37, 20);
             this.fileToolStripMenuItem.Text = "File";
             // 
+            // exportToCsvToolStripMenuItem
+            // 
+            this.exportToCsvToolStripMenuItem.Name = "exportToCsvToolStripMenuItem";
+            this.exportToCsvToolStripMenuItem.Size = new System.Drawing.Size(222, 22);
+            this.exportToCsvToolStripMenuItem.Text = "Export All to csv";
+            this.exportToCsvToolStripMenuItem.Click += new System.EventHandler(this.exportToCsvToolStripMenuItem_Click);
+            // 
+            // exportSelectionToCsvToolStripMenuItem
+            // 
+            this.exportSelectionToCsvToolStripMenuItem.Name = "exportSelectionToCsvToolStripMenuItem";
+            this.exportSelectionToCsvToolStripMenuItem.Size = new System.Drawing.Size(222, 22);
+            this.exportSelectionToCsvToolStripMenuItem.Text = "Export Selection to csv";
+            this.exportSelectionToCsvToolStripMenuItem.Click += new System.EventHandler(this.exportSelectionToCsvToolStripMenuItem_Click);
+            // 
+            // copyAllToClipboardToolStripMenuItem
+            // 
+            this.copyAllToClipboardToolStripMenuItem.Name = "copyAllToClipboardToolStripMenuItem";
+            this.copyAllToClipboardToolStripMenuItem.Size = new System.Drawing.Size(222, 22);
+            this.copyAllToClipboardToolStripMenuItem.Text = "Copy All to Clipboard";
+            this.copyAllToClipboardToolStripMenuItem.Click += new System.EventHandler(this.copyAllToClipboardToolStripMenuItem_Click);
+            // 
+            // copySelectionToClipboardToolStripMenuItem
+            // 
+            this.copySelectionToClipboardToolStripMenuItem.Name = "copySelectionToClipboardToolStripMenuItem";
+            this.copySelectionToClipboardToolStripMenuItem.Size = new System.Drawing.Size(222, 22);
+            this.copySelectionToClipboardToolStripMenuItem.Text = "Copy Selection to Clipboard";
+            this.copySelectionToClipboardToolStripMenuItem.Click += new System.EventHandler(this.copySelectionToClipboardToolStripMenuItem_Click);
+            // 
             // exitToolStripMenuItem
             // 
             this.exitToolStripMenuItem.Name = "exitToolStripMenuItem";
-            this.exitToolStripMenuItem.Size = new System.Drawing.Size(92, 22);
+            this.exitToolStripMenuItem.Size = new System.Drawing.Size(222, 22);
             this.exitToolStripMenuItem.Text = "Exit";
             this.exitToolStripMenuItem.Click += new System.EventHandler(this.HandleExitClick);
             // 
@@ -276,6 +318,13 @@
             this.scrapeForStorageAccountsToolStripMenuItem.Text = "Scrape for storage accounts...";
             this.scrapeForStorageAccountsToolStripMenuItem.Click += new System.EventHandler(this.HandleScrapeForStorageAccountsClicked);
             // 
+            // exportToAzureStorageExplorerToolStripMenuItem
+            // 
+            this.exportToAzureStorageExplorerToolStripMenuItem.Name = "exportToAzureStorageExplorerToolStripMenuItem";
+            this.exportToAzureStorageExplorerToolStripMenuItem.Size = new System.Drawing.Size(251, 22);
+            this.exportToAzureStorageExplorerToolStripMenuItem.Text = "Export to Azure Storage Explorer...";
+            this.exportToAzureStorageExplorerToolStripMenuItem.Click += new System.EventHandler(this.HandleExportToAzureStorageExplorerClicked);
+            // 
             // helpToolStripMenuItem
             // 
             this.helpToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
@@ -291,12 +340,33 @@
             this.aboutToolStripMenuItem.Text = "About";
             this.aboutToolStripMenuItem.Click += new System.EventHandler(this.HandleAboutClick);
             // 
-            // exportToAzureStorageExplorerToolStripMenuItem
+            // ctxMenuPopup
             // 
-            this.exportToAzureStorageExplorerToolStripMenuItem.Name = "exportToAzureStorageExplorerToolStripMenuItem";
-            this.exportToAzureStorageExplorerToolStripMenuItem.Size = new System.Drawing.Size(251, 22);
-            this.exportToAzureStorageExplorerToolStripMenuItem.Text = "Export to Azure Storage Explorer...";
-            this.exportToAzureStorageExplorerToolStripMenuItem.Click += new System.EventHandler(this.HandleExportToAzureStorageExplorerClicked);
+            this.ctxMenuPopup.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.cutToolStripMenuItem,
+            this.copyToolStripMenuItem,
+            this.pasteToolStripMenuItem});
+            this.ctxMenuPopup.Name = "ctxMenuPopup";
+            this.ctxMenuPopup.Size = new System.Drawing.Size(103, 70);
+            this.ctxMenuPopup.Opening += new System.ComponentModel.CancelEventHandler(this.contextMenuStrip1_Opening);
+            // 
+            // cutToolStripMenuItem
+            // 
+            this.cutToolStripMenuItem.Name = "cutToolStripMenuItem";
+            this.cutToolStripMenuItem.Size = new System.Drawing.Size(102, 22);
+            this.cutToolStripMenuItem.Text = "Cut";
+            // 
+            // copyToolStripMenuItem
+            // 
+            this.copyToolStripMenuItem.Name = "copyToolStripMenuItem";
+            this.copyToolStripMenuItem.Size = new System.Drawing.Size(102, 22);
+            this.copyToolStripMenuItem.Text = "Copy";
+            // 
+            // pasteToolStripMenuItem
+            // 
+            this.pasteToolStripMenuItem.Name = "pasteToolStripMenuItem";
+            this.pasteToolStripMenuItem.Size = new System.Drawing.Size(102, 22);
+            this.pasteToolStripMenuItem.Text = "Paste";
             // 
             // MainForm
             // 
@@ -316,6 +386,7 @@
             this.flowLayoutPanel1.PerformLayout();
             this.menuStrip1.ResumeLayout(false);
             this.menuStrip1.PerformLayout();
+            this.ctxMenuPopup.ResumeLayout(false);
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -347,6 +418,14 @@
         private System.Windows.Forms.ToolStripSeparator toolStripSeparator1;
         private System.Windows.Forms.ToolStripMenuItem scrapeForStorageAccountsToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem exportToAzureStorageExplorerToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem exportToCsvToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem exportSelectionToCsvToolStripMenuItem;
+        private System.Windows.Forms.ContextMenuStrip ctxMenuPopup;
+        private System.Windows.Forms.ToolStripMenuItem cutToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem copyToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem pasteToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem copySelectionToClipboardToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem copyAllToClipboardToolStripMenuItem;
     }
 }
 
