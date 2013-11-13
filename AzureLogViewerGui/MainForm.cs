@@ -419,9 +419,14 @@ namespace AzureLogViewerGui
             Close();
         }
 
+        private void HandleChangelogClicked(object sender, EventArgs e)
+        {
+            AzureLogViewerGui.Version.DisplayChanges();
+        }
+
         private void HandleAboutClick(object sender, EventArgs e)
         {
-            MessageBox.Show("AzureLogViewer " + Version + " by Martijn Stolk");
+            AzureLogViewerGui.Version.DisplayAbout();
         }
 
         private string GetSelectedAccountName()

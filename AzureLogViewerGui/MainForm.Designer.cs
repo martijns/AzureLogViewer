@@ -61,6 +61,7 @@
             this.cutToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.copyToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.pasteToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.changelogToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.mainPanel.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.dataGridView1)).BeginInit();
             this.flowLayoutPanel1.SuspendLayout();
@@ -328,6 +329,7 @@
             // helpToolStripMenuItem
             // 
             this.helpToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.changelogToolStripMenuItem,
             this.aboutToolStripMenuItem});
             this.helpToolStripMenuItem.Name = "helpToolStripMenuItem";
             this.helpToolStripMenuItem.Size = new System.Drawing.Size(44, 20);
@@ -336,7 +338,7 @@
             // aboutToolStripMenuItem
             // 
             this.aboutToolStripMenuItem.Name = "aboutToolStripMenuItem";
-            this.aboutToolStripMenuItem.Size = new System.Drawing.Size(107, 22);
+            this.aboutToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
             this.aboutToolStripMenuItem.Text = "About";
             this.aboutToolStripMenuItem.Click += new System.EventHandler(this.HandleAboutClick);
             // 
@@ -366,6 +368,13 @@
             this.pasteToolStripMenuItem.Name = "pasteToolStripMenuItem";
             this.pasteToolStripMenuItem.Size = new System.Drawing.Size(102, 22);
             this.pasteToolStripMenuItem.Text = "Paste";
+            // 
+            // changelogToolStripMenuItem
+            // 
+            this.changelogToolStripMenuItem.Name = "changelogToolStripMenuItem";
+            this.changelogToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
+            this.changelogToolStripMenuItem.Text = "Changelog";
+            this.changelogToolStripMenuItem.Click += new System.EventHandler(this.HandleChangelogClicked);
             // 
             // MainForm
             // 
@@ -425,6 +434,7 @@
         private System.Windows.Forms.ToolStripMenuItem pasteToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem copySelectionToClipboardToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem copyAllToClipboardToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem changelogToolStripMenuItem;
     }
 }
 
