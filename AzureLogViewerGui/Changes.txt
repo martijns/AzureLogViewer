@@ -1,9 +1,16 @@
-﻿2013-11-07:
-- Copy to clipboard (fdepijper)
-- Export to CSV (fdepijper)
+﻿2013-11-13:
+- FIX: Error when calculated width would exceed maximum column width
+
+2013-11-10:
+- FIX: Update mechanism. Automatically downloads the update now and applies it on the next start. Still provides the user with a choice to restart now or later.
+- NEW: Ability to view changelog within the application.
+
+2013-11-07:
+- NEW: Copy to clipboard (fdepijper)
+- NEW: Export to CSV (fdepijper)
 
 2013-11-06:
-- Export accounts to Azure Storage Explorer
+- NEW: Export accounts to Azure Storage Explorer
 
 2013-10-30:
-- Scrape for storage accounts by recursively searching directories
+- NEW: Scrape for storage accounts by recursively searching directories

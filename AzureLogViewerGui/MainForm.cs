@@ -260,6 +260,8 @@ namespace AzureLogViewerGui
                 foreach (DataGridViewColumn column in dataGridView1.Columns)
                 {
                     int width = column.Width + 15; // Compensate character width a little, so we don't get "..." on the slightest difference
+                    if (width > 65536)
+                        width = 65536;
                     column.AutoSizeMode = DataGridViewAutoSizeColumnMode.None;
                     column.Width = width;
                 }
