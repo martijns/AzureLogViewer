@@ -73,6 +73,8 @@ namespace AzureLogViewerGui
 
         private void SaveControlStateAndDisable(Control control)
         {
+            if (control is Form)
+                return;
             controlState.Add(control, control.Enabled);
             control.Enabled = false;
             if (control is DataGridView)
@@ -85,6 +87,8 @@ namespace AzureLogViewerGui
         
         private void RestoreControlState(Control control)
         {
+            if (control is Form)
+                return;
             if (controlState.ContainsKey(control))
             {
                 control.Enabled = controlState[control];
