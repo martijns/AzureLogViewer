@@ -14,9 +14,15 @@ namespace AzureLogViewerGui
         [STAThread]
         static void Main()
         {
+            AppDomain.CurrentDomain.UnhandledException += HandleUnhandledException;
             Application.EnableVisualStyles();
             Application.SetCompatibleTextRenderingDefault(false);
             Application.Run(new MainForm());
+        }
+
+        static void HandleUnhandledException(object sender, UnhandledExceptionEventArgs e)
+        {
+            MessageBox.Show("An unhandled 'oopsie' occurred. Make a screenshot of this box and show it to the developer.\r\n\r\n" + e.ExceptionObject, "Whoops...");
         }
     }
 }
