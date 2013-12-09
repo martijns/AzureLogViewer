@@ -56,12 +56,13 @@
             this.scrapeForStorageAccountsToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.exportToAzureStorageExplorerToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.helpToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.changelogToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.aboutToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.ctxMenuPopup = new System.Windows.Forms.ContextMenuStrip(this.components);
             this.cutToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.copyToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.pasteToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.changelogToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.exportToCloudBerryExplorerToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.mainPanel.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.dataGridView1)).BeginInit();
             this.flowLayoutPanel1.SuspendLayout();
@@ -281,7 +282,8 @@
             this.removeMenuItem,
             this.toolStripSeparator1,
             this.scrapeForStorageAccountsToolStripMenuItem,
-            this.exportToAzureStorageExplorerToolStripMenuItem});
+            this.exportToAzureStorageExplorerToolStripMenuItem,
+            this.exportToCloudBerryExplorerToolStripMenuItem});
             this.accountsToolStripMenuItem.Name = "accountsToolStripMenuItem";
             this.accountsToolStripMenuItem.Size = new System.Drawing.Size(69, 20);
             this.accountsToolStripMenuItem.Text = "Accounts";
@@ -335,10 +337,17 @@
             this.helpToolStripMenuItem.Size = new System.Drawing.Size(44, 20);
             this.helpToolStripMenuItem.Text = "Help";
             // 
+            // changelogToolStripMenuItem
+            // 
+            this.changelogToolStripMenuItem.Name = "changelogToolStripMenuItem";
+            this.changelogToolStripMenuItem.Size = new System.Drawing.Size(132, 22);
+            this.changelogToolStripMenuItem.Text = "Changelog";
+            this.changelogToolStripMenuItem.Click += new System.EventHandler(this.HandleChangelogClicked);
+            // 
             // aboutToolStripMenuItem
             // 
             this.aboutToolStripMenuItem.Name = "aboutToolStripMenuItem";
-            this.aboutToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
+            this.aboutToolStripMenuItem.Size = new System.Drawing.Size(132, 22);
             this.aboutToolStripMenuItem.Text = "About";
             this.aboutToolStripMenuItem.Click += new System.EventHandler(this.HandleAboutClick);
             // 
@@ -369,12 +378,12 @@
             this.pasteToolStripMenuItem.Size = new System.Drawing.Size(102, 22);
             this.pasteToolStripMenuItem.Text = "Paste";
             // 
-            // changelogToolStripMenuItem
+            // exportToCloudBerryExplorerToolStripMenuItem
             // 
-            this.changelogToolStripMenuItem.Name = "changelogToolStripMenuItem";
-            this.changelogToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
-            this.changelogToolStripMenuItem.Text = "Changelog";
-            this.changelogToolStripMenuItem.Click += new System.EventHandler(this.HandleChangelogClicked);
+            this.exportToCloudBerryExplorerToolStripMenuItem.Name = "exportToCloudBerryExplorerToolStripMenuItem";
+            this.exportToCloudBerryExplorerToolStripMenuItem.Size = new System.Drawing.Size(251, 22);
+            this.exportToCloudBerryExplorerToolStripMenuItem.Text = "Export to CloudBerry Explorer...";
+            this.exportToCloudBerryExplorerToolStripMenuItem.Click += new System.EventHandler(this.HandleExportToCloudBerryExplorerClicked);
             // 
             // MainForm
             // 
@@ -435,6 +444,7 @@
         private System.Windows.Forms.ToolStripMenuItem copySelectionToClipboardToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem copyAllToClipboardToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem changelogToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem exportToCloudBerryExplorerToolStripMenuItem;
     }
 }
 

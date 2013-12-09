@@ -1,4 +1,7 @@
-﻿2013-11-13:
+﻿2013-12-09:
+- NEW: Ability to export to CloudBerry Explorer for Azure Blob Storage
+
+2013-11-13:
 - FIX: Error when calculated width would exceed maximum column width
 
 2013-11-10:

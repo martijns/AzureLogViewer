@@ -516,6 +516,35 @@ namespace AzureLogViewerGui
             }
         }
 
+        private void HandleExportToCloudBerryExplorerClicked(object sender, EventArgs e)
+        {
+            try
+            {
+                MessageBox.Show(this, "In order to export storage accounts to CloudBerry Explorer, we'll need to load a library for this application. Please select the indicated library in the CloudBerry Explorer installation directory. For example in: c:\\Program Files (x86)\\CloudBerryLab\\CloudBerry Explorer for Azure Blob Storage\\");
+
+                var dialog = new OpenFileDialog();
+                if (Directory.Exists(@"c:\Program Files (x86)\CloudBerryLab\CloudBerry Explorer for Azure Blob Storage\"))
+                    dialog.InitialDirectory = @"c:\Program Files (x86)\CloudBerryLab\CloudBerry Explorer for Azure Blob Storage\";
+                if (Directory.Exists(@"c:\Program Files\CloudBerryLab\CloudBerry Explorer for Azure Blob Storage\"))
+                    dialog.InitialDirectory = @"c:\Program Files\CloudBerryLab\CloudBerry Explorer for Azure Blob Storage\";
+                dialog.CheckFileExists = true;
+                dialog.Filter = "CloudBerryLab Client DLL|CloudBerryLab.Client.dll|All DLLs|*.dll";
+                dialog.Multiselect = false;
+                dialog.ReadOnlyChecked = true;
+                var result = dialog.ShowDialog(this);
+                if (result == DialogResult.Cancel)
+                    return;
+
+                var adapter = new CloudberryExplorerAdapter(dialog.FileName);
+                int count = adapter.Export();
+                MessageBox.Show(this, "Successfully exported " + count + " (new) accounts to CloudBerry Explorer.");
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(this, "Failed to export accounts: " + ex.ToString(), "Export failed!");
+            }
+        }
+
         private void CopyAllToClip()
         {
              dataGridView1.SelectAll();

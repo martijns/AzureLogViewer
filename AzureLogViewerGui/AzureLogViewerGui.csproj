@@ -118,6 +118,7 @@
       <DependentUpon>AccountKeyForm.cs</DependentUpon>
     </Compile>
     <Compile Include="Adapters\AzureStorageExplorerAdapter.cs" />
+    <Compile Include="Adapters\CloudberryExplorerAdapter.cs" />
     <Compile Include="BaseForm.cs">
       <SubType>Form</SubType>
     </Compile>
