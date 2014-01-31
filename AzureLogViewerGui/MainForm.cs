@@ -67,6 +67,15 @@ namespace AzureLogViewerGui
             filterTextBox.KeyUp += HandleFilterKeyup;
             HandleFilterLostFocus(this, EventArgs.Empty);
 
+            // Extra opties
+            useOptimizedQueriesForWADTablesToolStripMenuItem.Checked = Configuration.Instance.UseWADPerformanceOptimization;
+            useOptimizedQueriesForWADTablesToolStripMenuItem.Click += (src, evt) =>
+            {
+                Configuration.Instance.UseWADPerformanceOptimization = !Configuration.Instance.UseWADPerformanceOptimization;
+                useOptimizedQueriesForWADTablesToolStripMenuItem.Checked = Configuration.Instance.UseWADPerformanceOptimization;
+                Configuration.Instance.Save();
+            };
+
             // New version check
             AzureLogViewerGui.Version.CheckForUpdateAsync();
         }
@@ -119,9 +128,12 @@ namespace AzureLogViewerGui
             }
             else
             {
+                string[] searchterms = filterText.Split(new [] { "&&" }, StringSplitOptions.RemoveEmptyEntries);
                 _filteredRows = (from row in _loadedRows
-                                 from item in row
-                                 where item != null && item.ToLower().Contains(filterText)
+                                 //where FilterContains(row, searchterms)
+                                 where searchterms.All(s => row.Any(r => r.ToLower().Contains(s)))
+                                 //from item in row
+                                 //where item != null && item.ToLower().Contains(filterText)
                                  select row).ToArray();
             }
 
@@ -136,6 +148,34 @@ namespace AzureLogViewerGui
                 dataGridView1.Rows.Clear();
                 dataGridView1.RowCount = _filteredRows.Length;
             }
+        }
+
+        bool FilterContains(string[] items, string[] searchterms)
+        {
+            // Keep a list of searchterms to find
+            List<string> searchtermsRemaining = new List<string>(searchterms);
+
+            // Loop over each item (i.e. column values)
+            foreach (var item in items)
+            {
+                // Loop over each remaining searchterm
+                foreach (var searchterm in searchtermsRemaining)
+                {
+                    // If a searchterm is found, remove it from the 'remaining' list
+                    if (item.ToLower().Contains(searchterm))
+                    {
+                        searchtermsRemaining = new List<string>(searchtermsRemaining);
+                        searchtermsRemaining.Remove(searchterm);
+                    }
+                }
+
+                // If all searchterms are found, return early (for performance)
+                if (searchtermsRemaining.Count == 0)
+                    return true;
+            }
+
+            // All search terms found?
+            return searchtermsRemaining.Count == 0;
         }
 
         #endregion
@@ -176,7 +216,7 @@ namespace AzureLogViewerGui
             PerformBG(this, () =>
             {
                 // Find results for this period in time
-                entities = new LogFetcher(accountName, accountKey).FetchLogs(table, from, to);
+                entities = new LogFetcher(accountName, accountKey) { UseWADPerformanceOptimization = Configuration.Instance.UseWADPerformanceOptimization }.FetchLogs(table, from, to);
                 switch (order)
                 {
                     case OrderBy.New_to_Old:
@@ -192,7 +232,7 @@ namespace AzureLogViewerGui
                 {
                     entities = new List<WadTableEntity>();
                     var entity = new WadTableEntity {
-                        PartitionKey = "No results found. Try extending the from/to period."
+                        PartitionKey = "No results found. Try extending the from/to period. If you were expecting results, you could try disabling 'Use optimized queries for WAD tables'."
                     };
                     entity.Properties.Add("PartitionKey", entity.PartitionKey);
                     entities.Add(entity);
@@ -345,7 +385,7 @@ namespace AzureLogViewerGui
 
             PerformBG(this, () =>
             {
-                tableNames = new LogFetcher(accountname, accountkey).FetchTables();
+                tableNames = new LogFetcher(accountname, accountkey) { UseWADPerformanceOptimization = Configuration.Instance.UseWADPerformanceOptimization }.FetchTables();
             },
             () =>
             {
@@ -624,6 +664,11 @@ namespace AzureLogViewerGui
                 return fdSaveAs.FileName;
             else
                 return null;
+        }
+
+        private void HandleUseWADOptimizationClicked(object sender, EventArgs e)
+        {
+
         }
     }
 }

@@ -168,7 +168,22 @@ namespace AzureLogViewerGui
             SaveConfiguration(this);
         }
 
+        /// <summary>
+        /// The list of accounts
+        /// </summary>
         [XmlElement]
         public SerializableDictionary<string, string> Accounts { get; set; }
+
+        /// <summary>
+        /// As we want to default 'true' we use a negative setting, as a non-existing xml element will default to its default value (false). The public
+        /// property is used to negate the private one, so that it is more convenient in its use.
+        /// </summary>
+        [XmlElement]
+        protected bool DisableWADPerformanceOptimization { get; set; }
+        public bool UseWADPerformanceOptimization
+        {
+            get { return !DisableWADPerformanceOptimization; }
+            set { DisableWADPerformanceOptimization = !value; }
+        }
     }
 }

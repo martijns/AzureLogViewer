@@ -1,4 +1,8 @@
-﻿2013-12-09:
+﻿2014-01-29:
+- NEW: Added new setting to optimize queries on WAD tables, enabled by default but breaks compatibility with logging based on https://github.com/netripper/Ms.Azure.Logging
+- NEW: Filter now allows the use of "&&" to filter on multiple search terms
+
+2013-12-09:
 - NEW: Ability to export to CloudBerry Explorer for Azure Blob Storage
 
 2013-11-13:

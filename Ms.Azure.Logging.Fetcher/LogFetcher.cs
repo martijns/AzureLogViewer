@@ -29,6 +29,8 @@ namespace Ms.Azure.Logging.Fetcher
             }
         }
 
+        public bool UseWADPerformanceOptimization { get; set; }
+
         public bool ValidateCredentials()
         {
             // Expect exception when credentials are incorrect
@@ -41,35 +43,31 @@ namespace Ms.Azure.Logging.Fetcher
             return _client.ListTables().Select(t => t.Name).ToArray();
         }
 
-        public IList<WadTableEntity> FetchLogsBACKUP(string tableName, DateTime start, DateTime end)
-        {
-            var context = _client.GetTableServiceContext();
-            context.MergeOption = MergeOption.NoTracking;
-            var items = from record in context.CreateQuery<WadTableEntity>(tableName)
-                        where record.EventTickCount >= start.Ticks && record.EventTickCount <= end.Ticks
-                        //where record.Timestamp >= start && record.Timestamp < end
-                        select record;
-            //return items.ToList().Select(s => new WadTableEntity() { PartitionKey = s.PartitionKey, RowKey = s.RowKey, Timestamp = s.Timestamp, EventTickCount = s.Timestamp.Ticks}).OrderBy(i => i.EventTickCount).ToList();
-            return items.ToList();
-        }
-
         public IList<WadTableEntity> FetchLogs(string tableName, DateTime start, DateTime end)
         {
             var context = _client.GetTableServiceContext();
             context.MergeOption = MergeOption.NoTracking;
             context.ReadingEntity += HandleReadEntity;
 
-            // Deze manier haalt alle records op. Het verwerken van continuationtokens wordt gedaan door de Execute()
-            var query = (from record in context.CreateQuery<WadTableEntity>(tableName)
-                         where record.Timestamp >= start && record.Timestamp < end
+            // Fetch all records. Internally uses continuation tokens to retrieve all pages.
+            TableServiceQuery<WadTableEntity> query;
+            if (UseWADPerformanceOptimization && tableName.StartsWith("WAD"))
+            {
+                // Use a better performing query for WAD tables, as we know how the partitionkey is built
+                query = (from record in context.CreateQuery<WadTableEntity>(tableName)
+                         where string.Compare(record.PartitionKey, "0" + start.Ticks.ToString()) >= 0 && string.Compare(record.PartitionKey, "0" + end.Ticks.ToString()) <= 0
+                         where record.Timestamp >= start && record.Timestamp <= end
                          select record).AsTableServiceQuery<WadTableEntity>(context);
+            }
+            else
+            {
+                // Use timestamp querying on everything else
+                query = (from record in context.CreateQuery<WadTableEntity>(tableName)
+                         where record.Timestamp >= start && record.Timestamp <= end
+                         select record).AsTableServiceQuery<WadTableEntity>(context);
+
+            }
             var items = query.Execute().ToList();
-            
-            // Deze manier haalt maximaal 1000 records op, aangezien vervolgrequests met continuation tokens dienen te gaan.
-            //var items = (from record in context.CreateQuery<WadTableEntity>(tableName)
-            //             where record.Timestamp >= start && record.Timestamp < end
-            //             select record).ToList();
-            
             return items;
         }
 
