@@ -287,7 +287,7 @@ namespace AzureLogViewerGui
                 string[] dummyvals = Enumerable.Repeat("", _loadedColumns.Length).ToArray();
                 for (int i = 0; i < _loadedColumns.Length; i++)
                 {
-                    string longest = (from item in _loadedRows select item[i]).Aggregate("", (max, cur) => max.Length > cur.Length ? max : cur);
+                    string longest = (from item in _loadedRows select i < item.Length ? item[i] : "").Aggregate("", (max, cur) => max.Length > cur.Length ? max : cur);
                     //longest = new string('#', longest.Length);
                     dummyvals[i] = longest;
                 }
@@ -336,7 +336,11 @@ namespace AzureLogViewerGui
             if (e.RowIndex < 0 || e.RowIndex >= _filteredRows.Length)
                 return;
 
-            e.Value = _filteredRows[e.RowIndex][e.ColumnIndex];
+            string[] row = _filteredRows[e.RowIndex];
+            if (e.ColumnIndex < row.Length)
+                e.Value = row[e.ColumnIndex];
+            else
+                e.Value = "";
         }
 
         private void HandleAccountAdd(object sender, EventArgs e)

@@ -1,4 +1,7 @@
 ﻿2014-02-05:
+- FIX: Fixed crash when a table has new columns, but not all records within the table have content for them
+
+2014-02-05:
 - FIX: DeploymentId added to the WADLogsTable columns
 - NEW: Added ability to negate searchterms by prefixing it with an exclamation mark (!), i.e.: ServiceRuntime&&!ForceSecureConnection
 
