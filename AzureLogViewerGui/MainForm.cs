@@ -131,7 +131,9 @@ namespace AzureLogViewerGui
                 string[] searchterms = filterText.Split(new [] { "&&" }, StringSplitOptions.RemoveEmptyEntries);
                 _filteredRows = (from row in _loadedRows
                                  //where FilterContains(row, searchterms)
-                                 where searchterms.All(s => row.Any(r => r.ToLower().Contains(s)))
+                                 where searchterms.Where(s => !s.StartsWith("!")).All(s => row.Any(r => r.ToLower().Contains(s))) &&
+                                       searchterms.Where(s => s.StartsWith("!")).All(s => row.All(r => !r.ToLower().Contains(s.TrimStart('!'))))
+                                 //where searchterms.All(s => row.Any(r => s.StartsWith("!") ? !s.ToLower().Contains(s.TrimStart('!')) : s.ToLower().Contains(s)))
                                  //from item in row
                                  //where item != null && item.ToLower().Contains(filterText)
                                  select row).ToArray();
@@ -242,13 +244,14 @@ namespace AzureLogViewerGui
                 string[] propertyNames = entities.SelectMany(entity => entity.Properties).Select(p => p.Key).Distinct().ToArray();
 
                 // If certain propertynames are available, we assume this is a Windows Azure Diagnostics table and we leave out some info
-                if (propertyNames.Contains("EventTickCount") &&
+                if (propertyNames.Contains("DeploymentId") &&
+                    propertyNames.Contains("EventTickCount") &&
                     propertyNames.Contains("RoleInstance") &&
                     propertyNames.Contains("Level") &&
                     propertyNames.Contains("Message"))
                 {
-                    _loadedColumns = new string[] { "RoleInstance", "Timestamp", "Message" };
-                    _loadedRows = (from i in entities select new[] { i.RoleInstance, i.Timestamp.ToString(), i.Message }).ToArray();
+                    _loadedColumns = new string[] { "DeploymentId", "RoleInstance", "Timestamp", "Message" };
+                    _loadedRows = (from i in entities select new[] { i.DeploymentId, i.RoleInstance, i.Timestamp.ToString(), i.Message }).ToArray();
                     _filteredRows = _loadedRows;
                     return;
                 }
