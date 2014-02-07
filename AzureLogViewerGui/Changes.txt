@@ -1,4 +1,7 @@
-﻿2014-02-05:
+﻿2014-02-07:
+- NEW: Convert values in column EventTickCount to a readable format. Enabled by default, can be disabled via Extra menu.
+
+2014-02-05:
 - FIX: Fixed crash when a table has new columns, but not all records within the table have content for them
 
 2014-02-05:

@@ -75,6 +75,13 @@ namespace AzureLogViewerGui
                 useOptimizedQueriesForWADTablesToolStripMenuItem.Checked = Configuration.Instance.UseWADPerformanceOptimization;
                 Configuration.Instance.Save();
             };
+            convertEventTickCountColumnToReadableFormatToolStripMenuItem.Checked = Configuration.Instance.ConvertEventTickCount;
+            convertEventTickCountColumnToReadableFormatToolStripMenuItem.Click += (src, evt) =>
+            {
+                Configuration.Instance.ConvertEventTickCount = !Configuration.Instance.ConvertEventTickCount;
+                convertEventTickCountColumnToReadableFormatToolStripMenuItem.Checked = Configuration.Instance.ConvertEventTickCount;
+                Configuration.Instance.Save();
+            };
 
             // New version check
             AzureLogViewerGui.Version.CheckForUpdateAsync();
@@ -250,8 +257,8 @@ namespace AzureLogViewerGui
                     propertyNames.Contains("Level") &&
                     propertyNames.Contains("Message"))
                 {
-                    _loadedColumns = new string[] { "DeploymentId", "RoleInstance", "Timestamp", "Message" };
-                    _loadedRows = (from i in entities select new[] { i.DeploymentId, i.RoleInstance, i.Timestamp.ToString(), i.Message }).ToArray();
+                    _loadedColumns = new string[] { "DeploymentId", "RoleInstance", "EventTickCount", "Message" };
+                    _loadedRows = (from i in entities select new[] { i.DeploymentId, i.RoleInstance, new DateTime(i.EventTickCount).ToString("yyyy-MM-dd HH:mm:ss.fff"), i.Message }).ToArray();
                     _filteredRows = _loadedRows;
                     return;
                 }
@@ -259,7 +266,7 @@ namespace AzureLogViewerGui
                 {
                     _loadedColumns = (from propname in propertyNames select propname).ToArray();
                     _loadedRows = (from entity in entities
-                                   select (from prop in entity.Properties select prop.Value).ToArray()).ToArray();
+                                   select (from prop in entity.Properties select GetPropertyValue(prop)).ToArray()).ToArray();
                     _filteredRows = _loadedRows;
                 }
             },
@@ -321,6 +328,25 @@ namespace AzureLogViewerGui
                 if (GetFilterText() != null)
                     HandleFilterKeyup(this, EventArgs.Empty);
             });
+        }
+
+        string GetPropertyValue(KeyValuePair<string, string> prop)
+        {
+            switch (prop.Key)
+            {
+                case "EventTickCount":
+                    if (Configuration.Instance.ConvertEventTickCount)
+                    {
+                        long ticks;
+                        if (Int64.TryParse(prop.Value, out ticks) && ticks >= DateTime.MinValue.Ticks && ticks <= DateTime.MaxValue.Ticks)
+                        {
+                            return new DateTime(ticks).ToString("yyyy-MM-dd HH:mm:ss.fff");
+                        }
+                    }
+                    return prop.Value;
+                default:
+                    return prop.Value;
+            }
         }
 
         void HandleCellValueNeeded(object sender, DataGridViewCellValueEventArgs e)
@@ -671,11 +697,6 @@ namespace AzureLogViewerGui
                 return fdSaveAs.FileName;
             else
                 return null;
-        }
-
-        private void HandleUseWADOptimizationClicked(object sender, EventArgs e)
-        {
-
         }
     }
 }

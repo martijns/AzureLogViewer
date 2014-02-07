@@ -56,6 +56,8 @@
             this.scrapeForStorageAccountsToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.exportToAzureStorageExplorerToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.exportToCloudBerryExplorerToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.extraToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.useOptimizedQueriesForWADTablesToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.helpToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.changelogToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.aboutToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
@@ -63,8 +65,7 @@
             this.cutToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.copyToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.pasteToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.extraToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.useOptimizedQueriesForWADTablesToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.convertEventTickCountColumnToReadableFormatToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.mainPanel.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.dataGridView1)).BeginInit();
             this.flowLayoutPanel1.SuspendLayout();
@@ -338,6 +339,21 @@
             this.exportToCloudBerryExplorerToolStripMenuItem.Text = "Export to CloudBerry Explorer...";
             this.exportToCloudBerryExplorerToolStripMenuItem.Click += new System.EventHandler(this.HandleExportToCloudBerryExplorerClicked);
             // 
+            // extraToolStripMenuItem
+            // 
+            this.extraToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.useOptimizedQueriesForWADTablesToolStripMenuItem,
+            this.convertEventTickCountColumnToReadableFormatToolStripMenuItem});
+            this.extraToolStripMenuItem.Name = "extraToolStripMenuItem";
+            this.extraToolStripMenuItem.Size = new System.Drawing.Size(44, 20);
+            this.extraToolStripMenuItem.Text = "Extra";
+            // 
+            // useOptimizedQueriesForWADTablesToolStripMenuItem
+            // 
+            this.useOptimizedQueriesForWADTablesToolStripMenuItem.Name = "useOptimizedQueriesForWADTablesToolStripMenuItem";
+            this.useOptimizedQueriesForWADTablesToolStripMenuItem.Size = new System.Drawing.Size(348, 22);
+            this.useOptimizedQueriesForWADTablesToolStripMenuItem.Text = "Use optimized queries for WAD tables";
+            // 
             // helpToolStripMenuItem
             // 
             this.helpToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
@@ -350,14 +366,14 @@
             // changelogToolStripMenuItem
             // 
             this.changelogToolStripMenuItem.Name = "changelogToolStripMenuItem";
-            this.changelogToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
+            this.changelogToolStripMenuItem.Size = new System.Drawing.Size(132, 22);
             this.changelogToolStripMenuItem.Text = "Changelog";
             this.changelogToolStripMenuItem.Click += new System.EventHandler(this.HandleChangelogClicked);
             // 
             // aboutToolStripMenuItem
             // 
             this.aboutToolStripMenuItem.Name = "aboutToolStripMenuItem";
-            this.aboutToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
+            this.aboutToolStripMenuItem.Size = new System.Drawing.Size(132, 22);
             this.aboutToolStripMenuItem.Text = "About";
             this.aboutToolStripMenuItem.Click += new System.EventHandler(this.HandleAboutClick);
             // 
@@ -388,20 +404,11 @@
             this.pasteToolStripMenuItem.Size = new System.Drawing.Size(102, 22);
             this.pasteToolStripMenuItem.Text = "Paste";
             // 
-            // extraToolStripMenuItem
+            // convertEventTickCountColumnToReadableFormatToolStripMenuItem
             // 
-            this.extraToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.useOptimizedQueriesForWADTablesToolStripMenuItem});
-            this.extraToolStripMenuItem.Name = "extraToolStripMenuItem";
-            this.extraToolStripMenuItem.Size = new System.Drawing.Size(44, 20);
-            this.extraToolStripMenuItem.Text = "Extra";
-            // 
-            // useOptimizedQueriesForWADTablesToolStripMenuItem
-            // 
-            this.useOptimizedQueriesForWADTablesToolStripMenuItem.Name = "useOptimizedQueriesForWADTablesToolStripMenuItem";
-            this.useOptimizedQueriesForWADTablesToolStripMenuItem.Size = new System.Drawing.Size(272, 22);
-            this.useOptimizedQueriesForWADTablesToolStripMenuItem.Text = "Use optimized queries for WAD tables";
-            this.useOptimizedQueriesForWADTablesToolStripMenuItem.Click += new System.EventHandler(this.HandleUseWADOptimizationClicked);
+            this.convertEventTickCountColumnToReadableFormatToolStripMenuItem.Name = "convertEventTickCountColumnToReadableFormatToolStripMenuItem";
+            this.convertEventTickCountColumnToReadableFormatToolStripMenuItem.Size = new System.Drawing.Size(348, 22);
+            this.convertEventTickCountColumnToReadableFormatToolStripMenuItem.Text = "Convert EventTickCount column to readable format";
             // 
             // MainForm
             // 
@@ -465,6 +472,7 @@
         private System.Windows.Forms.ToolStripMenuItem exportToCloudBerryExplorerToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem extraToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem useOptimizedQueriesForWADTablesToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem convertEventTickCountColumnToReadableFormatToolStripMenuItem;
     }
 }
 

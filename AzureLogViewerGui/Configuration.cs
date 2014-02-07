@@ -185,5 +185,13 @@ namespace AzureLogViewerGui
             get { return !DisableWADPerformanceOptimization; }
             set { DisableWADPerformanceOptimization = !value; }
         }
+
+        [XmlElement]
+        protected bool DisableConvertEventTickCount { get; set; }
+        public bool ConvertEventTickCount
+        {
+            get { return !DisableConvertEventTickCount; }
+            set { DisableConvertEventTickCount = !value; }
+        }
     }
 }
