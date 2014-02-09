@@ -1,5 +1,9 @@
-﻿2014-02-07:
+﻿2014-02-10:
+- NEW: Ability to highlight columns containing text using searchterms in the filter box prefixed with the '#' character. Example: http://content.screencast.com/users/Martijn_Stolk/folders/Jing/media/6dd477fb-fa4f-4d94-8dd7-ed80abd61252/2014-02-10_0030.png
+
+2014-02-07:
 - NEW: Convert values in column EventTickCount to a readable format. Enabled by default, can be disabled via Extra menu.
+- CHG: Viewing WADLogsTable now displays EventTickCount column instead of Timestamp. Timestamp indicates time the record was added, not the time of logging.
 
 2014-02-05:
 - FIX: Fixed crash when a table has new columns, but not all records within the table have content for them

@@ -111,11 +111,12 @@ namespace AzureLogViewerGui
             }
         }
 
-        string GetFilterText()
+        string[] GetFilterTextSearchTerms()
         {
-            if (!string.IsNullOrEmpty(filterTextBox.Text) && filterTextBox.Text != FilterText)
-                return filterTextBox.Text;
-            return null;
+            if (string.IsNullOrEmpty(filterTextBox.Text) || filterTextBox.Text.Equals(FilterText))
+                return null;
+
+            return filterTextBox.Text.ToLower().Split(new[] { "&&" }, StringSplitOptions.RemoveEmptyEntries);
         }
 
         void HandleFilterKeyup(object sender, EventArgs e)
@@ -124,25 +125,19 @@ namespace AzureLogViewerGui
                 return;
 
             // Get the selected filter text
-            string filterText = GetFilterText();
-            if (filterText != null)
-                filterText = filterText.ToLower();
+            string[] searchterms = GetFilterTextSearchTerms();
 
             // Determine the filteredrows
-            if (filterText == null)
+            if (searchterms == null)
             {
                 _filteredRows = _loadedRows;
             }
             else
             {
-                string[] searchterms = filterText.Split(new [] { "&&" }, StringSplitOptions.RemoveEmptyEntries);
+                searchterms = searchterms.Where(s => !s.StartsWith("#")).ToArray(); // niet filteren op highlight terms
                 _filteredRows = (from row in _loadedRows
-                                 //where FilterContains(row, searchterms)
                                  where searchterms.Where(s => !s.StartsWith("!")).All(s => row.Any(r => r.ToLower().Contains(s))) &&
                                        searchterms.Where(s => s.StartsWith("!")).All(s => row.All(r => !r.ToLower().Contains(s.TrimStart('!'))))
-                                 //where searchterms.All(s => row.Any(r => s.StartsWith("!") ? !s.ToLower().Contains(s.TrimStart('!')) : s.ToLower().Contains(s)))
-                                 //from item in row
-                                 //where item != null && item.ToLower().Contains(filterText)
                                  select row).ToArray();
             }
 
@@ -157,6 +152,7 @@ namespace AzureLogViewerGui
                 dataGridView1.Rows.Clear();
                 dataGridView1.RowCount = _filteredRows.Length;
             }
+            dataGridView1.Invalidate();
         }
 
         bool FilterContains(string[] items, string[] searchterms)
@@ -277,6 +273,7 @@ namespace AzureLogViewerGui
                 {
                     dataGridView1.VirtualMode = true;
                     dataGridView1.CellValueNeeded += HandleCellValueNeeded;
+                    dataGridView1.CellFormatting += HandleCellFormatting;
                 }
                 dataGridView1.AllowUserToAddRows = false;
                 dataGridView1.AllowUserToDeleteRows = false;
@@ -325,7 +322,7 @@ namespace AzureLogViewerGui
                 dataGridView1.RowCount = _loadedRows.Length;
 
                 // Als er een filter is, pas het filter toe...
-                if (GetFilterText() != null)
+                if (GetFilterTextSearchTerms() != null)
                     HandleFilterKeyup(this, EventArgs.Empty);
             });
         }
@@ -349,24 +346,66 @@ namespace AzureLogViewerGui
             }
         }
 
+        string GetCellValue(int columnindex, int rowindex)
+        {
+            if (_filteredRows == null || _loadedColumns == null)
+                return "";
+
+            if (columnindex < 0 || columnindex >= _loadedColumns.Length)
+                return "";
+
+            if (rowindex < 0 || rowindex >= _filteredRows.Length)
+                return "";
+
+            string[] row = _filteredRows[rowindex];
+            if (columnindex < row.Length)
+                return row[columnindex] ?? "";
+            else
+                return "";
+        }
+
+        void HandleCellFormatting(object sender, DataGridViewCellFormattingEventArgs e)
+        {
+            string[] highlightterms = (GetFilterTextSearchTerms() ?? new string[0]).Where(s => s.StartsWith("#")).Select(s => s.TrimStart('#')).ToArray();
+            Color originalcolor = Color.FromKnownColor(KnownColor.Window);
+
+            // Geen highlightterms, default color dus
+            if (highlightterms.Length == 0)
+            {
+                if (e.CellStyle.BackColor != originalcolor)
+                {
+                    e.CellStyle.BackColor = originalcolor;
+                    e.FormattingApplied = true;
+                }
+                return;
+            }
+
+            // Cell wel/niet formatten op basis van content
+            string value = GetCellValue(e.ColumnIndex, e.RowIndex);
+            foreach (string term in highlightterms)
+            {
+                if (value.ToLower().Contains(term))
+                {
+                    if (e.CellStyle.BackColor != Color.Orange)
+                    {
+                        e.CellStyle.BackColor = Color.Orange;
+                        e.FormattingApplied = true;
+                    }
+                }
+                else
+                {
+                    if (e.CellStyle.BackColor != originalcolor)
+                    {
+                        e.CellStyle.BackColor = originalcolor;
+                        e.FormattingApplied = true;
+                    }
+                }
+            }
+        }
+
         void HandleCellValueNeeded(object sender, DataGridViewCellValueEventArgs e)
         {
-            e.Value = "";
-
-            if (_filteredRows == null || _loadedColumns == null)
-                return;
-
-            if (e.ColumnIndex < 0 || e.ColumnIndex >= _loadedColumns.Length)
-                return;
-
-            if (e.RowIndex < 0 || e.RowIndex >= _filteredRows.Length)
-                return;
-
-            string[] row = _filteredRows[e.RowIndex];
-            if (e.ColumnIndex < row.Length)
-                e.Value = row[e.ColumnIndex];
-            else
-                e.Value = "";
+            e.Value = GetCellValue(e.ColumnIndex, e.RowIndex);
         }
 
         private void HandleAccountAdd(object sender, EventArgs e)
