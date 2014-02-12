@@ -58,6 +58,7 @@
             this.exportToCloudBerryExplorerToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.extraToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.useOptimizedQueriesForWADTablesToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.convertEventTickCountColumnToReadableFormatToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.helpToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.changelogToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.aboutToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
@@ -65,7 +66,6 @@
             this.cutToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.copyToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.pasteToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.convertEventTickCountColumnToReadableFormatToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.mainPanel.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.dataGridView1)).BeginInit();
             this.flowLayoutPanel1.SuspendLayout();
@@ -354,6 +354,12 @@
             this.useOptimizedQueriesForWADTablesToolStripMenuItem.Size = new System.Drawing.Size(348, 22);
             this.useOptimizedQueriesForWADTablesToolStripMenuItem.Text = "Use optimized queries for WAD tables";
             // 
+            // convertEventTickCountColumnToReadableFormatToolStripMenuItem
+            // 
+            this.convertEventTickCountColumnToReadableFormatToolStripMenuItem.Name = "convertEventTickCountColumnToReadableFormatToolStripMenuItem";
+            this.convertEventTickCountColumnToReadableFormatToolStripMenuItem.Size = new System.Drawing.Size(348, 22);
+            this.convertEventTickCountColumnToReadableFormatToolStripMenuItem.Text = "Convert EventTickCount column to readable format";
+            // 
             // helpToolStripMenuItem
             // 
             this.helpToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
@@ -404,12 +410,6 @@
             this.pasteToolStripMenuItem.Size = new System.Drawing.Size(102, 22);
             this.pasteToolStripMenuItem.Text = "Paste";
             // 
-            // convertEventTickCountColumnToReadableFormatToolStripMenuItem
-            // 
-            this.convertEventTickCountColumnToReadableFormatToolStripMenuItem.Name = "convertEventTickCountColumnToReadableFormatToolStripMenuItem";
-            this.convertEventTickCountColumnToReadableFormatToolStripMenuItem.Size = new System.Drawing.Size(348, 22);
-            this.convertEventTickCountColumnToReadableFormatToolStripMenuItem.Text = "Convert EventTickCount column to readable format";
-            // 
             // MainForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -421,6 +421,7 @@
             this.Margin = new System.Windows.Forms.Padding(2);
             this.Name = "MainForm";
             this.Text = "AzureLogViewer";
+            this.FormClosed += new System.Windows.Forms.FormClosedEventHandler(this.HandleFormClosed);
             this.mainPanel.ResumeLayout(false);
             this.mainPanel.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.dataGridView1)).EndInit();

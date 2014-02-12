@@ -737,5 +737,11 @@ namespace AzureLogViewerGui
             else
                 return null;
         }
+
+        private void HandleFormClosed(object sender, FormClosedEventArgs e)
+        {
+            // Make sure the process actually terminates, and no background processes keep the application alive.
+            Environment.Exit(0);
+        }
     }
 }

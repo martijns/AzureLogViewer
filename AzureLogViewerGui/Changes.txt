@@ -1,4 +1,7 @@
-﻿2014-02-10:
+﻿2014-02-13:
+- NEW: New crash dialog with the ability to upload a report to the developer.
+
+2014-02-10:
 - NEW: Ability to highlight columns containing text using searchterms in the filter box prefixed with the '#' character. Example: http://content.screencast.com/users/Martijn_Stolk/folders/Jing/media/6dd477fb-fa4f-4d94-8dd7-ed80abd61252/2014-02-10_0030.png
 
 2014-02-07:
