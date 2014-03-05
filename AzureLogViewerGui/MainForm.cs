@@ -32,6 +32,7 @@ namespace AzureLogViewerGui
         private string[] _loadedColumns = null;
         private string[][] _loadedRows = null;
         private string[][] _filteredRows = null;
+        private PerformanceCountersControl _performanceCountersControl = new PerformanceCountersControl();
 
         public MainForm()
         {
@@ -82,6 +83,13 @@ namespace AzureLogViewerGui
                 convertEventTickCountColumnToReadableFormatToolStripMenuItem.Checked = Configuration.Instance.ConvertEventTickCount;
                 Configuration.Instance.Save();
             };
+            showPerfCountersAsChartMenuItem.Checked = Configuration.Instance.ShowPerformanceCountersAsChart;
+            showPerfCountersAsChartMenuItem.Click += (src, evt) =>
+            {
+                Configuration.Instance.ShowPerformanceCountersAsChart = !Configuration.Instance.ShowPerformanceCountersAsChart;
+                showPerfCountersAsChartMenuItem.Checked = Configuration.Instance.ShowPerformanceCountersAsChart;
+                Configuration.Instance.Save();
+            };
 
             // New version check
             AzureLogViewerGui.Version.CheckForUpdateAsync();
@@ -121,6 +129,12 @@ namespace AzureLogViewerGui
 
         void HandleFilterKeyup(object sender, EventArgs e)
         {
+            if (resultPanel.Controls.Contains(_performanceCountersControl))
+            {
+                _performanceCountersControl.SetFilter(GetFilterTextSearchTerms());
+                return;
+            }
+
             if (dataGridView1 == null || dataGridView1.RowCount == 0)
                 return;
 
@@ -269,63 +283,106 @@ namespace AzureLogViewerGui
             },
             () =>
             {
-                dataGridView1.ReadOnly = true;
-                if (!dataGridView1.VirtualMode)
+                if ("WADPerformanceCountersTable".Equals(table) && _loadedRows.Length > 0 && Configuration.Instance.ShowPerformanceCountersAsChart)
                 {
-                    dataGridView1.VirtualMode = true;
-                    dataGridView1.CellValueNeeded += HandleCellValueNeeded;
-                    dataGridView1.CellFormatting += HandleCellFormatting;
+                    ShowPerformanceCountersChart();
                 }
-                dataGridView1.AllowUserToAddRows = false;
-                dataGridView1.AllowUserToDeleteRows = false;
-                dataGridView1.AllowUserToResizeColumns = true; // Resizen mag wel
-                dataGridView1.AllowUserToResizeRows = false;
-                dataGridView1.AllowUserToOrderColumns = false;
-                dataGridView1.Columns.Clear();
-                dataGridView1.Rows.Clear();
-                foreach (var column in _loadedColumns)
+                else
                 {
-                    dataGridView1.Columns.Add(column, column);
+                    ShowDataGridView();
                 }
-
-                // Vind van elke kolom de langste waarde
-                string[] dummyvals = Enumerable.Repeat("", _loadedColumns.Length).ToArray();
-                for (int i = 0; i < _loadedColumns.Length; i++)
-                {
-                    string longest = (from item in _loadedRows select i < item.Length ? item[i] : "").Aggregate("", (max, cur) => max.Length > cur.Length ? max : cur);
-                    //longest = new string('#', longest.Length);
-                    dummyvals[i] = longest;
-                }
-
-                // Voeg een dummy record toe
-                dataGridView1.VirtualMode = false;
-                dataGridView1.Rows.Add(dummyvals);
-
-                // Autosize alle kolommen
-                dataGridView1.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.AllCells;
-
-                // Breedtes van kolommen vastzetten
-                foreach (DataGridViewColumn column in dataGridView1.Columns)
-                {
-                    int width = column.Width + 15; // Compensate character width a little, so we don't get "..." on the slightest difference
-                    if (width > 65536)
-                        width = 65536;
-                    column.AutoSizeMode = DataGridViewAutoSizeColumnMode.None;
-                    column.Width = width;
-                }
-
-                // Haal de autosize weer weg
-                dataGridView1.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.None;
-
-                // Rowcount goed zetten
-                dataGridView1.Rows.Clear();
-                dataGridView1.VirtualMode = true;
-                dataGridView1.RowCount = _loadedRows.Length;
-
-                // Als er een filter is, pas het filter toe...
-                if (GetFilterTextSearchTerms() != null)
-                    HandleFilterKeyup(this, EventArgs.Empty);
             });
+        }
+
+        private void ShowDataGridView()
+        {
+            if (!resultPanel.Contains(dataGridView1))
+            {
+                resultPanel.Controls.Clear();
+                resultPanel.Controls.Add(dataGridView1);
+            }
+
+            dataGridView1.ReadOnly = true;
+            if (!dataGridView1.VirtualMode)
+            {
+                dataGridView1.VirtualMode = true;
+                dataGridView1.CellValueNeeded += HandleCellValueNeeded;
+                dataGridView1.CellFormatting += HandleCellFormatting;
+            }
+            dataGridView1.AllowUserToAddRows = false;
+            dataGridView1.AllowUserToDeleteRows = false;
+            dataGridView1.AllowUserToResizeColumns = true; // Resizen mag wel
+            dataGridView1.AllowUserToResizeRows = false;
+            dataGridView1.AllowUserToOrderColumns = false;
+            dataGridView1.Columns.Clear();
+            dataGridView1.Rows.Clear();
+            foreach (var column in _loadedColumns)
+            {
+                dataGridView1.Columns.Add(column, column);
+            }
+
+            // Vind van elke kolom de langste waarde
+            string[] dummyvals = Enumerable.Repeat("", _loadedColumns.Length).ToArray();
+            for (int i = 0; i < _loadedColumns.Length; i++)
+            {
+                string longest = (from item in _loadedRows select i < item.Length ? item[i] : "").Aggregate("", (max, cur) => max.Length > cur.Length ? max : cur);
+                //longest = new string('#', longest.Length);
+                dummyvals[i] = longest;
+            }
+
+            // Voeg een dummy record toe
+            dataGridView1.VirtualMode = false;
+            dataGridView1.Rows.Add(dummyvals);
+
+            // Autosize alle kolommen
+            dataGridView1.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.AllCells;
+
+            // Breedtes van kolommen vastzetten
+            foreach (DataGridViewColumn column in dataGridView1.Columns)
+            {
+                int width = column.Width + 15; // Compensate character width a little, so we don't get "..." on the slightest difference
+                if (width > 65536)
+                    width = 65536;
+                column.AutoSizeMode = DataGridViewAutoSizeColumnMode.None;
+                column.Width = width;
+            }
+
+            // Haal de autosize weer weg
+            dataGridView1.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.None;
+
+            // Rowcount goed zetten
+            dataGridView1.Rows.Clear();
+            dataGridView1.VirtualMode = true;
+            dataGridView1.RowCount = _loadedRows.Length;
+
+            // Als er een filter is, pas het filter toe...
+            if (GetFilterTextSearchTerms() != null)
+                HandleFilterKeyup(this, EventArgs.Empty);
+        }
+
+        private void ShowPerformanceCountersChart()
+        {
+            if (!resultPanel.Contains(_performanceCountersControl))
+            {
+                resultPanel.Controls.Clear();
+                resultPanel.Controls.Add(_performanceCountersControl);
+            }
+
+            if (_loadedRows == null)
+            {
+                _loadedRows = new string[][] {
+                    new string[] { "234252523", "2014-03-05 12:00:00", "deployment id1", "INSTANCE_IN_0" ,"Counter1", "23" },
+                    new string[] { "234252523", "2014-03-05 12:00:00", "deployment id1", "INSTANCE_IN_1" ,"Counter1", "29" },
+                    new string[] { "234252523", "2014-03-05 12:00:00", "deployment id1", "INSTANCE_IN_0" ,"Counter2", "33" },
+                    new string[] { "234252523", "2014-03-05 12:00:00", "deployment id1", "INSTANCE_IN_1" ,"Counter2", "39" },
+                    new string[] { "234252523", "2014-03-05 12:05:00", "deployment id1", "INSTANCE_IN_0" ,"Counter1", "20" },
+                    new string[] { "234252523", "2014-03-05 12:05:00", "deployment id1", "INSTANCE_IN_1" ,"Counter1", "17" },
+                    new string[] { "234252523", "2014-03-05 12:05:00", "deployment id1", "INSTANCE_IN_0" ,"Counter2", "30" },
+                    new string[] { "234252523", "2014-03-05 12:05:00", "deployment id1", "INSTANCE_IN_1" ,"Counter2", "23" }
+                };
+            }
+
+            _performanceCountersControl.Initialize(_loadedRows, GetFilterTextSearchTerms());
         }
 
         string GetPropertyValue(KeyValuePair<string, string> prop)
@@ -462,11 +519,15 @@ namespace AzureLogViewerGui
             },
             () =>
             {
+                string previousTable = GetSelectedTableName();
                 tableSelection.Items.Clear();
                 tableSelection.Items.Add("-- select table --");
                 foreach (var tablename in tableNames)
                     tableSelection.Items.Add(tablename);
-                tableSelection.SelectedIndex = 0;
+                if (tableNames.Contains(previousTable))
+                    tableSelection.SelectedItem = previousTable;
+                else
+                    tableSelection.SelectedIndex = 0;
                 UpdateAccountSelection();
             }, (ex) =>
             {
@@ -588,7 +649,7 @@ namespace AzureLogViewerGui
                         if (customErrorHandler != null)
                             customErrorHandler(exception);
                         else
-                            MessageBox.Show(control, "An error occurred executing a background task:\r\n\r\n" + exception.ToString());
+                            new ReportBugForm(exception).ShowDialog();
                         IsBusy = false;
                         return;
                     }
@@ -598,7 +659,7 @@ namespace AzureLogViewerGui
                     }
                     catch (Exception ex)
                     {
-                        MessageBox.Show(control, "An error occurred exucuting a foreground task:\r\n\r\n" + ex.ToString());
+                        new ReportBugForm(ex).ShowDialog();
                     }
                     finally
                     {

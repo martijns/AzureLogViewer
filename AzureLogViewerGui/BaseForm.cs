@@ -67,6 +67,12 @@ namespace AzureLogViewerGui
             foreach (Control inner in c.Controls)
                 RecursiveRestore(inner);
             RestoreControlState(c);
+
+            // Controls could be removed in the meantime. To prevent odd behaviour, we explicitely restore the state of each recorded control
+            foreach (Control control in controlState.Keys)
+            {
+                RestoreControlState(control);
+            }
         }
 
         #region ControlState

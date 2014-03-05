@@ -32,6 +32,7 @@ namespace AzureLogViewerGui
         private Configuration()
         {
             Accounts = new SerializableDictionary<string, string>();
+            PerformanceCounterPreferences = new List<PerformanceCounterPreference>();
         }
 
         private static string GetConfigFilePath()
@@ -193,5 +194,29 @@ namespace AzureLogViewerGui
             get { return !DisableConvertEventTickCount; }
             set { DisableConvertEventTickCount = !value; }
         }
+
+        [XmlElement]
+        protected bool DoNotShowPerformanceCountersAsChart { get; set; }
+        public bool ShowPerformanceCountersAsChart
+        {
+            get { return !DoNotShowPerformanceCountersAsChart; }
+            set { DoNotShowPerformanceCountersAsChart = !value; }
+        }
+
+        [XmlElement]
+        public List<PerformanceCounterPreference> PerformanceCounterPreferences { get; set; }
+    }
+
+    [Serializable]
+    public class PerformanceCounterPreference
+    {
+        [XmlElement]
+        public string Name { get; set; }
+
+        [XmlElement]
+        public double Scale { get; set; }
+
+        [XmlElement]
+        public DateTime LastSeen { get; set; }
     }
 }

@@ -59,6 +59,7 @@
             this.extraToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.useOptimizedQueriesForWADTablesToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.convertEventTickCountColumnToReadableFormatToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.showPerfCountersAsChartMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.helpToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.changelogToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.aboutToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
@@ -66,16 +67,18 @@
             this.cutToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.copyToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.pasteToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.resultPanel = new System.Windows.Forms.Panel();
             this.mainPanel.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.dataGridView1)).BeginInit();
             this.flowLayoutPanel1.SuspendLayout();
             this.menuStrip1.SuspendLayout();
             this.ctxMenuPopup.SuspendLayout();
+            this.resultPanel.SuspendLayout();
             this.SuspendLayout();
             // 
             // mainPanel
             // 
-            this.mainPanel.Controls.Add(this.dataGridView1);
+            this.mainPanel.Controls.Add(this.resultPanel);
             this.mainPanel.Controls.Add(this.flowLayoutPanel1);
             this.mainPanel.Dock = System.Windows.Forms.DockStyle.Fill;
             this.mainPanel.Location = new System.Drawing.Point(0, 24);
@@ -93,7 +96,7 @@
             this.dataGridView1.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
             this.dataGridView1.Dock = System.Windows.Forms.DockStyle.Fill;
             this.dataGridView1.EditMode = System.Windows.Forms.DataGridViewEditMode.EditProgrammatically;
-            this.dataGridView1.Location = new System.Drawing.Point(0, 42);
+            this.dataGridView1.Location = new System.Drawing.Point(0, 0);
             this.dataGridView1.Margin = new System.Windows.Forms.Padding(2);
             this.dataGridView1.MultiSelect = false;
             this.dataGridView1.Name = "dataGridView1";
@@ -343,7 +346,8 @@
             // 
             this.extraToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.useOptimizedQueriesForWADTablesToolStripMenuItem,
-            this.convertEventTickCountColumnToReadableFormatToolStripMenuItem});
+            this.convertEventTickCountColumnToReadableFormatToolStripMenuItem,
+            this.showPerfCountersAsChartMenuItem});
             this.extraToolStripMenuItem.Name = "extraToolStripMenuItem";
             this.extraToolStripMenuItem.Size = new System.Drawing.Size(44, 20);
             this.extraToolStripMenuItem.Text = "Extra";
@@ -359,6 +363,12 @@
             this.convertEventTickCountColumnToReadableFormatToolStripMenuItem.Name = "convertEventTickCountColumnToReadableFormatToolStripMenuItem";
             this.convertEventTickCountColumnToReadableFormatToolStripMenuItem.Size = new System.Drawing.Size(348, 22);
             this.convertEventTickCountColumnToReadableFormatToolStripMenuItem.Text = "Convert EventTickCount column to readable format";
+            // 
+            // showPerfCountersAsChartMenuItem
+            // 
+            this.showPerfCountersAsChartMenuItem.Name = "showPerfCountersAsChartMenuItem";
+            this.showPerfCountersAsChartMenuItem.Size = new System.Drawing.Size(348, 22);
+            this.showPerfCountersAsChartMenuItem.Text = "Show PerformanceCounters in a chart";
             // 
             // helpToolStripMenuItem
             // 
@@ -410,6 +420,15 @@
             this.pasteToolStripMenuItem.Size = new System.Drawing.Size(102, 22);
             this.pasteToolStripMenuItem.Text = "Paste";
             // 
+            // resultPanel
+            // 
+            this.resultPanel.Controls.Add(this.dataGridView1);
+            this.resultPanel.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.resultPanel.Location = new System.Drawing.Point(0, 42);
+            this.resultPanel.Name = "resultPanel";
+            this.resultPanel.Size = new System.Drawing.Size(1202, 329);
+            this.resultPanel.TabIndex = 2;
+            // 
             // MainForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -430,6 +449,7 @@
             this.menuStrip1.ResumeLayout(false);
             this.menuStrip1.PerformLayout();
             this.ctxMenuPopup.ResumeLayout(false);
+            this.resultPanel.ResumeLayout(false);
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -474,6 +494,8 @@
         private System.Windows.Forms.ToolStripMenuItem extraToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem useOptimizedQueriesForWADTablesToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem convertEventTickCountColumnToReadableFormatToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem showPerfCountersAsChartMenuItem;
+        private System.Windows.Forms.Panel resultPanel;
     }
 }
 

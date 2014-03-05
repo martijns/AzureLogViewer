@@ -24,8 +24,16 @@ namespace AzureLogViewerGui
             AppDomain.CurrentDomain.UnhandledException += HandleUnhandledException;
             Application.EnableVisualStyles();
             Application.SetCompatibleTextRenderingDefault(false);
-            form = new MainForm();
-            Application.Run(form);
+            try
+            {
+                form = new MainForm();
+                Application.Run(form);
+            }
+            catch (Exception ex)
+            {
+                var bugform = new ReportBugForm(ex);
+                Application.Run(bugform);
+            }
         }
 
         static void HandleUnhandledException(object sender, UnhandledExceptionEventArgs e)
@@ -34,13 +42,14 @@ namespace AzureLogViewerGui
             if (ex == null)
                 return;
 
-            try
+            if (Application.MessageLoop)
             {
                 new ReportBugForm(ex).ShowDialog();
             }
-            catch (Exception ex2)
+            else
             {
-                MessageBox.Show("Proper error handling failed (" + ex2.Message + "). Please show the following message to the developer:\r\n\r\n" + ex, "Whoops!");
+                var bugform = new ReportBugForm(ex);
+                Application.Run(bugform);
             }
         }
     }
