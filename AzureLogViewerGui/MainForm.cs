@@ -247,16 +247,17 @@ namespace AzureLogViewerGui
                 string[] propertyNames = entities.SelectMany(entity => entity.Properties).Select(p => p.Key).Distinct().ToArray();
 
                 // If certain propertynames are available, we assume this is a Windows Azure Diagnostics table and we leave out some info
-                if (propertyNames.Contains("DeploymentId") &&
-                    propertyNames.Contains("EventTickCount") &&
-                    propertyNames.Contains("RoleInstance") &&
-                    propertyNames.Contains("Level") &&
-                    propertyNames.Contains("Message"))
+                if ("WADLogsTable".Equals(table))
                 {
                     _loadedColumns = new string[] { "DeploymentId", "RoleInstance", "EventTickCount", "Message" };
                     _loadedRows = (from i in entities select new[] { i.DeploymentId, i.RoleInstance, new DateTime(i.EventTickCount).ToString("yyyy-MM-dd HH:mm:ss.fff"), i.Message }).ToArray();
                     _filteredRows = _loadedRows;
-                    return;
+                }
+                else if ("WADPerformanceCountersTable".Equals(table))
+                {
+                    _loadedColumns = new string[] { "Timestamp", "EventTickCount", "DeploymentId", "RoleInstance", "CounterName", "CounterValue" };
+                    _loadedRows = (from i in entities select new[] { i.Timestamp.ToString(), new DateTime(i.EventTickCount).ToString("yyyy-MM-dd HH:mm:ss.fff"), i.DeploymentId, i.Properties["RoleInstance"], i.Properties["CounterName"], i.Properties["CounterValue"] }).ToArray();
+                    _filteredRows = _loadedRows;
                 }
                 else
                 {
