@@ -2,6 +2,7 @@
 - NEW: Special view for the 'WADPerformanceCountersTable' table. Enabled by default, but can be disabled via the 'Extra' menu. Enabled and Scale preferences are saved until counters haven't been used for more than 30 days. Also supports basic filtering.
 - NEW: When a different account is selected, the table selection is kept when the new account has the same table as well.
 - FIX: Improved error handling.
+- FIX: Empty resultset no longer results in exception.
 
 2014-02-13:
 - NEW: New crash dialog with the ability to upload a report to the developer.

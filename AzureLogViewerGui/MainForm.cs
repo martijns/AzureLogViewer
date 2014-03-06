@@ -261,13 +261,23 @@ namespace AzureLogViewerGui
                 string[] propertyNames = entities.SelectMany(entity => entity.Properties).Select(p => p.Key).Distinct().ToArray();
 
                 // If certain propertynames are available, we assume this is a Windows Azure Diagnostics table and we leave out some info
-                if ("WADLogsTable".Equals(table))
+                if ("WADLogsTable".Equals(table) &&
+                    propertyNames.Contains("DeploymentId") &&
+                    propertyNames.Contains("RoleInstance") &&
+                    propertyNames.Contains("EventTickCount") &&
+                    propertyNames.Contains("Message"))
                 {
                     _loadedColumns = new string[] { "DeploymentId", "RoleInstance", "EventTickCount", "Message" };
                     _loadedRows = (from i in entities select new[] { i.DeploymentId, i.RoleInstance, new DateTime(i.EventTickCount).ToString("yyyy-MM-dd HH:mm:ss.fff"), i.Message }).ToArray();
                     _filteredRows = _loadedRows;
                 }
-                else if ("WADPerformanceCountersTable".Equals(table))
+                else if ("WADPerformanceCountersTable".Equals(table) &&
+                    propertyNames.Contains("Timestamp") &&
+                    propertyNames.Contains("EventTickCount") &&
+                    propertyNames.Contains("DeploymentId") &&
+                    propertyNames.Contains("RoleInstance") &&
+                    propertyNames.Contains("CounterName") &&
+                    propertyNames.Contains("CounterValue"))
                 {
                     _loadedColumns = new string[] { "Timestamp", "EventTickCount", "DeploymentId", "RoleInstance", "CounterName", "CounterValue" };
                     _loadedRows = (from i in entities select new[] { i.Timestamp.ToString(), new DateTime(i.EventTickCount).ToString("yyyy-MM-dd HH:mm:ss.fff"), i.DeploymentId, i.Properties["RoleInstance"], i.Properties["CounterName"], i.Properties["CounterValue"] }).ToArray();
@@ -283,7 +293,7 @@ namespace AzureLogViewerGui
             },
             () =>
             {
-                if ("WADPerformanceCountersTable".Equals(table) && _loadedRows.Length > 0 && Configuration.Instance.ShowPerformanceCountersAsChart)
+                if ("WADPerformanceCountersTable".Equals(table) && _loadedRows.Length > 1 /* the dummy if empty */ && Configuration.Instance.ShowPerformanceCountersAsChart)
                 {
                     ShowPerformanceCountersChart();
                 }
