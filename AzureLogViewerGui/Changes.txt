@@ -1,4 +1,7 @@
-﻿2014-03-05:
+﻿2014-04-18:
+- FIX: Exporting to CloudBerry Explorer for Azure Blob Storage didn't respect the selected file location and used a hardcoded location instead
+
+2014-03-05:
 - NEW: Special view for the 'WADPerformanceCountersTable' table. Enabled by default, but can be disabled via the 'Extra' menu. Enabled and Scale preferences are saved until counters haven't been used for more than 30 days. Also supports basic filtering.
 - NEW: When a different account is selected, the table selection is kept when the new account has the same table as well.
 - FIX: Improved error handling.

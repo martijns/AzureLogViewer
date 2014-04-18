@@ -70,7 +70,7 @@ namespace AzureLogViewerGui.Adapters
         {
             try
             {
-                Assembly aClient = Assembly.LoadFrom(@"C:\Program Files (x86)\CloudBerryLab\CloudBerry Explorer for Azure Blob Storage\CloudBerryLab.Client.dll");
+                Assembly aClient = Assembly.LoadFrom(_cloudberryClientPath);
                 Type settingsType = aClient.GetType("CloudBerryLab.Client.Options.Settings");
                 string encrypted = settingsType.InvokeMember("Encrypt", BindingFlags.Public | BindingFlags.Static | BindingFlags.InvokeMethod, null, null, new object[] { sharedkey }) as string;
                 return encrypted;
