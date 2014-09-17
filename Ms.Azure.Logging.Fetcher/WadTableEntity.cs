@@ -27,10 +27,10 @@ namespace Ms.Azure.Logging.Fetcher
         public string DeploymentId { get; set; }
         public string Role { get; set; }
         public string RoleInstance { get; set; }
-        public int Level { get; set; }
-        public int EventId { get; set; }
-        public int Pid { get; set; }
-        public int Tid { get; set; }
+        public string Level { get; set; }
+        public string EventId { get; set; }
+        public string Pid { get; set; }
+        public string Tid { get; set; }
         public string Message { get; set; }
 
         public Dictionary<string, string> Properties { get; set; }

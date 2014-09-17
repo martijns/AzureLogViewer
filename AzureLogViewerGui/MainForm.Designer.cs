@@ -30,6 +30,7 @@
         {
             this.components = new System.ComponentModel.Container();
             this.mainPanel = new System.Windows.Forms.Panel();
+            this.resultPanel = new System.Windows.Forms.Panel();
             this.dataGridView1 = new System.Windows.Forms.DataGridView();
             this.flowLayoutPanel1 = new System.Windows.Forms.FlowLayoutPanel();
             this.accountSelection = new System.Windows.Forms.ComboBox();
@@ -38,6 +39,7 @@
             this.fromDate = new System.Windows.Forms.DateTimePicker();
             this.label2 = new System.Windows.Forms.Label();
             this.toDate = new System.Windows.Forms.DateTimePicker();
+            this.llPresets = new System.Windows.Forms.LinkLabel();
             this.orderByCombo = new System.Windows.Forms.ComboBox();
             this.filterTextBox = new System.Windows.Forms.TextBox();
             this.fetchButton = new System.Windows.Forms.Button();
@@ -67,13 +69,22 @@
             this.cutToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.copyToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.pasteToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.resultPanel = new System.Windows.Forms.Panel();
+            this.ctxPresets = new System.Windows.Forms.ContextMenuStrip(this.components);
+            this.last30MinutesToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.lastHourToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.last2HoursToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.last4HoursToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.last8HoursToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.wholeCurrentDayToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.todayAndYesterdayToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.past7DaysToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.mainPanel.SuspendLayout();
+            this.resultPanel.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.dataGridView1)).BeginInit();
             this.flowLayoutPanel1.SuspendLayout();
             this.menuStrip1.SuspendLayout();
             this.ctxMenuPopup.SuspendLayout();
-            this.resultPanel.SuspendLayout();
+            this.ctxPresets.SuspendLayout();
             this.SuspendLayout();
             // 
             // mainPanel
@@ -86,6 +97,15 @@
             this.mainPanel.Name = "mainPanel";
             this.mainPanel.Size = new System.Drawing.Size(1202, 371);
             this.mainPanel.TabIndex = 1;
+            // 
+            // resultPanel
+            // 
+            this.resultPanel.Controls.Add(this.dataGridView1);
+            this.resultPanel.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.resultPanel.Location = new System.Drawing.Point(0, 42);
+            this.resultPanel.Name = "resultPanel";
+            this.resultPanel.Size = new System.Drawing.Size(1202, 329);
+            this.resultPanel.TabIndex = 2;
             // 
             // dataGridView1
             // 
@@ -120,6 +140,7 @@
             this.flowLayoutPanel1.Controls.Add(this.fromDate);
             this.flowLayoutPanel1.Controls.Add(this.label2);
             this.flowLayoutPanel1.Controls.Add(this.toDate);
+            this.flowLayoutPanel1.Controls.Add(this.llPresets);
             this.flowLayoutPanel1.Controls.Add(this.orderByCombo);
             this.flowLayoutPanel1.Controls.Add(this.filterTextBox);
             this.flowLayoutPanel1.Controls.Add(this.fetchButton);
@@ -192,11 +213,22 @@
             this.toDate.Size = new System.Drawing.Size(174, 20);
             this.toDate.TabIndex = 3;
             // 
+            // llPresets
+            // 
+            this.llPresets.AutoSize = true;
+            this.llPresets.Location = new System.Drawing.Point(734, 13);
+            this.llPresets.Margin = new System.Windows.Forms.Padding(3, 5, 3, 3);
+            this.llPresets.Name = "llPresets";
+            this.llPresets.Size = new System.Drawing.Size(42, 13);
+            this.llPresets.TabIndex = 9;
+            this.llPresets.TabStop = true;
+            this.llPresets.Text = "Presets";
+            // 
             // orderByCombo
             // 
             this.orderByCombo.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
             this.orderByCombo.FormattingEnabled = true;
-            this.orderByCombo.Location = new System.Drawing.Point(733, 10);
+            this.orderByCombo.Location = new System.Drawing.Point(781, 10);
             this.orderByCombo.Margin = new System.Windows.Forms.Padding(2);
             this.orderByCombo.Name = "orderByCombo";
             this.orderByCombo.Size = new System.Drawing.Size(107, 21);
@@ -204,14 +236,14 @@
             // 
             // filterTextBox
             // 
-            this.filterTextBox.Location = new System.Drawing.Point(845, 11);
+            this.filterTextBox.Location = new System.Drawing.Point(893, 11);
             this.filterTextBox.Name = "filterTextBox";
             this.filterTextBox.Size = new System.Drawing.Size(100, 20);
             this.filterTextBox.TabIndex = 8;
             // 
             // fetchButton
             // 
-            this.fetchButton.Location = new System.Drawing.Point(950, 10);
+            this.fetchButton.Location = new System.Drawing.Point(998, 10);
             this.fetchButton.Margin = new System.Windows.Forms.Padding(2);
             this.fetchButton.Name = "fetchButton";
             this.fetchButton.Size = new System.Drawing.Size(56, 19);
@@ -420,14 +452,75 @@
             this.pasteToolStripMenuItem.Size = new System.Drawing.Size(102, 22);
             this.pasteToolStripMenuItem.Text = "Paste";
             // 
-            // resultPanel
+            // ctxPresets
             // 
-            this.resultPanel.Controls.Add(this.dataGridView1);
-            this.resultPanel.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.resultPanel.Location = new System.Drawing.Point(0, 42);
-            this.resultPanel.Name = "resultPanel";
-            this.resultPanel.Size = new System.Drawing.Size(1202, 329);
-            this.resultPanel.TabIndex = 2;
+            this.ctxPresets.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.last30MinutesToolStripMenuItem,
+            this.lastHourToolStripMenuItem,
+            this.last2HoursToolStripMenuItem,
+            this.last4HoursToolStripMenuItem,
+            this.last8HoursToolStripMenuItem,
+            this.wholeCurrentDayToolStripMenuItem,
+            this.todayAndYesterdayToolStripMenuItem,
+            this.past7DaysToolStripMenuItem});
+            this.ctxPresets.Name = "ctxPresets";
+            this.ctxPresets.Size = new System.Drawing.Size(184, 202);
+            // 
+            // last30MinutesToolStripMenuItem
+            // 
+            this.last30MinutesToolStripMenuItem.Name = "last30MinutesToolStripMenuItem";
+            this.last30MinutesToolStripMenuItem.Size = new System.Drawing.Size(183, 22);
+            this.last30MinutesToolStripMenuItem.Text = "Last 30 minutes";
+            this.last30MinutesToolStripMenuItem.Click += new System.EventHandler(this.HandlePresetLast30Minutes);
+            // 
+            // lastHourToolStripMenuItem
+            // 
+            this.lastHourToolStripMenuItem.Name = "lastHourToolStripMenuItem";
+            this.lastHourToolStripMenuItem.Size = new System.Drawing.Size(183, 22);
+            this.lastHourToolStripMenuItem.Text = "Last hour";
+            this.lastHourToolStripMenuItem.Click += new System.EventHandler(this.HandlePresetLastHour);
+            // 
+            // last2HoursToolStripMenuItem
+            // 
+            this.last2HoursToolStripMenuItem.Name = "last2HoursToolStripMenuItem";
+            this.last2HoursToolStripMenuItem.Size = new System.Drawing.Size(183, 22);
+            this.last2HoursToolStripMenuItem.Text = "Last 2 hours";
+            this.last2HoursToolStripMenuItem.Click += new System.EventHandler(this.HandlePresetLast2Hours);
+            // 
+            // last4HoursToolStripMenuItem
+            // 
+            this.last4HoursToolStripMenuItem.Name = "last4HoursToolStripMenuItem";
+            this.last4HoursToolStripMenuItem.Size = new System.Drawing.Size(183, 22);
+            this.last4HoursToolStripMenuItem.Text = "Last 4 hours";
+            this.last4HoursToolStripMenuItem.Click += new System.EventHandler(this.HandlePresetLast4Hours);
+            // 
+            // last8HoursToolStripMenuItem
+            // 
+            this.last8HoursToolStripMenuItem.Name = "last8HoursToolStripMenuItem";
+            this.last8HoursToolStripMenuItem.Size = new System.Drawing.Size(183, 22);
+            this.last8HoursToolStripMenuItem.Text = "Last 8 hours";
+            this.last8HoursToolStripMenuItem.Click += new System.EventHandler(this.HandlePresetLast8Hours);
+            // 
+            // wholeCurrentDayToolStripMenuItem
+            // 
+            this.wholeCurrentDayToolStripMenuItem.Name = "wholeCurrentDayToolStripMenuItem";
+            this.wholeCurrentDayToolStripMenuItem.Size = new System.Drawing.Size(183, 22);
+            this.wholeCurrentDayToolStripMenuItem.Text = "Whole current day";
+            this.wholeCurrentDayToolStripMenuItem.Click += new System.EventHandler(this.HandlePresetWholeCurrentDay);
+            // 
+            // todayAndYesterdayToolStripMenuItem
+            // 
+            this.todayAndYesterdayToolStripMenuItem.Name = "todayAndYesterdayToolStripMenuItem";
+            this.todayAndYesterdayToolStripMenuItem.Size = new System.Drawing.Size(183, 22);
+            this.todayAndYesterdayToolStripMenuItem.Text = "Today and yesterday";
+            this.todayAndYesterdayToolStripMenuItem.Click += new System.EventHandler(this.HandlePresetTodayAndYesterday);
+            // 
+            // past7DaysToolStripMenuItem
+            // 
+            this.past7DaysToolStripMenuItem.Name = "past7DaysToolStripMenuItem";
+            this.past7DaysToolStripMenuItem.Size = new System.Drawing.Size(183, 22);
+            this.past7DaysToolStripMenuItem.Text = "Past 7 days";
+            this.past7DaysToolStripMenuItem.Click += new System.EventHandler(this.HandlePresetPast7Days);
             // 
             // MainForm
             // 
@@ -443,13 +536,14 @@
             this.FormClosed += new System.Windows.Forms.FormClosedEventHandler(this.HandleFormClosed);
             this.mainPanel.ResumeLayout(false);
             this.mainPanel.PerformLayout();
+            this.resultPanel.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.dataGridView1)).EndInit();
             this.flowLayoutPanel1.ResumeLayout(false);
             this.flowLayoutPanel1.PerformLayout();
             this.menuStrip1.ResumeLayout(false);
             this.menuStrip1.PerformLayout();
             this.ctxMenuPopup.ResumeLayout(false);
-            this.resultPanel.ResumeLayout(false);
+            this.ctxPresets.ResumeLayout(false);
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -496,6 +590,16 @@
         private System.Windows.Forms.ToolStripMenuItem convertEventTickCountColumnToReadableFormatToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem showPerfCountersAsChartMenuItem;
         private System.Windows.Forms.Panel resultPanel;
+        private System.Windows.Forms.LinkLabel llPresets;
+        private System.Windows.Forms.ContextMenuStrip ctxPresets;
+        private System.Windows.Forms.ToolStripMenuItem last30MinutesToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem lastHourToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem last2HoursToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem last4HoursToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem last8HoursToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem wholeCurrentDayToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem todayAndYesterdayToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem past7DaysToolStripMenuItem;
     }
 }
 

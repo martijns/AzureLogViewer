@@ -1,4 +1,8 @@
-﻿2014-04-18:
+﻿2014-09-17:
+- FIX: Crash when WAD column names were reused in other tables as a different type (i.e. a table had a column named Level but isn't an integer).
+- NEW: Presets for date/time selection, such as 'last hour'.
+
+2014-04-18:
 - FIX: Exporting to CloudBerry Explorer for Azure Blob Storage didn't respect the selected file location and used a hardcoded location instead
 
 2014-03-05:

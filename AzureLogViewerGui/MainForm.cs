@@ -46,6 +46,10 @@ namespace AzureLogViewerGui
                 if (toDate.Value < fromDate.Value)
                     toDate.Value = fromDate.Value.AddDays(1);
             };
+            llPresets.Click += (o, e) =>
+            {
+                ctxPresets.Show(llPresets, llPresets.PointToClient(Control.MousePosition));
+            };
             dataGridView1.ClipboardCopyMode = DataGridViewClipboardCopyMode.EnableWithAutoHeaderText;
             dataGridView1.MultiSelect = true;
             dataGridView1.CellDoubleClick += HandleCellDoubleClick;
@@ -815,5 +819,57 @@ namespace AzureLogViewerGui
             // Make sure the process actually terminates, and no background processes keep the application alive.
             Environment.Exit(0);
         }
+
+        #region Presets
+
+        private void HandlePresetLast30Minutes(object sender, EventArgs e)
+        {
+            fromDate.Value = DateTime.UtcNow.AddMinutes(-30);
+            toDate.Value = DateTime.UtcNow;
+        }
+
+        private void HandlePresetLastHour(object sender, EventArgs e)
+        {
+            fromDate.Value = DateTime.UtcNow.AddHours(-1);
+            toDate.Value = DateTime.UtcNow;
+        }
+
+        private void HandlePresetLast2Hours(object sender, EventArgs e)
+        {
+            fromDate.Value = DateTime.UtcNow.AddHours(-2);
+            toDate.Value = DateTime.UtcNow;
+        }
+
+        private void HandlePresetLast4Hours(object sender, EventArgs e)
+        {
+            fromDate.Value = DateTime.UtcNow.AddHours(-4);
+            toDate.Value = DateTime.UtcNow;
+        }
+
+        private void HandlePresetLast8Hours(object sender, EventArgs e)
+        {
+            fromDate.Value = DateTime.UtcNow.AddHours(-8);
+            toDate.Value = DateTime.UtcNow;
+        }
+
+        private void HandlePresetWholeCurrentDay(object sender, EventArgs e)
+        {
+            fromDate.Value = DateTime.Today;
+            toDate.Value = DateTime.Today.AddDays(1);
+        }
+
+        private void HandlePresetTodayAndYesterday(object sender, EventArgs e)
+        {
+            fromDate.Value = DateTime.Today.AddDays(-1);
+            toDate.Value = DateTime.Today.AddDays(1);
+        }
+
+        private void HandlePresetPast7Days(object sender, EventArgs e)
+        {
+            fromDate.Value = DateTime.Today.AddDays(-7);
+            toDate.Value = DateTime.Today.AddDays(1);
+        }
+
+        #endregion
     }
 }
