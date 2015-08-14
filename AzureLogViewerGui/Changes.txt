@@ -1,4 +1,7 @@
-﻿2014-09-17:
+﻿2014-09-18:
+- CHG: Updated code-signing certificate
+
+2014-09-17:
 - FIX: Crash when WAD column names were reused in other tables as a different type (i.e. a table had a column named Level but isn't an integer).
 - NEW: Presets for date/time selection, such as 'last hour'.
 

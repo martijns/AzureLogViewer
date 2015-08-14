@@ -55,7 +55,7 @@ namespace Ms.Azure.Logging.Fetcher
             {
                 // Use a better performing query for WAD tables, as we know how the partitionkey is built
                 query = (from record in context.CreateQuery<WadTableEntity>(tableName)
-                         where string.Compare(record.PartitionKey, "0" + start.Ticks.ToString()) >= 0 && string.Compare(record.PartitionKey, "0" + end.Ticks.ToString()) <= 0
+                         where string.Compare(record.PartitionKey, start.Ticks.ToString("D19")) >= 0 && string.Compare(record.PartitionKey, end.Ticks.ToString("D19")) <= 0
                          where record.Timestamp >= start && record.Timestamp <= end
                          select record).AsTableServiceQuery<WadTableEntity>(context);
             }

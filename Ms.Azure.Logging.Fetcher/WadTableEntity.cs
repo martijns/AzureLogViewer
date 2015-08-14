@@ -18,7 +18,7 @@ namespace Ms.Azure.Logging.Fetcher
         public WadTableEntity()
         {
             var now = DateTime.UtcNow;
-            PartitionKey = string.Format("{0:yyyy-MM-dd}", now);
+            PartitionKey = now.Ticks.ToString("D19");
             RowKey = string.Format("{0:dd HH:mm:ss.fff}-{1}", now, Guid.NewGuid());
             Properties = new Dictionary<string, string>();
         }
