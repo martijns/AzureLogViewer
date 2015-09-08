@@ -16,6 +16,7 @@ using System.Threading;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 using System.IO;
+using Timer = System.Windows.Forms.Timer;
 
 namespace AzureLogViewerGui
 {
@@ -33,6 +34,8 @@ namespace AzureLogViewerGui
         private string[][] _loadedRows = null;
         private string[][] _filteredRows = null;
         private PerformanceCountersControl _performanceCountersControl = new PerformanceCountersControl();
+
+        private Action<object, EventArgs> _lastPresetAction = null;  
 
         public MainForm()
         {
@@ -826,50 +829,76 @@ namespace AzureLogViewerGui
         {
             fromDate.Value = DateTime.UtcNow.AddMinutes(-30);
             toDate.Value = DateTime.UtcNow;
+            _lastPresetAction = HandlePresetLast30Minutes;
         }
 
         private void HandlePresetLastHour(object sender, EventArgs e)
         {
             fromDate.Value = DateTime.UtcNow.AddHours(-1);
             toDate.Value = DateTime.UtcNow;
+            _lastPresetAction = HandlePresetLastHour;
         }
 
         private void HandlePresetLast2Hours(object sender, EventArgs e)
         {
             fromDate.Value = DateTime.UtcNow.AddHours(-2);
             toDate.Value = DateTime.UtcNow;
+            _lastPresetAction = HandlePresetLast2Hours;
         }
 
         private void HandlePresetLast4Hours(object sender, EventArgs e)
         {
             fromDate.Value = DateTime.UtcNow.AddHours(-4);
             toDate.Value = DateTime.UtcNow;
+            _lastPresetAction = HandlePresetLast4Hours;
         }
 
         private void HandlePresetLast8Hours(object sender, EventArgs e)
         {
             fromDate.Value = DateTime.UtcNow.AddHours(-8);
             toDate.Value = DateTime.UtcNow;
+            _lastPresetAction = HandlePresetLast8Hours;
         }
 
         private void HandlePresetWholeCurrentDay(object sender, EventArgs e)
         {
             fromDate.Value = DateTime.Today;
             toDate.Value = DateTime.Today.AddDays(1);
+            _lastPresetAction = HandlePresetWholeCurrentDay;
         }
 
         private void HandlePresetTodayAndYesterday(object sender, EventArgs e)
         {
             fromDate.Value = DateTime.Today.AddDays(-1);
             toDate.Value = DateTime.Today.AddDays(1);
+            _lastPresetAction = HandlePresetTodayAndYesterday;
         }
 
         private void HandlePresetPast7Days(object sender, EventArgs e)
         {
             fromDate.Value = DateTime.Today.AddDays(-7);
             toDate.Value = DateTime.Today.AddDays(1);
+            _lastPresetAction = HandlePresetPast7Days;
         }
 
         #endregion
+
+        private Timer _refreshTimer = new Timer();
+        private void refreshInterval_ValueChanged(object sender, EventArgs e)
+        {
+            _refreshTimer.Stop();
+            if (refreshInterval.Value > 0 && _lastPresetAction != null)
+            {
+                _refreshTimer.Interval = (int)refreshInterval.Value * 1000;
+                _refreshTimer.Start();
+                
+                _refreshTimer.Tick += (o, args) => 
+                {
+                    _lastPresetAction(this, e);
+                    HandleFetchButton(this, e);
+                };
+            }
+        
+        }
     }
 }
