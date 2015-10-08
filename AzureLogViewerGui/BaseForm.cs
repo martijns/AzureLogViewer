@@ -103,6 +103,10 @@ namespace AzureLogViewerGui
                     var dgv = (DataGridView)control;
                     dgv.ForeColor = Control.DefaultForeColor;
                     dgv.ColumnHeadersDefaultCellStyle.ForeColor = Control.DefaultForeColor;
+                    foreach (Control scrollbar in dgv.Controls)
+                    {
+                        scrollbar.Enabled = controlState[control]; // Enable if parent is enabled
+                    }
                 }
             }
         }
