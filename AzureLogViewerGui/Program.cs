@@ -1,4 +1,5 @@
-﻿using System;
+﻿using MsCommon.ClickOnce;
+using System;
 using System.Collections.Generic;
 using System.Collections.Specialized;
 using System.Diagnostics;
@@ -13,44 +14,26 @@ namespace AzureLogViewerGui
 {
     static class Program
     {
-        private static MainForm form;
-
         /// <summary>
         /// The main entry point for the application.
         /// </summary>
         [STAThread]
-        static void Main()
+        static void Main(string[] arguments)
         {
-            AppDomain.CurrentDomain.UnhandledException += HandleUnhandledException;
-            Application.EnableVisualStyles();
-            Application.SetCompatibleTextRenderingDefault(false);
-            try
+            Action<string[]> method = (args) =>
             {
-                form = new MainForm();
+                Application.EnableVisualStyles();
+                Application.SetCompatibleTextRenderingDefault(false);
+                var form = new MainForm();
                 Application.Run(form);
-            }
-            catch (Exception ex)
-            {
-                var bugform = new ReportBugForm(ex);
-                Application.Run(bugform);
-            }
-        }
+            };
 
-        static void HandleUnhandledException(object sender, UnhandledExceptionEventArgs e)
-        {
-            Exception ex = e.ExceptionObject as Exception;
-            if (ex == null)
-                return;
-
-            if (Application.MessageLoop)
-            {
-                new ReportBugForm(ex).ShowDialog();
-            }
-            else
-            {
-                var bugform = new ReportBugForm(ex);
-                Application.Run(bugform);
-            }
+            AppProgram.Start(
+                applicationName: "AzureLogViewer",
+                authorName: "Martijn Stolk",
+                reportBugEndpoint: "http://martijn.tikkie.net/reportbug.php",
+                args: arguments,
+                mainMethod: method);
         }
     }
 }

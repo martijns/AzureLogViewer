@@ -1,4 +1,7 @@
-﻿2014-09-18:
+﻿2015-10-08:
+- CHG: Moved clickonce-specific code to a reusable library
+
+2014-09-18:
 - CHG: Updated code-signing certificate
 
 2014-09-17:

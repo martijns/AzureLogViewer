@@ -3,19 +3,15 @@ using AzureLogViewerGui.Scrapers;
 using Ms.Azure.Logging.Fetcher;
 using System;
 using System.Collections.Generic;
-using System.ComponentModel;
 using System.Data;
-using System.Diagnostics;
 using System.Drawing;
-using System.Dynamic;
 using System.Linq;
-using System.Linq.Expressions;
 using System.Reflection;
 using System.Text;
 using System.Threading;
-using System.Threading.Tasks;
 using System.Windows.Forms;
 using System.IO;
+using MsCommon.ClickOnce;
 
 namespace AzureLogViewerGui
 {
@@ -27,7 +23,7 @@ namespace AzureLogViewerGui
 
     public partial class MainForm : BaseForm
     {
-        private static readonly string Version = "v" + AzureLogViewerGui.Version.GetVersion();
+        private static readonly string Version = "v" + AppVersion.GetVersion();
 
         private string[] _loadedColumns = null;
         private string[][] _loadedRows = null;
@@ -96,7 +92,7 @@ namespace AzureLogViewerGui
             };
 
             // New version check
-            AzureLogViewerGui.Version.CheckForUpdateAsync();
+            AppVersion.CheckForUpdateAsync();
         }
 
         #region Filter textbox
@@ -611,12 +607,12 @@ namespace AzureLogViewerGui
 
         private void HandleChangelogClicked(object sender, EventArgs e)
         {
-            AzureLogViewerGui.Version.DisplayChanges();
+            AppVersion.DisplayChanges();
         }
 
         private void HandleAboutClick(object sender, EventArgs e)
         {
-            AzureLogViewerGui.Version.DisplayAbout();
+            AppVersion.DisplayAbout();
         }
 
         private string GetSelectedAccountName()
@@ -729,7 +725,7 @@ namespace AzureLogViewerGui
             }
             catch (Exception ex)
             {
-                MessageBox.Show(this, "Failed to export accounts: " + ex.ToString(), "Export failed!");
+                new ReportBugForm(ex).ShowDialog();
             }
         }
 
