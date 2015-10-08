@@ -1,5 +1,6 @@
 ﻿2015-10-08:
 - CHG: Moved clickonce-specific code to a reusable library
+- CHG: The labels on the X-axis of the PerformanceCounters graph are now variable and staggered, resulting in more precision.
 
 2014-09-18:
 - CHG: Updated code-signing certificate

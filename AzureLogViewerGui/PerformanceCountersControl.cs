@@ -143,6 +143,8 @@ namespace AzureLogViewerGui
             }
             foreach (var area in chart1.ChartAreas)
             {
+                area.AxisX.IntervalAutoMode = IntervalAutoMode.VariableCount;
+                area.AxisX.LabelStyle.IsStaggered = true;
                 area.RecalculateAxesScale();
             }
         }
