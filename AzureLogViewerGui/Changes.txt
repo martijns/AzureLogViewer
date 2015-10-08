@@ -2,6 +2,7 @@
 - CHG: Moved clickonce-specific code to a reusable library.
 - CHG: The labels on the X-axis of the PerformanceCounters graph are now variable and staggered, resulting in more precision.
 - FIX: Issue where the datagrid would have disabled scrollbars should be resolved.
+- NEW: Ability to auto-refresh based on the last selected preset (thanks to Dissimilis).
 
 2014-09-18:
 - CHG: Updated code-signing certificate
