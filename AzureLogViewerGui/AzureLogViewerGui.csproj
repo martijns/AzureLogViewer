@@ -12,7 +12,7 @@
     <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <IsWebBootstrapper>true</IsWebBootstrapper>
-    <PublishUrl>ftp://martijn.tikkie.net/apps/AzureLogViewer/</PublishUrl>
+    <PublishUrl>ftp://martijn.tikkie.net%40ftp.pcextreme.nl/apps/AzureLogViewer/</PublishUrl>
     <Install>true</Install>
     <InstallFrom>Web</InstallFrom>
     <UpdateEnabled>true</UpdateEnabled>
@@ -26,7 +26,9 @@
     <SupportUrl>http://www.netripper.nl</SupportUrl>
     <ProductName>AzureLogViewer</ProductName>
     <PublisherName>Tikkie</PublisherName>
-    <ApplicationRevision>36</ApplicationRevision>
+    <CreateWebPageOnPublish>true</CreateWebPageOnPublish>
+    <WebPage>publish.htm</WebPage>
+    <ApplicationRevision>41</ApplicationRevision>
     <ApplicationVersion>1.0.0.%2a</ApplicationVersion>
     <UseApplicationTrust>false</UseApplicationTrust>
     <CreateDesktopShortcut>true</CreateDesktopShortcut>
@@ -168,7 +170,6 @@
     <EmbeddedResource Include="Scrapers\StorageAccountScraperForm.resx">
       <DependentUpon>StorageAccountScraperForm.cs</DependentUpon>
     </EmbeddedResource>
-    <None Include="martijn_stolk_codesigning.pfx" />
     <None Include="Properties\app.manifest" />
     <None Include="Properties\Settings.settings">
       <Generator>SettingsSingleFileGenerator</Generator>
