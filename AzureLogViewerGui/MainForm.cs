@@ -707,7 +707,14 @@ namespace AzureLogViewerGui
         {
             try
             {
-                MessageBox.Show(this, "In order to export storage accounts to CloudBerry Explorer, we'll need to load a library for this application. Please select the indicated library in the CloudBerry Explorer installation directory. For example in: c:\\Program Files (x86)\\CloudBerryLab\\CloudBerry Explorer for Azure Blob Storage\\");
+                MessageBox.Show(this,
+                    "~~ READ CAREFULLY ~~\r\n" +
+                    "\r\n" +
+                    "1) Close the CloudBerry Storage application.\r\n" +
+                    "\r\n" +
+                    "2) Select the Cloud.Client.dll from the CloudBerry Explorer installation directory in the next dialog.\r\n" +
+                    "\r\n" +
+                    "(In order to export storage accounts to CloudBerry Explorer, we'll need to load a library for this application to deal with their encryption.)");
 
                 var dialog = new OpenFileDialog();
                 if (Directory.Exists(@"c:\Program Files (x86)\CloudBerryLab\CloudBerry Explorer for Azure Blob Storage\"))
@@ -715,7 +722,7 @@ namespace AzureLogViewerGui
                 if (Directory.Exists(@"c:\Program Files\CloudBerryLab\CloudBerry Explorer for Azure Blob Storage\"))
                     dialog.InitialDirectory = @"c:\Program Files\CloudBerryLab\CloudBerry Explorer for Azure Blob Storage\";
                 dialog.CheckFileExists = true;
-                dialog.Filter = "CloudBerryLab Client DLL|CloudBerryLab.Client.dll|All DLLs|*.dll";
+                dialog.Filter = "CloudBerryLab Client DLL|Cloud.Client.dll|All DLLs|*.dll";
                 dialog.Multiselect = false;
                 dialog.ReadOnlyChecked = true;
                 var result = dialog.ShowDialog(this);

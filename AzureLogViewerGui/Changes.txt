@@ -1,4 +1,7 @@
-﻿2015-10-08:
+﻿2015-10-09:
+- FIX: Export to CloudBerry Explorer updated. The name of the DLL changed in their newer versions.
+
+2015-10-08:
 - CHG: Moved clickonce-specific code to a reusable library.
 - CHG: The labels on the X-axis of the PerformanceCounters graph are now variable and staggered, resulting in more precision.
 - FIX: Issue where the datagrid would have disabled scrollbars should be resolved.
