@@ -30,6 +30,7 @@ namespace AzureLogViewerGui
         private string[][] _loadedRows = null;
         private string[][] _filteredRows = null;
         private PerformanceCountersControl _performanceCountersControl = new PerformanceCountersControl();
+        private LogFetcher _currentFetcher = null;
 
         private Action<object, EventArgs> _lastPresetAction = null;  
 
@@ -235,10 +236,13 @@ namespace AzureLogViewerGui
             OrderBy order = (OrderBy)Enum.Parse(typeof(OrderBy), orderByCombo.SelectedItem + "");
 
             IList<WadTableEntity> entities = null;
+            statusStrip1.Visible = true;
             PerformBG(this, () =>
             {
                 // Find results for this period in time
-                entities = new LogFetcher(accountName, accountKey) { UseWADPerformanceOptimization = Configuration.Instance.UseWADPerformanceOptimization }.FetchLogs(table, from, to);
+                _currentFetcher = new LogFetcher(accountName, accountKey) { UseWADPerformanceOptimization = Configuration.Instance.UseWADPerformanceOptimization };
+                _currentFetcher.RetrievedPage += HandleRetrievedPage;
+                entities = _currentFetcher.FetchLogs(table, from, to);
                 switch (order)
                 {
                     case OrderBy.New_to_Old:
@@ -304,7 +308,18 @@ namespace AzureLogViewerGui
                 {
                     ShowDataGridView();
                 }
+                statusStrip1.Visible = false;
             });
+        }
+
+        private void HandleRetrievedPage(object sender, LogFetcher.RetrievedPageEventArgs e)
+        {
+            if (InvokeRequired)
+            {
+                Invoke((Action<object,LogFetcher.RetrievedPageEventArgs>)HandleRetrievedPage, sender, e);
+                return;
+            }
+            lblStatus.Text = "Fetching page " + e.PageNr + "...";
         }
 
         private void ShowDataGridView()
@@ -902,6 +917,12 @@ namespace AzureLogViewerGui
                 };
             }
         
+        }
+
+        private void HandleAbortClicked(object sender, EventArgs e)
+        {
+            if (_currentFetcher != null)
+                _currentFetcher.Interrupt = true;
         }
     }
 }

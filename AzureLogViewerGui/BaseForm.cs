@@ -82,6 +82,8 @@ namespace AzureLogViewerGui
             if (control is Form)
                 return;
             controlState.Add(control, control.Enabled);
+            if (control.Tag is string && (string)control.Tag == "KEEP_ENABLED")
+                return;
             control.Enabled = false;
             if (control is DataGridView)
             {

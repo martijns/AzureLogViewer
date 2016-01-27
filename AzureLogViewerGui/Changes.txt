@@ -1,4 +1,8 @@
-﻿2015-10-09:
+﻿2015-10-15:
+- NEW: View fetched pagecount at the bottom of the screen
+- NEW: Ability to abort
+
+2015-10-09:
 - FIX: Export to CloudBerry Explorer updated. The name of the DLL changed in their newer versions.
 
 2015-10-08:

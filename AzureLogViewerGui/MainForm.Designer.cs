@@ -81,6 +81,9 @@
             this.helpToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.changelogToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.aboutToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.statusStrip1 = new System.Windows.Forms.StatusStrip();
+            this.lblStatus = new System.Windows.Forms.ToolStripStatusLabel();
+            this.toolStripSplitButton1 = new System.Windows.Forms.ToolStripSplitButton();
             this.ctxMenuPopup.SuspendLayout();
             this.ctxPresets.SuspendLayout();
             this.mainPanel.SuspendLayout();
@@ -89,6 +92,7 @@
             this.flowLayoutPanel1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.refreshInterval)).BeginInit();
             this.menuStrip1.SuspendLayout();
+            this.statusStrip1.SuspendLayout();
             this.SuspendLayout();
             // 
             // ctxMenuPopup
@@ -130,61 +134,61 @@
             this.todayAndYesterdayToolStripMenuItem,
             this.past7DaysToolStripMenuItem});
             this.ctxPresets.Name = "ctxPresets";
-            this.ctxPresets.Size = new System.Drawing.Size(184, 180);
+            this.ctxPresets.Size = new System.Drawing.Size(183, 180);
             // 
             // last30MinutesToolStripMenuItem
             // 
             this.last30MinutesToolStripMenuItem.Name = "last30MinutesToolStripMenuItem";
-            this.last30MinutesToolStripMenuItem.Size = new System.Drawing.Size(183, 22);
+            this.last30MinutesToolStripMenuItem.Size = new System.Drawing.Size(182, 22);
             this.last30MinutesToolStripMenuItem.Text = "Last 30 minutes";
             this.last30MinutesToolStripMenuItem.Click += new System.EventHandler(this.HandlePresetLast30Minutes);
             // 
             // lastHourToolStripMenuItem
             // 
             this.lastHourToolStripMenuItem.Name = "lastHourToolStripMenuItem";
-            this.lastHourToolStripMenuItem.Size = new System.Drawing.Size(183, 22);
+            this.lastHourToolStripMenuItem.Size = new System.Drawing.Size(182, 22);
             this.lastHourToolStripMenuItem.Text = "Last hour";
             this.lastHourToolStripMenuItem.Click += new System.EventHandler(this.HandlePresetLastHour);
             // 
             // last2HoursToolStripMenuItem
             // 
             this.last2HoursToolStripMenuItem.Name = "last2HoursToolStripMenuItem";
-            this.last2HoursToolStripMenuItem.Size = new System.Drawing.Size(183, 22);
+            this.last2HoursToolStripMenuItem.Size = new System.Drawing.Size(182, 22);
             this.last2HoursToolStripMenuItem.Text = "Last 2 hours";
             this.last2HoursToolStripMenuItem.Click += new System.EventHandler(this.HandlePresetLast2Hours);
             // 
             // last4HoursToolStripMenuItem
             // 
             this.last4HoursToolStripMenuItem.Name = "last4HoursToolStripMenuItem";
-            this.last4HoursToolStripMenuItem.Size = new System.Drawing.Size(183, 22);
+            this.last4HoursToolStripMenuItem.Size = new System.Drawing.Size(182, 22);
             this.last4HoursToolStripMenuItem.Text = "Last 4 hours";
             this.last4HoursToolStripMenuItem.Click += new System.EventHandler(this.HandlePresetLast4Hours);
             // 
             // last8HoursToolStripMenuItem
             // 
             this.last8HoursToolStripMenuItem.Name = "last8HoursToolStripMenuItem";
-            this.last8HoursToolStripMenuItem.Size = new System.Drawing.Size(183, 22);
+            this.last8HoursToolStripMenuItem.Size = new System.Drawing.Size(182, 22);
             this.last8HoursToolStripMenuItem.Text = "Last 8 hours";
             this.last8HoursToolStripMenuItem.Click += new System.EventHandler(this.HandlePresetLast8Hours);
             // 
             // wholeCurrentDayToolStripMenuItem
             // 
             this.wholeCurrentDayToolStripMenuItem.Name = "wholeCurrentDayToolStripMenuItem";
-            this.wholeCurrentDayToolStripMenuItem.Size = new System.Drawing.Size(183, 22);
+            this.wholeCurrentDayToolStripMenuItem.Size = new System.Drawing.Size(182, 22);
             this.wholeCurrentDayToolStripMenuItem.Text = "Whole current day";
             this.wholeCurrentDayToolStripMenuItem.Click += new System.EventHandler(this.HandlePresetWholeCurrentDay);
             // 
             // todayAndYesterdayToolStripMenuItem
             // 
             this.todayAndYesterdayToolStripMenuItem.Name = "todayAndYesterdayToolStripMenuItem";
-            this.todayAndYesterdayToolStripMenuItem.Size = new System.Drawing.Size(183, 22);
+            this.todayAndYesterdayToolStripMenuItem.Size = new System.Drawing.Size(182, 22);
             this.todayAndYesterdayToolStripMenuItem.Text = "Today and yesterday";
             this.todayAndYesterdayToolStripMenuItem.Click += new System.EventHandler(this.HandlePresetTodayAndYesterday);
             // 
             // past7DaysToolStripMenuItem
             // 
             this.past7DaysToolStripMenuItem.Name = "past7DaysToolStripMenuItem";
-            this.past7DaysToolStripMenuItem.Size = new System.Drawing.Size(183, 22);
+            this.past7DaysToolStripMenuItem.Size = new System.Drawing.Size(182, 22);
             this.past7DaysToolStripMenuItem.Text = "Past 7 days";
             this.past7DaysToolStripMenuItem.Click += new System.EventHandler(this.HandlePresetPast7Days);
             // 
@@ -568,11 +572,43 @@
             this.aboutToolStripMenuItem.Text = "About";
             this.aboutToolStripMenuItem.Click += new System.EventHandler(this.HandleAboutClick);
             // 
+            // statusStrip1
+            // 
+            this.statusStrip1.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.lblStatus,
+            this.toolStripSplitButton1});
+            this.statusStrip1.Location = new System.Drawing.Point(0, 373);
+            this.statusStrip1.Name = "statusStrip1";
+            this.statusStrip1.Size = new System.Drawing.Size(1627, 22);
+            this.statusStrip1.TabIndex = 2;
+            this.statusStrip1.Tag = "KEEP_ENABLED";
+            this.statusStrip1.Text = "statusStrip1";
+            this.statusStrip1.Visible = false;
+            // 
+            // lblStatus
+            // 
+            this.lblStatus.Name = "lblStatus";
+            this.lblStatus.Size = new System.Drawing.Size(48, 17);
+            this.lblStatus.Text = "Status...";
+            // 
+            // toolStripSplitButton1
+            // 
+            this.toolStripSplitButton1.DropDownButtonWidth = 0;
+            this.toolStripSplitButton1.Image = global::AzureLogViewerGui.Properties.Resources.corssbtn;
+            this.toolStripSplitButton1.ImageTransparentColor = System.Drawing.Color.Magenta;
+            this.toolStripSplitButton1.Name = "toolStripSplitButton1";
+            this.toolStripSplitButton1.Size = new System.Drawing.Size(58, 20);
+            this.toolStripSplitButton1.Tag = "KEEP_ENABLED";
+            this.toolStripSplitButton1.Text = "Abort";
+            this.toolStripSplitButton1.ToolTipText = "Abort";
+            this.toolStripSplitButton1.ButtonClick += new System.EventHandler(this.HandleAbortClicked);
+            // 
             // MainForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(1627, 395);
+            this.Controls.Add(this.statusStrip1);
             this.Controls.Add(this.mainPanel);
             this.Controls.Add(this.menuStrip1);
             this.MainMenuStrip = this.menuStrip1;
@@ -591,6 +627,8 @@
             ((System.ComponentModel.ISupportInitialize)(this.refreshInterval)).EndInit();
             this.menuStrip1.ResumeLayout(false);
             this.menuStrip1.PerformLayout();
+            this.statusStrip1.ResumeLayout(false);
+            this.statusStrip1.PerformLayout();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -650,6 +688,9 @@
         private System.Windows.Forms.Label label3;
         private System.Windows.Forms.NumericUpDown refreshInterval;
         private System.Windows.Forms.Label label4;
+        private System.Windows.Forms.StatusStrip statusStrip1;
+        private System.Windows.Forms.ToolStripStatusLabel lblStatus;
+        private System.Windows.Forms.ToolStripSplitButton toolStripSplitButton1;
     }
 }
 

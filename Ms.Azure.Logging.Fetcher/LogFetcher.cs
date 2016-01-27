@@ -15,6 +15,25 @@ namespace Ms.Azure.Logging.Fetcher
     {
         private CloudTableClient _client;
 
+        #region RetrievedPageEvent
+
+        public event EventHandler<RetrievedPageEventArgs> RetrievedPage;
+
+        public class RetrievedPageEventArgs : EventArgs
+        {
+            public int PageNr { get; set; }
+        }
+
+        public void OnRetrievedPage(int pagenr)
+        {
+            var handler = RetrievedPage;
+            if (handler != null)
+                handler(this, new RetrievedPageEventArgs { PageNr = pagenr });
+        }
+
+        #endregion
+
+
         public LogFetcher(string accountname, string accountkey)
         {
             if (accountname.StartsWith("devstoreaccount"))
@@ -30,6 +49,8 @@ namespace Ms.Azure.Logging.Fetcher
         }
 
         public bool UseWADPerformanceOptimization { get; set; }
+
+        public bool Interrupt { get; set; }
 
         public bool ValidateCredentials()
         {
@@ -67,7 +88,20 @@ namespace Ms.Azure.Logging.Fetcher
                          select record).AsTableServiceQuery<WadTableEntity>(context);
 
             }
-            var items = query.Execute().ToList();
+
+            // Fetch using continuation token so we can interrupt and keep count
+            List<WadTableEntity> items = new List<WadTableEntity>();
+            TableContinuationToken token = null;
+            int count = 0;
+            Interrupt = false;
+            do
+            {
+                count++;
+                OnRetrievedPage(count);
+                var segment = query.ExecuteSegmented(token);
+                token = segment.ContinuationToken;
+                items.AddRange(segment.Results);
+            } while (token != null && !Interrupt);
             return items;
         }
 
