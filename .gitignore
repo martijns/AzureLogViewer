@@ -7,3 +7,4 @@ Ms.Azure.Logging.Fetcher/obj
 **/*.suo
 **/*.user
 **/*.pfx
+External/CloudBerryTest/**
