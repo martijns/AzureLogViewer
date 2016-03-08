@@ -1,10 +1,7 @@
-AzureLogViewer/bin
-AzureLogViewer/obj
-AzureLogViewerGui/bin
-AzureLogViewerGui/obj
-Ms.Azure.Logging.Fetcher/bin
-Ms.Azure.Logging.Fetcher/obj
+**/bin
+**/obj
 **/*.suo
 **/*.user
 **/*.pfx
 External/CloudBerryTest/**
+packages/
