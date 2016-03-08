@@ -67,6 +67,7 @@ namespace Ms.Azure.Logging.Fetcher
         public IList<WadTableEntity> FetchLogs(string tableName, DateTime start, DateTime end)
         {
             var context = _client.GetTableServiceContext();
+            context.Format.UseAtom();
             context.MergeOption = MergeOption.NoTracking;
             context.ReadingEntity += HandleReadEntity;
 
