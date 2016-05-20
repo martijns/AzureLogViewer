@@ -924,5 +924,10 @@ namespace AzureLogViewerGui
             if (_currentFetcher != null)
                 _currentFetcher.Interrupt = true;
         }
+
+        private void HandleSubmitFeedbackClicked(object sender, EventArgs e)
+        {
+            new FeedbackForm().ShowDialog(this);
+        }
     }
 }

@@ -1,4 +1,11 @@
-﻿2015-10-15:
+﻿2016-05-19:
+- CHG: Updated to .NET 4.5.2
+- CHG: Updated to new table storage API
+- CHG: Don't prefer 32-bit to allow more memory usage when fetching a lot of records
+- NEW: Added ability to submit feedback (see menu)
+- NEW: Added logging
+
+2015-10-15:
 - NEW: View fetched pagecount at the bottom of the screen
 - NEW: Ability to abort
 

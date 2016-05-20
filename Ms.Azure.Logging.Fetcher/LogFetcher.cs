@@ -1,4 +1,5 @@
-﻿using Microsoft.WindowsAzure.Storage;
+﻿using log4net;
+using Microsoft.WindowsAzure.Storage;
 using Microsoft.WindowsAzure.Storage.Auth;
 using Microsoft.WindowsAzure.Storage.Table;
 using Microsoft.WindowsAzure.Storage.Table.DataServices;
@@ -13,6 +14,8 @@ namespace Ms.Azure.Logging.Fetcher
 {
     public class LogFetcher
     {
+        private static readonly ILog logger = LogManager.GetLogger(typeof(LogFetcher));
+
         private CloudTableClient _client;
 
         #region RetrievedPageEvent
@@ -64,33 +67,30 @@ namespace Ms.Azure.Logging.Fetcher
             return _client.ListTables().Select(t => t.Name).ToArray();
         }
 
+        private void HandleBuildingRequest(object sender, BuildingRequestEventArgs e)
+        {
+            logger.Info($"Building request, uri: ${e.Method} ${e.RequestUri}");
+        }
+
         public IList<WadTableEntity> FetchLogs(string tableName, DateTime start, DateTime end)
         {
-            var context = _client.GetTableServiceContext();
-            context.Format.UseAtom();
-            context.MergeOption = MergeOption.NoTracking;
-            context.ReadingEntity += HandleReadEntity;
-
-            // Fetch all records. Internally uses continuation tokens to retrieve all pages.
-            TableServiceQuery<WadTableEntity> query;
+            var table = _client.GetTableReference(tableName);
+            var query = new TableQuery<WadTableEntity>();
             if (UseWADPerformanceOptimization && tableName.StartsWith("WAD"))
             {
-                // Use a better performing query for WAD tables, as we know how the partitionkey is built
-                query = (from record in context.CreateQuery<WadTableEntity>(tableName)
-                         where string.Compare(record.PartitionKey, start.Ticks.ToString("D19")) >= 0 && string.Compare(record.PartitionKey, end.Ticks.ToString("D19")) <= 0
-                         where record.Timestamp >= start && record.Timestamp <= end
-                         select record).AsTableServiceQuery<WadTableEntity>(context);
+                query = query.Where(TableQuery.CombineFilters(
+                    TableQuery.GenerateFilterCondition("PartitionKey", QueryComparisons.GreaterThanOrEqual, start.Ticks.ToString("D19")),
+                    TableOperators.And,
+                    TableQuery.GenerateFilterCondition("PartitionKey", QueryComparisons.LessThanOrEqual, end.Ticks.ToString("D19"))));
             }
             else
             {
-                // Use timestamp querying on everything else
-                query = (from record in context.CreateQuery<WadTableEntity>(tableName)
-                         where record.Timestamp >= start && record.Timestamp <= end
-                         select record).AsTableServiceQuery<WadTableEntity>(context);
-
+                query = query.Where(TableQuery.CombineFilters(
+                    TableQuery.GenerateFilterConditionForDate("Timestamp", QueryComparisons.GreaterThanOrEqual, start),
+                    TableOperators.And,
+                    TableQuery.GenerateFilterConditionForDate("Timestamp", QueryComparisons.LessThanOrEqual, end)));
             }
 
-            // Fetch using continuation token so we can interrupt and keep count
             List<WadTableEntity> items = new List<WadTableEntity>();
             TableContinuationToken token = null;
             int count = 0;
@@ -99,7 +99,7 @@ namespace Ms.Azure.Logging.Fetcher
             {
                 count++;
                 OnRetrievedPage(count);
-                var segment = query.ExecuteSegmented(token);
+                var segment = table.ExecuteQuerySegmented(query, token);
                 token = segment.ContinuationToken;
                 items.AddRange(segment.Results);
             } while (token != null && !Interrupt);
