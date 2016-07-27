@@ -94,6 +94,8 @@ namespace AzureLogViewerGui
                 showPerfCountersAsChartMenuItem.Checked = Configuration.Instance.ShowPerformanceCountersAsChart;
                 Configuration.Instance.Save();
             };
+            useKarellPartitionKey.Checked = Configuration.Instance.UseKarellPartitionKey;
+            useKarellRowKey.Checked = Configuration.Instance.UseKarellRowKey;
 
             // New version check
             AppVersion.CheckForUpdateAsync();
@@ -240,7 +242,11 @@ namespace AzureLogViewerGui
             PerformBG(this, () =>
             {
                 // Find results for this period in time
-                _currentFetcher = new LogFetcher(accountName, accountKey) { UseWADPerformanceOptimization = Configuration.Instance.UseWADPerformanceOptimization };
+                _currentFetcher = new LogFetcher(accountName, accountKey) {
+                    UseWADPerformanceOptimization = Configuration.Instance.UseWADPerformanceOptimization,
+                    UseKarellPartitionKey = Configuration.Instance.UseKarellPartitionKey,
+                    UseKarellRowKey = Configuration.Instance.UseKarellRowKey
+                };
                 _currentFetcher.RetrievedPage += HandleRetrievedPage;
                 entities = _currentFetcher.FetchLogs(table, from, to);
                 switch (order)
@@ -258,9 +264,9 @@ namespace AzureLogViewerGui
                 {
                     entities = new List<WadTableEntity>();
                     var entity = new WadTableEntity {
-                        PartitionKey = "No results found. Try extending the from/to period. If you were expecting results, you could try disabling 'Use optimized queries for WAD tables'."
+                        PartitionKey = "No results found. Try extending the from/to period. If you were expecting results, you could try disabling 'Use optimized queries for WAD tables'.",
+                        RowKey = ""
                     };
-                    entity.Properties.Add("PartitionKey", entity.PartitionKey);
                     entities.Add(entity);
                 }
 
@@ -292,9 +298,9 @@ namespace AzureLogViewerGui
                 }
                 else
                 {
-                    _loadedColumns = (from propname in propertyNames select propname).ToArray();
+                    _loadedColumns = new[] { "PartitionKey", "RowKey", "Timestamp" }.Concat(from propname in propertyNames select propname).ToArray();
                     _loadedRows = (from entity in entities
-                                   select (from prop in entity.Properties select GetPropertyValue(prop)).ToArray()).ToArray();
+                                   select (new [] { entity.PartitionKey, entity.RowKey, entity.Timestamp.ToString("yyyy-MM-dd HH:mm:ss.fff") }.Concat(from prop in entity.Properties select GetPropertyValue(prop))).ToArray()).ToArray();
                     _filteredRows = _loadedRows;
                 }
             },
@@ -928,6 +934,24 @@ namespace AzureLogViewerGui
         private void HandleSubmitFeedbackClicked(object sender, EventArgs e)
         {
             new FeedbackForm().ShowDialog(this);
+        }
+
+        private void HandleUseKarellPartitionKeyClicked(object sender, EventArgs e)
+        {
+            if (useKarellRowKey.Checked)
+                useKarellRowKey.Checked = false;
+            Configuration.Instance.UseKarellPartitionKey = useKarellPartitionKey.Checked;
+            Configuration.Instance.UseKarellRowKey = useKarellRowKey.Checked;
+            Configuration.Instance.Save();
+        }
+
+        private void HandleUseKarellRowKeyClicked(object sender, EventArgs e)
+        {
+            if (useKarellPartitionKey.Checked)
+                useKarellPartitionKey.Checked = false;
+            Configuration.Instance.UseKarellPartitionKey = useKarellPartitionKey.Checked;
+            Configuration.Instance.UseKarellRowKey = useKarellRowKey.Checked;
+            Configuration.Instance.Save();
         }
     }
 }

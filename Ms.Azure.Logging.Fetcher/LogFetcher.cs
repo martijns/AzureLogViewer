@@ -53,6 +53,10 @@ namespace Ms.Azure.Logging.Fetcher
 
         public bool UseWADPerformanceOptimization { get; set; }
 
+        public bool UseKarellPartitionKey { get; set; }
+
+        public bool UseKarellRowKey { get; set; }
+
         public bool Interrupt { get; set; }
 
         public bool ValidateCredentials()
@@ -76,7 +80,41 @@ namespace Ms.Azure.Logging.Fetcher
         {
             var table = _client.GetTableReference(tableName);
             var query = new TableQuery<WadTableEntity>();
-            if (UseWADPerformanceOptimization && tableName.StartsWith("WAD"))
+            if (UseKarellPartitionKey)
+            {
+                // Note that filter condition less/greater seems weird, but Karell uses a reverse format format and subtracts maxvalue
+                DateTime startHour = new DateTime(start.Year, start.Month, start.Day, start.Hour, 0, 0);
+                DateTime endHour = new DateTime(end.Year, end.Month, end.Day, end.Hour, 0, 0);
+                if (endHour.Minute != 0 || endHour.Second != 0)
+                    endHour = endHour.AddHours(1);
+                query = query.Where(TableQuery.CombineFilters(
+                    TableQuery.GenerateFilterCondition("PartitionKey", QueryComparisons.LessThanOrEqual, ((DateTime.MaxValue - startHour).Ticks + 1).ToString("D19")),
+                    TableOperators.And,
+                    TableQuery.GenerateFilterCondition("PartitionKey", QueryComparisons.GreaterThanOrEqual, ((DateTime.MaxValue - endHour).Ticks + 1).ToString("D19"))));
+            }
+            else if (UseKarellRowKey)
+            {
+                // Note that filter condition less/greater seems weird, but Karell uses a reverse format format and subtracts maxvalue
+                DateTime startHour = new DateTime(start.Year, start.Month, start.Day, start.Hour, 0, 0);
+                DateTime endHour = new DateTime(end.Year, end.Month, end.Day, end.Hour, 0, 0);
+                if (endHour.Minute != 0 || endHour.Second != 0)
+                    endHour = endHour.AddHours(1);
+                query = query.Where(TableQuery.CombineFilters(
+                    TableQuery.CombineFilters(
+                        TableQuery.GenerateFilterCondition("PartitionKey", QueryComparisons.LessThanOrEqual, ((DateTime.MaxValue - startHour).Ticks + 1).ToString("D19")),
+                        TableOperators.And,
+                        TableQuery.GenerateFilterCondition("PartitionKey", QueryComparisons.GreaterThanOrEqual, ((DateTime.MaxValue - endHour).Ticks + 1).ToString("D19"))
+                    ),
+                    TableOperators.And,
+                    TableQuery.CombineFilters(
+                        TableQuery.GenerateFilterCondition("RowKey", QueryComparisons.LessThanOrEqual, (DateTime.MaxValue - start).Ticks.ToString("D19")),
+                        TableOperators.And,
+                        TableQuery.GenerateFilterCondition("RowKey", QueryComparisons.GreaterThanOrEqual, (DateTime.MaxValue - end).Ticks.ToString("D19"))
+                        )
+                    )
+                );
+            }
+            else if (UseWADPerformanceOptimization && tableName.StartsWith("WAD"))
             {
                 query = query.Where(TableQuery.CombineFilters(
                     TableQuery.GenerateFilterCondition("PartitionKey", QueryComparisons.GreaterThanOrEqual, start.Ticks.ToString("D19")),

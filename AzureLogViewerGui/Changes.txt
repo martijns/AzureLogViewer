@@ -1,4 +1,7 @@
-﻿2016-05-19:
+﻿2016-07-27:
+- NEW: Added support for Karell Ste-Marie's log4net.Appender.Azure format, see Extra menu to enable/disable.
+
+2016-05-19:
 - CHG: Updated to .NET 4.5.2
 - CHG: Updated to new table storage API
 - CHG: Don't prefer 32-bit to allow more memory usage when fetching a lot of records

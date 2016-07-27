@@ -50,6 +50,12 @@ namespace AzureLogViewerGui
 
         [XmlElement]
         public List<PerformanceCounterPreference> PerformanceCounterPreferences { get; set; }
+
+        [XmlElement]
+        public bool UseKarellPartitionKey { get; set; }
+
+        [XmlElement]
+        public bool UseKarellRowKey { get; set; }
     }
 
     [Serializable]

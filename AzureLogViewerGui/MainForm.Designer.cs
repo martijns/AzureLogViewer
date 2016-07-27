@@ -78,13 +78,16 @@
             this.useOptimizedQueriesForWADTablesToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.convertEventTickCountColumnToReadableFormatToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.showPerfCountersAsChartMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.toolStripSeparator2 = new System.Windows.Forms.ToolStripSeparator();
+            this.useKarellPartitionKey = new System.Windows.Forms.ToolStripMenuItem();
+            this.useKarellRowKey = new System.Windows.Forms.ToolStripMenuItem();
             this.helpToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.changelogToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.submitFeedbackToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.aboutToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.statusStrip1 = new System.Windows.Forms.StatusStrip();
             this.lblStatus = new System.Windows.Forms.ToolStripStatusLabel();
             this.toolStripSplitButton1 = new System.Windows.Forms.ToolStripSplitButton();
-            this.submitFeedbackToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.ctxMenuPopup.SuspendLayout();
             this.ctxPresets.SuspendLayout();
             this.mainPanel.SuspendLayout();
@@ -527,7 +530,10 @@
             this.extraToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.useOptimizedQueriesForWADTablesToolStripMenuItem,
             this.convertEventTickCountColumnToReadableFormatToolStripMenuItem,
-            this.showPerfCountersAsChartMenuItem});
+            this.showPerfCountersAsChartMenuItem,
+            this.toolStripSeparator2,
+            this.useKarellPartitionKey,
+            this.useKarellRowKey});
             this.extraToolStripMenuItem.Name = "extraToolStripMenuItem";
             this.extraToolStripMenuItem.Size = new System.Drawing.Size(44, 20);
             this.extraToolStripMenuItem.Text = "Extra";
@@ -535,20 +541,43 @@
             // useOptimizedQueriesForWADTablesToolStripMenuItem
             // 
             this.useOptimizedQueriesForWADTablesToolStripMenuItem.Name = "useOptimizedQueriesForWADTablesToolStripMenuItem";
-            this.useOptimizedQueriesForWADTablesToolStripMenuItem.Size = new System.Drawing.Size(348, 22);
+            this.useOptimizedQueriesForWADTablesToolStripMenuItem.Size = new System.Drawing.Size(604, 22);
             this.useOptimizedQueriesForWADTablesToolStripMenuItem.Text = "Use optimized queries for WAD tables";
             // 
             // convertEventTickCountColumnToReadableFormatToolStripMenuItem
             // 
             this.convertEventTickCountColumnToReadableFormatToolStripMenuItem.Name = "convertEventTickCountColumnToReadableFormatToolStripMenuItem";
-            this.convertEventTickCountColumnToReadableFormatToolStripMenuItem.Size = new System.Drawing.Size(348, 22);
+            this.convertEventTickCountColumnToReadableFormatToolStripMenuItem.Size = new System.Drawing.Size(604, 22);
             this.convertEventTickCountColumnToReadableFormatToolStripMenuItem.Text = "Convert EventTickCount column to readable format";
             // 
             // showPerfCountersAsChartMenuItem
             // 
             this.showPerfCountersAsChartMenuItem.Name = "showPerfCountersAsChartMenuItem";
-            this.showPerfCountersAsChartMenuItem.Size = new System.Drawing.Size(348, 22);
+            this.showPerfCountersAsChartMenuItem.Size = new System.Drawing.Size(604, 22);
             this.showPerfCountersAsChartMenuItem.Text = "Show PerformanceCounters in a chart";
+            // 
+            // toolStripSeparator2
+            // 
+            this.toolStripSeparator2.Name = "toolStripSeparator2";
+            this.toolStripSeparator2.Size = new System.Drawing.Size(601, 6);
+            // 
+            // useKarellPartitionKey
+            // 
+            this.useKarellPartitionKey.CheckOnClick = true;
+            this.useKarellPartitionKey.Name = "useKarellPartitionKey";
+            this.useKarellPartitionKey.Size = new System.Drawing.Size(604, 22);
+            this.useKarellPartitionKey.Text = "Use Karell Ste-Marie\'s \"log4net.Appender.Azure\" (PartitionKey only, query by hour" +
+    ")";
+            this.useKarellPartitionKey.Click += new System.EventHandler(this.HandleUseKarellPartitionKeyClicked);
+            // 
+            // useKarellRowKey
+            // 
+            this.useKarellRowKey.CheckOnClick = true;
+            this.useKarellRowKey.Name = "useKarellRowKey";
+            this.useKarellRowKey.Size = new System.Drawing.Size(604, 22);
+            this.useKarellRowKey.Text = "Use Karell Ste-Marie\'s \"log4net.Appender.Azure\" (RowKey in reversed date format, " +
+    "query by seconds)";
+            this.useKarellRowKey.Click += new System.EventHandler(this.HandleUseKarellRowKeyClicked);
             // 
             // helpToolStripMenuItem
             // 
@@ -566,6 +595,13 @@
             this.changelogToolStripMenuItem.Size = new System.Drawing.Size(172, 22);
             this.changelogToolStripMenuItem.Text = "Changelog...";
             this.changelogToolStripMenuItem.Click += new System.EventHandler(this.HandleChangelogClicked);
+            // 
+            // submitFeedbackToolStripMenuItem
+            // 
+            this.submitFeedbackToolStripMenuItem.Name = "submitFeedbackToolStripMenuItem";
+            this.submitFeedbackToolStripMenuItem.Size = new System.Drawing.Size(172, 22);
+            this.submitFeedbackToolStripMenuItem.Text = "Submit feedback...";
+            this.submitFeedbackToolStripMenuItem.Click += new System.EventHandler(this.HandleSubmitFeedbackClicked);
             // 
             // aboutToolStripMenuItem
             // 
@@ -604,13 +640,6 @@
             this.toolStripSplitButton1.Text = "Abort";
             this.toolStripSplitButton1.ToolTipText = "Abort";
             this.toolStripSplitButton1.ButtonClick += new System.EventHandler(this.HandleAbortClicked);
-            // 
-            // submitFeedbackToolStripMenuItem
-            // 
-            this.submitFeedbackToolStripMenuItem.Name = "submitFeedbackToolStripMenuItem";
-            this.submitFeedbackToolStripMenuItem.Size = new System.Drawing.Size(172, 22);
-            this.submitFeedbackToolStripMenuItem.Text = "Submit feedback...";
-            this.submitFeedbackToolStripMenuItem.Click += new System.EventHandler(this.HandleSubmitFeedbackClicked);
             // 
             // MainForm
             // 
@@ -701,6 +730,9 @@
         private System.Windows.Forms.ToolStripStatusLabel lblStatus;
         private System.Windows.Forms.ToolStripSplitButton toolStripSplitButton1;
         private System.Windows.Forms.ToolStripMenuItem submitFeedbackToolStripMenuItem;
+        private System.Windows.Forms.ToolStripSeparator toolStripSeparator2;
+        private System.Windows.Forms.ToolStripMenuItem useKarellPartitionKey;
+        private System.Windows.Forms.ToolStripMenuItem useKarellRowKey;
     }
 }
 
