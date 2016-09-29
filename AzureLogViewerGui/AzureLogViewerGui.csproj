@@ -29,7 +29,7 @@
     <PublisherName>Tikkie</PublisherName>
     <CreateWebPageOnPublish>true</CreateWebPageOnPublish>
     <WebPage>publish.htm</WebPage>
-    <ApplicationRevision>46</ApplicationRevision>
+    <ApplicationRevision>48</ApplicationRevision>
     <ApplicationVersion>1.0.0.%2a</ApplicationVersion>
     <UseApplicationTrust>false</UseApplicationTrust>
     <CreateDesktopShortcut>true</CreateDesktopShortcut>
@@ -67,7 +67,7 @@
     <SignManifests>true</SignManifests>
   </PropertyGroup>
   <PropertyGroup>
-    <ManifestCertificateThumbprint>B4C5100E2ED9347F88CDAFCA04F07EEAD3FE528C</ManifestCertificateThumbprint>
+    <ManifestCertificateThumbprint>EDB501EE2E946250AF0FDDF2260AFB75F3345A6E</ManifestCertificateThumbprint>
   </PropertyGroup>
   <PropertyGroup>
     <SignAssembly>false</SignAssembly>
@@ -249,7 +249,7 @@
     </PropertyGroup>
     <Message Text="Signing assembly post-compile..." />
     <!-- On AfterCompile we need to sign the executable that is in the obj/ dir, not the bin/ dir -->
-    <Exec Condition="Exists('$(ProjectDir)obj\$(PlatformName)\$(ConfigurationName)\$(TargetFileName)')" Command="&quot;$(SignToolPath)&quot; sign /i &quot;Certum&quot; /n &quot;Martijn Stolk&quot;  /v &quot;$(ProjectDir)obj\$(PlatformName)\$(ConfigurationName)\$(TargetFileName)&quot;" />
-    <Exec Condition="Exists('$(ProjectDir)obj\$(ConfigurationName)\$(TargetFileName)')" Command="&quot;$(SignToolPath)&quot; sign /i &quot;Certum&quot; /n &quot;Martijn Stolk&quot;  /v &quot;$(ProjectDir)obj\$(ConfigurationName)\$(TargetFileName)&quot;" />
+    <Exec Condition="Exists('$(ProjectDir)obj\$(PlatformName)\$(ConfigurationName)\$(TargetFileName)')" Command="&quot;$(SignToolPath)&quot; sign /i &quot;StartCom&quot; /n &quot;Martijn Stolk&quot;  /v &quot;$(ProjectDir)obj\$(PlatformName)\$(ConfigurationName)\$(TargetFileName)&quot;" />
+    <Exec Condition="Exists('$(ProjectDir)obj\$(ConfigurationName)\$(TargetFileName)')" Command="&quot;$(SignToolPath)&quot; sign /i &quot;StartCom&quot; /n &quot;Martijn Stolk&quot;  /v &quot;$(ProjectDir)obj\$(ConfigurationName)\$(TargetFileName)&quot;" />
   </Target>
 </Project>

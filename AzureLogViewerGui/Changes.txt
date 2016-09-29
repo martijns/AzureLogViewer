@@ -1,4 +1,7 @@
-﻿2016-07-27:
+﻿2016-09-29:
+- CHG: Updated app with new code signing cert
+
+2016-07-27:
 - NEW: Added support for Karell Ste-Marie's log4net.Appender.Azure format, see Extra menu to enable/disable.
 
 2016-05-19:
