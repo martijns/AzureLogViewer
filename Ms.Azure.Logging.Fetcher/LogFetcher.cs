@@ -7,6 +7,7 @@ using System;
 using System.Collections.Generic;
 using System.Data.Services.Client;
 using System.Linq;
+using System.Net;
 using System.Text;
 using System.Xml.Linq;
 
@@ -61,6 +62,9 @@ namespace Ms.Azure.Logging.Fetcher
 
         public bool ValidateCredentials()
         {
+            // Throws exception if host does not exist
+            Dns.GetHostEntry(_client.Credentials.AccountName + ".table.core.windows.net");
+
             // Expect exception when credentials are incorrect
             var tables = _client.ListTables();
             return tables.Count() >= 0; // Make sure the (possibly internal) IQueryable evaluates

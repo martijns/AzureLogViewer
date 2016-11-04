@@ -146,6 +146,21 @@ namespace AzureLogViewerGui.Scrapers
                 }
             }
 
+            // Check *.config
+            files = Directory.GetFiles(dir, "*.config");
+            foreach (string file in files)
+            {
+                string contents = File.ReadAllText(file);
+                Regex regex = new Regex("DefaultEndpointsProtocol.*?AccountName=(.+?);.*?AccountKey=([a-zA-Z0-9/+=]+)", RegexOptions.Singleline);
+                MatchCollection mc = regex.Matches(contents);
+                foreach (Match m in mc)
+                {
+                    if (!m.Success)
+                        continue;
+                    TestKey(m.Groups[1].Value, m.Groups[2].Value);
+                }
+            }
+
             // Check stopbordje.storage*config
             files = Directory.GetFiles(dir, "stopbordje*.storage*config");
             foreach (string file in files)
