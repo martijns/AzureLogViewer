@@ -1,6 +1,7 @@
 ﻿2016-11-04:
 - CHG: Scraping for storage accounts now also includes *.config and tests for the connection string format.
 - CHG: Increase validation speed when scraping for storage accounts. Unknown hosts will no longer pause for ~10 sec.
+- FIX: Fixes for Karell's appender where small selections were not accurate.
 
 2016-09-29:
 - CHG: Updated app with new code signing cert

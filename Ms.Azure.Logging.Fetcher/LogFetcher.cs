@@ -89,7 +89,7 @@ namespace Ms.Azure.Logging.Fetcher
                 // Note that filter condition less/greater seems weird, but Karell uses a reverse format format and subtracts maxvalue
                 DateTime startHour = new DateTime(start.Year, start.Month, start.Day, start.Hour, 0, 0);
                 DateTime endHour = new DateTime(end.Year, end.Month, end.Day, end.Hour, 0, 0);
-                if (endHour.Minute != 0 || endHour.Second != 0)
+                if (end.Minute != 0 || end.Second != 0)
                     endHour = endHour.AddHours(1);
                 query = query.Where(TableQuery.CombineFilters(
                     TableQuery.GenerateFilterCondition("PartitionKey", QueryComparisons.LessThanOrEqual, ((DateTime.MaxValue - startHour).Ticks + 1).ToString("D19")),
@@ -101,8 +101,10 @@ namespace Ms.Azure.Logging.Fetcher
                 // Note that filter condition less/greater seems weird, but Karell uses a reverse format format and subtracts maxvalue
                 DateTime startHour = new DateTime(start.Year, start.Month, start.Day, start.Hour, 0, 0);
                 DateTime endHour = new DateTime(end.Year, end.Month, end.Day, end.Hour, 0, 0);
-                if (endHour.Minute != 0 || endHour.Second != 0)
+                if (end.Minute != 0 || end.Second != 0)
                     endHour = endHour.AddHours(1);
+                start = start.AddHours(1);
+                end = end.AddHours(1);
                 query = query.Where(TableQuery.CombineFilters(
                     TableQuery.CombineFilters(
                         TableQuery.GenerateFilterCondition("PartitionKey", QueryComparisons.LessThanOrEqual, ((DateTime.MaxValue - startHour).Ticks + 1).ToString("D19")),
