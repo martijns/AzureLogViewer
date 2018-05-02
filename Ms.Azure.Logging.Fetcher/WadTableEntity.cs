@@ -34,7 +34,25 @@ namespace Ms.Azure.Logging.Fetcher
         public string EventId { get { return Properties.ContainsKey("EventId") ? Properties["EventId"] : null; } set { Properties["EventId"] = value.ToString(); } }
         public string Pid { get { return Properties.ContainsKey("Pid") ? Properties["Pid"] : null; } set { Properties["Pid"] = value.ToString(); } }
         public string Tid { get { return Properties.ContainsKey("Tid") ? Properties["Tid"] : null; } set { Properties["Tid"] = value.ToString(); } }
-        public string Message { get { return Properties.ContainsKey("Message") ? Properties["Message"] : null; } set { Properties["Message"] = value.ToString(); } }
+        public string Message { get { return Properties.ContainsKey("Message") ? GetMessage() : null; } set { Properties["Message"] = value.ToString(); } }
+
+        private string GetMessage()
+        {
+            var message = Properties["Message"];
+
+            if (message != null)
+            {
+                var substring = message.Substring(message.Length - 2, 1);
+
+                if (substring.Contains("\n"))
+                {
+                    var remove = message.Remove(message.Length - 2, 1);
+                    return remove;
+                }
+            }
+
+            return message;
+        }
 
         public Dictionary<string, string> Properties { get; set; }
 
