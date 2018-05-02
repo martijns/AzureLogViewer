@@ -11,6 +11,7 @@ using System.Text;
 using System.Threading;
 using System.Windows.Forms;
 using System.IO;
+using System.Threading.Tasks;
 using Timer = System.Windows.Forms.Timer;
 using MsCommon.ClickOnce;
 
@@ -32,7 +33,7 @@ namespace AzureLogViewerGui
         private PerformanceCountersControl _performanceCountersControl = new PerformanceCountersControl();
         private LogFetcher _currentFetcher = null;
 
-        private Action<object, EventArgs> _lastPresetAction = null;  
+        private Action<object, EventArgs> _lastPresetAction = null;
 
         public MainForm()
         {
@@ -242,7 +243,8 @@ namespace AzureLogViewerGui
             PerformBG(this, () =>
             {
                 // Find results for this period in time
-                _currentFetcher = new LogFetcher(accountName, accountKey) {
+                _currentFetcher = new LogFetcher(accountName, accountKey)
+                {
                     UseWADPerformanceOptimization = Configuration.Instance.UseWADPerformanceOptimization,
                     UseKarellPartitionKey = Configuration.Instance.UseKarellPartitionKey,
                     UseKarellRowKey = Configuration.Instance.UseKarellRowKey
@@ -263,7 +265,8 @@ namespace AzureLogViewerGui
                 if (entities == null || entities.Count == 0)
                 {
                     entities = new List<WadTableEntity>();
-                    var entity = new WadTableEntity {
+                    var entity = new WadTableEntity
+                    {
                         PartitionKey = "No results found. Try extending the from/to period. If you were expecting results, you could try disabling 'Use optimized queries for WAD tables'.",
                         RowKey = ""
                     };
@@ -300,7 +303,7 @@ namespace AzureLogViewerGui
                 {
                     _loadedColumns = new[] { "PartitionKey", "RowKey", "Timestamp" }.Concat(from propname in propertyNames select propname).ToArray();
                     _loadedRows = (from entity in entities
-                                   select (new [] { entity.PartitionKey, entity.RowKey, entity.Timestamp.ToString("yyyy-MM-dd HH:mm:ss.fff") }.Concat(from prop in entity.Properties select GetPropertyValue(prop))).ToArray()).ToArray();
+                                   select (new[] { entity.PartitionKey, entity.RowKey, entity.Timestamp.ToString("yyyy-MM-dd HH:mm:ss.fff") }.Concat(from prop in entity.Properties select GetPropertyValue(prop))).ToArray()).ToArray();
                     _filteredRows = _loadedRows;
                 }
             },
@@ -322,7 +325,7 @@ namespace AzureLogViewerGui
         {
             if (InvokeRequired)
             {
-                Invoke((Action<object,LogFetcher.RetrievedPageEventArgs>)HandleRetrievedPage, sender, e);
+                Invoke((Action<object, LogFetcher.RetrievedPageEventArgs>)HandleRetrievedPage, sender, e);
                 return;
             }
             lblStatus.Text = "Fetching page " + e.PageNr + "...";
@@ -762,9 +765,9 @@ namespace AzureLogViewerGui
 
         private void CopyAllToClip()
         {
-             dataGridView1.SelectAll();
-             DataObject dataObj = dataGridView1.GetClipboardContent();
-             Clipboard.SetDataObject(dataObj, true);
+            dataGridView1.SelectAll();
+            DataObject dataObj = dataGridView1.GetClipboardContent();
+            Clipboard.SetDataObject(dataObj, true);
         }
 
         private void CopySelectionToClip()
@@ -798,7 +801,7 @@ namespace AzureLogViewerGui
             String fileName = OpenSaveAsDialog();
             if (fileName == null)
                 return;
- 
+
             var sb = new StringBuilder();
             var headers = dataGridView1.Columns.Cast<DataGridViewColumn>();
             sb.Append(string.Join(",", headers.Select(column => "\"" + column.HeaderText + "\"")));
@@ -915,14 +918,14 @@ namespace AzureLogViewerGui
             {
                 _refreshTimer.Interval = (int)refreshInterval.Value * 1000;
                 _refreshTimer.Start();
-                
-                _refreshTimer.Tick += (o, args) => 
+
+                _refreshTimer.Tick += (o, args) =>
                 {
                     _lastPresetAction(this, e);
                     HandleFetchButton(this, e);
                 };
             }
-        
+
         }
 
         private void HandleAbortClicked(object sender, EventArgs e)
@@ -952,6 +955,51 @@ namespace AzureLogViewerGui
             Configuration.Instance.UseKarellPartitionKey = useKarellPartitionKey.Checked;
             Configuration.Instance.UseKarellRowKey = useKarellRowKey.Checked;
             Configuration.Instance.Save();
+        }
+
+        private void removeUnavliableStorageAccountsToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            var removedAccounts = new List<string>();
+
+            var currentCursor = Cursor;
+
+            try
+            {
+                Cursor.Current = Cursors.WaitCursor;
+
+                Parallel.ForEach(Configuration.Instance.Accounts, account =>
+                {
+                    var accountname = account.Key;
+                    var accountkey = account.Value;
+
+                    try
+                    {
+                        new LogFetcher(accountname, accountkey).ValidateCredentials();
+                    }
+                    catch (Exception)
+                    {
+                        lock (removedAccounts)
+                            removedAccounts.Add(accountname);
+                    }
+                });
+
+                foreach (var removedAccount in removedAccounts)
+                {
+                    if (Configuration.Instance.Accounts.ContainsKey(removedAccount))
+                        Configuration.Instance.Accounts.Remove(removedAccount);
+                }
+
+                Configuration.Instance.Save();
+            }
+            finally
+            {
+                Cursor.Current = currentCursor;
+            }
+
+            UpdateAccountSelection();
+
+            MessageBox.Show(this, string.Join(Environment.NewLine, removedAccounts.OrderBy(account => account)), "Removed the following storage accounts");
+
         }
     }
 }

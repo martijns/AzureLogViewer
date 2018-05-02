@@ -88,6 +88,7 @@
             this.statusStrip1 = new System.Windows.Forms.StatusStrip();
             this.lblStatus = new System.Windows.Forms.ToolStripStatusLabel();
             this.toolStripSplitButton1 = new System.Windows.Forms.ToolStripSplitButton();
+            this.removeUnavliableStorageAccountsToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.ctxMenuPopup.SuspendLayout();
             this.ctxPresets.SuspendLayout();
             this.mainPanel.SuspendLayout();
@@ -472,6 +473,7 @@
             this.removeMenuItem,
             this.toolStripSeparator1,
             this.scrapeForStorageAccountsToolStripMenuItem,
+            this.removeUnavliableStorageAccountsToolStripMenuItem,
             this.exportToAzureStorageExplorerToolStripMenuItem,
             this.exportToCloudBerryExplorerToolStripMenuItem});
             this.accountsToolStripMenuItem.Name = "accountsToolStripMenuItem";
@@ -481,47 +483,47 @@
             // addMenuItem
             // 
             this.addMenuItem.Name = "addMenuItem";
-            this.addMenuItem.Size = new System.Drawing.Size(251, 22);
+            this.addMenuItem.Size = new System.Drawing.Size(276, 22);
             this.addMenuItem.Text = "Add...";
             this.addMenuItem.Click += new System.EventHandler(this.HandleAccountAdd);
             // 
             // editMenuItem
             // 
             this.editMenuItem.Name = "editMenuItem";
-            this.editMenuItem.Size = new System.Drawing.Size(251, 22);
+            this.editMenuItem.Size = new System.Drawing.Size(276, 22);
             this.editMenuItem.Text = "Edit...";
             this.editMenuItem.Click += new System.EventHandler(this.HandleAccountEdit);
             // 
             // removeMenuItem
             // 
             this.removeMenuItem.Name = "removeMenuItem";
-            this.removeMenuItem.Size = new System.Drawing.Size(251, 22);
+            this.removeMenuItem.Size = new System.Drawing.Size(276, 22);
             this.removeMenuItem.Text = "Remove...";
             this.removeMenuItem.Click += new System.EventHandler(this.HandleAccountRemove);
             // 
             // toolStripSeparator1
             // 
             this.toolStripSeparator1.Name = "toolStripSeparator1";
-            this.toolStripSeparator1.Size = new System.Drawing.Size(248, 6);
+            this.toolStripSeparator1.Size = new System.Drawing.Size(273, 6);
             // 
             // scrapeForStorageAccountsToolStripMenuItem
             // 
             this.scrapeForStorageAccountsToolStripMenuItem.Name = "scrapeForStorageAccountsToolStripMenuItem";
-            this.scrapeForStorageAccountsToolStripMenuItem.Size = new System.Drawing.Size(251, 22);
+            this.scrapeForStorageAccountsToolStripMenuItem.Size = new System.Drawing.Size(276, 22);
             this.scrapeForStorageAccountsToolStripMenuItem.Text = "Scrape for storage accounts...";
             this.scrapeForStorageAccountsToolStripMenuItem.Click += new System.EventHandler(this.HandleScrapeForStorageAccountsClicked);
             // 
             // exportToAzureStorageExplorerToolStripMenuItem
             // 
             this.exportToAzureStorageExplorerToolStripMenuItem.Name = "exportToAzureStorageExplorerToolStripMenuItem";
-            this.exportToAzureStorageExplorerToolStripMenuItem.Size = new System.Drawing.Size(251, 22);
+            this.exportToAzureStorageExplorerToolStripMenuItem.Size = new System.Drawing.Size(276, 22);
             this.exportToAzureStorageExplorerToolStripMenuItem.Text = "Export to Azure Storage Explorer...";
             this.exportToAzureStorageExplorerToolStripMenuItem.Click += new System.EventHandler(this.HandleExportToAzureStorageExplorerClicked);
             // 
             // exportToCloudBerryExplorerToolStripMenuItem
             // 
             this.exportToCloudBerryExplorerToolStripMenuItem.Name = "exportToCloudBerryExplorerToolStripMenuItem";
-            this.exportToCloudBerryExplorerToolStripMenuItem.Size = new System.Drawing.Size(251, 22);
+            this.exportToCloudBerryExplorerToolStripMenuItem.Size = new System.Drawing.Size(276, 22);
             this.exportToCloudBerryExplorerToolStripMenuItem.Text = "Export to CloudBerry Explorer...";
             this.exportToCloudBerryExplorerToolStripMenuItem.Click += new System.EventHandler(this.HandleExportToCloudBerryExplorerClicked);
             // 
@@ -641,6 +643,13 @@
             this.toolStripSplitButton1.ToolTipText = "Abort";
             this.toolStripSplitButton1.ButtonClick += new System.EventHandler(this.HandleAbortClicked);
             // 
+            // removeUnavliableStorageAccountsToolStripMenuItem
+            // 
+            this.removeUnavliableStorageAccountsToolStripMenuItem.Name = "removeUnavliableStorageAccountsToolStripMenuItem";
+            this.removeUnavliableStorageAccountsToolStripMenuItem.Size = new System.Drawing.Size(276, 22);
+            this.removeUnavliableStorageAccountsToolStripMenuItem.Text = "Remove unavliable storage accounts...";
+            this.removeUnavliableStorageAccountsToolStripMenuItem.Click += new System.EventHandler(this.removeUnavliableStorageAccountsToolStripMenuItem_Click);
+            // 
             // MainForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -733,6 +742,7 @@
         private System.Windows.Forms.ToolStripSeparator toolStripSeparator2;
         private System.Windows.Forms.ToolStripMenuItem useKarellPartitionKey;
         private System.Windows.Forms.ToolStripMenuItem useKarellRowKey;
+        private System.Windows.Forms.ToolStripMenuItem removeUnavliableStorageAccountsToolStripMenuItem;
     }
 }
 
