@@ -44,6 +44,8 @@
             // 
             // lbValidated
             // 
+            this.lbValidated.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Left)));
             this.lbValidated.FormattingEnabled = true;
             this.lbValidated.Location = new System.Drawing.Point(12, 169);
             this.lbValidated.Name = "lbValidated";
@@ -98,6 +100,9 @@
             // 
             // lbFailed
             // 
+            this.lbFailed.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
             this.lbFailed.FormattingEnabled = true;
             this.lbFailed.Location = new System.Drawing.Point(215, 169);
             this.lbFailed.Name = "lbFailed";
