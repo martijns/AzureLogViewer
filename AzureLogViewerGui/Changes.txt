@@ -1,4 +1,11 @@
-﻿2016-11-04:
+﻿2018-05-03:
+- FIX: Window resizing in StorageAccountScraperForm
+- CHG: Removed the annoying '\n' at the end of each message. This makes it easier to copy into a text editor.
+- NEW: Added 'remove unavailable storage accounts...' menu item. This gathers a list of storage accounts that doesn't exist anymore and asks for confirmation. (No fancy UI involved)
+- NEW: Added line numbers in grid and GoToLine (ctrl + g) feature
+- NEW: Added autocomplete and suggest append in combobox accountSelection.
+
+2016-11-04:
 - CHG: Scraping for storage accounts now also includes *.config and tests for the connection string format.
 - CHG: Increase validation speed when scraping for storage accounts. Unknown hosts will no longer pause for ~10 sec.
 - FIX: Fixes for Karell's appender where small selections were not accurate.

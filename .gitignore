@@ -5,3 +5,4 @@
 **/*.pfx
 External/CloudBerryTest/**
 packages/
+/.vs/AzureLogViewer/v15/Server/sqlite3

@@ -72,6 +72,7 @@
             this.removeMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.toolStripSeparator1 = new System.Windows.Forms.ToolStripSeparator();
             this.scrapeForStorageAccountsToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.removeUnavailableStorageAccountsToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.exportToAzureStorageExplorerToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.exportToCloudBerryExplorerToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.extraToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
@@ -238,6 +239,7 @@
             this.dataGridView1.ShowRowErrors = false;
             this.dataGridView1.Size = new System.Drawing.Size(1627, 329);
             this.dataGridView1.TabIndex = 1;
+            this.dataGridView1.KeyDown += new System.Windows.Forms.KeyEventHandler(this.OnKeyDown);
             // 
             // flowLayoutPanel1
             // 
@@ -266,12 +268,13 @@
             // 
             // accountSelection
             // 
-            this.accountSelection.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+            this.accountSelection.AutoCompleteMode = System.Windows.Forms.AutoCompleteMode.SuggestAppend;
+            this.accountSelection.AutoCompleteSource = System.Windows.Forms.AutoCompleteSource.ListItems;
             this.accountSelection.FormattingEnabled = true;
             this.accountSelection.Location = new System.Drawing.Point(10, 10);
             this.accountSelection.Margin = new System.Windows.Forms.Padding(2);
             this.accountSelection.Name = "accountSelection";
-            this.accountSelection.Size = new System.Drawing.Size(144, 21);
+            this.accountSelection.Size = new System.Drawing.Size(160, 21);
             this.accountSelection.TabIndex = 5;
             this.accountSelection.SelectedValueChanged += new System.EventHandler(this.HandleAccountSelected);
             // 
@@ -279,16 +282,16 @@
             // 
             this.tableSelection.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
             this.tableSelection.FormattingEnabled = true;
-            this.tableSelection.Location = new System.Drawing.Point(158, 10);
+            this.tableSelection.Location = new System.Drawing.Point(174, 10);
             this.tableSelection.Margin = new System.Windows.Forms.Padding(2);
             this.tableSelection.Name = "tableSelection";
-            this.tableSelection.Size = new System.Drawing.Size(144, 21);
+            this.tableSelection.Size = new System.Drawing.Size(160, 21);
             this.tableSelection.TabIndex = 6;
             // 
             // label1
             // 
             this.label1.AutoSize = true;
-            this.label1.Location = new System.Drawing.Point(308, 12);
+            this.label1.Location = new System.Drawing.Point(340, 12);
             this.label1.Margin = new System.Windows.Forms.Padding(4);
             this.label1.Name = "label1";
             this.label1.Size = new System.Drawing.Size(33, 13);
@@ -299,7 +302,7 @@
             // 
             this.fromDate.CustomFormat = "dd-MM-yyyy HH:mm:ss";
             this.fromDate.Format = System.Windows.Forms.DateTimePickerFormat.Custom;
-            this.fromDate.Location = new System.Drawing.Point(347, 10);
+            this.fromDate.Location = new System.Drawing.Point(379, 10);
             this.fromDate.Margin = new System.Windows.Forms.Padding(2);
             this.fromDate.Name = "fromDate";
             this.fromDate.Size = new System.Drawing.Size(173, 20);
@@ -308,7 +311,7 @@
             // label2
             // 
             this.label2.AutoSize = true;
-            this.label2.Location = new System.Drawing.Point(526, 12);
+            this.label2.Location = new System.Drawing.Point(558, 12);
             this.label2.Margin = new System.Windows.Forms.Padding(4);
             this.label2.Name = "label2";
             this.label2.Size = new System.Drawing.Size(23, 13);
@@ -319,7 +322,7 @@
             // 
             this.toDate.CustomFormat = "dd-MM-yyyy HH:mm:ss";
             this.toDate.Format = System.Windows.Forms.DateTimePickerFormat.Custom;
-            this.toDate.Location = new System.Drawing.Point(555, 10);
+            this.toDate.Location = new System.Drawing.Point(587, 10);
             this.toDate.Margin = new System.Windows.Forms.Padding(2);
             this.toDate.Name = "toDate";
             this.toDate.Size = new System.Drawing.Size(174, 20);
@@ -328,7 +331,7 @@
             // llPresets
             // 
             this.llPresets.AutoSize = true;
-            this.llPresets.Location = new System.Drawing.Point(734, 13);
+            this.llPresets.Location = new System.Drawing.Point(766, 13);
             this.llPresets.Margin = new System.Windows.Forms.Padding(3, 5, 3, 3);
             this.llPresets.Name = "llPresets";
             this.llPresets.Size = new System.Drawing.Size(42, 13);
@@ -340,7 +343,7 @@
             // 
             this.orderByCombo.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
             this.orderByCombo.FormattingEnabled = true;
-            this.orderByCombo.Location = new System.Drawing.Point(781, 10);
+            this.orderByCombo.Location = new System.Drawing.Point(813, 10);
             this.orderByCombo.Margin = new System.Windows.Forms.Padding(2);
             this.orderByCombo.Name = "orderByCombo";
             this.orderByCombo.Size = new System.Drawing.Size(107, 21);
@@ -348,14 +351,14 @@
             // 
             // filterTextBox
             // 
-            this.filterTextBox.Location = new System.Drawing.Point(893, 11);
+            this.filterTextBox.Location = new System.Drawing.Point(925, 11);
             this.filterTextBox.Name = "filterTextBox";
             this.filterTextBox.Size = new System.Drawing.Size(100, 20);
             this.filterTextBox.TabIndex = 8;
             // 
             // fetchButton
             // 
-            this.fetchButton.Location = new System.Drawing.Point(998, 10);
+            this.fetchButton.Location = new System.Drawing.Point(1030, 10);
             this.fetchButton.Margin = new System.Windows.Forms.Padding(2);
             this.fetchButton.Name = "fetchButton";
             this.fetchButton.Size = new System.Drawing.Size(56, 19);
@@ -367,7 +370,7 @@
             // label3
             // 
             this.label3.AutoSize = true;
-            this.label3.Location = new System.Drawing.Point(1060, 12);
+            this.label3.Location = new System.Drawing.Point(1092, 12);
             this.label3.Margin = new System.Windows.Forms.Padding(4);
             this.label3.Name = "label3";
             this.label3.Size = new System.Drawing.Size(120, 13);
@@ -382,7 +385,7 @@
             0,
             0,
             0});
-            this.refreshInterval.Location = new System.Drawing.Point(1187, 11);
+            this.refreshInterval.Location = new System.Drawing.Point(1219, 11);
             this.refreshInterval.Maximum = new decimal(new int[] {
             100000,
             0,
@@ -396,7 +399,7 @@
             // label4
             // 
             this.label4.AutoSize = true;
-            this.label4.Location = new System.Drawing.Point(1252, 12);
+            this.label4.Location = new System.Drawing.Point(1284, 12);
             this.label4.Margin = new System.Windows.Forms.Padding(4);
             this.label4.Name = "label4";
             this.label4.Size = new System.Drawing.Size(12, 13);
@@ -472,6 +475,7 @@
             this.removeMenuItem,
             this.toolStripSeparator1,
             this.scrapeForStorageAccountsToolStripMenuItem,
+            this.removeUnavailableStorageAccountsToolStripMenuItem,
             this.exportToAzureStorageExplorerToolStripMenuItem,
             this.exportToCloudBerryExplorerToolStripMenuItem});
             this.accountsToolStripMenuItem.Name = "accountsToolStripMenuItem";
@@ -481,47 +485,54 @@
             // addMenuItem
             // 
             this.addMenuItem.Name = "addMenuItem";
-            this.addMenuItem.Size = new System.Drawing.Size(251, 22);
+            this.addMenuItem.Size = new System.Drawing.Size(276, 22);
             this.addMenuItem.Text = "Add...";
             this.addMenuItem.Click += new System.EventHandler(this.HandleAccountAdd);
             // 
             // editMenuItem
             // 
             this.editMenuItem.Name = "editMenuItem";
-            this.editMenuItem.Size = new System.Drawing.Size(251, 22);
+            this.editMenuItem.Size = new System.Drawing.Size(276, 22);
             this.editMenuItem.Text = "Edit...";
             this.editMenuItem.Click += new System.EventHandler(this.HandleAccountEdit);
             // 
             // removeMenuItem
             // 
             this.removeMenuItem.Name = "removeMenuItem";
-            this.removeMenuItem.Size = new System.Drawing.Size(251, 22);
+            this.removeMenuItem.Size = new System.Drawing.Size(276, 22);
             this.removeMenuItem.Text = "Remove...";
             this.removeMenuItem.Click += new System.EventHandler(this.HandleAccountRemove);
             // 
             // toolStripSeparator1
             // 
             this.toolStripSeparator1.Name = "toolStripSeparator1";
-            this.toolStripSeparator1.Size = new System.Drawing.Size(248, 6);
+            this.toolStripSeparator1.Size = new System.Drawing.Size(273, 6);
             // 
             // scrapeForStorageAccountsToolStripMenuItem
             // 
             this.scrapeForStorageAccountsToolStripMenuItem.Name = "scrapeForStorageAccountsToolStripMenuItem";
-            this.scrapeForStorageAccountsToolStripMenuItem.Size = new System.Drawing.Size(251, 22);
+            this.scrapeForStorageAccountsToolStripMenuItem.Size = new System.Drawing.Size(276, 22);
             this.scrapeForStorageAccountsToolStripMenuItem.Text = "Scrape for storage accounts...";
             this.scrapeForStorageAccountsToolStripMenuItem.Click += new System.EventHandler(this.HandleScrapeForStorageAccountsClicked);
+            // 
+            // removeUnavailableStorageAccountsToolStripMenuItem
+            // 
+            this.removeUnavailableStorageAccountsToolStripMenuItem.Name = "removeUnavailableStorageAccountsToolStripMenuItem";
+            this.removeUnavailableStorageAccountsToolStripMenuItem.Size = new System.Drawing.Size(276, 22);
+            this.removeUnavailableStorageAccountsToolStripMenuItem.Text = "Remove unavailable storage accounts...";
+            this.removeUnavailableStorageAccountsToolStripMenuItem.Click += new System.EventHandler(this.removeUnavailableStorageAccountsToolStripMenuItem_Click);
             // 
             // exportToAzureStorageExplorerToolStripMenuItem
             // 
             this.exportToAzureStorageExplorerToolStripMenuItem.Name = "exportToAzureStorageExplorerToolStripMenuItem";
-            this.exportToAzureStorageExplorerToolStripMenuItem.Size = new System.Drawing.Size(251, 22);
+            this.exportToAzureStorageExplorerToolStripMenuItem.Size = new System.Drawing.Size(276, 22);
             this.exportToAzureStorageExplorerToolStripMenuItem.Text = "Export to Azure Storage Explorer...";
             this.exportToAzureStorageExplorerToolStripMenuItem.Click += new System.EventHandler(this.HandleExportToAzureStorageExplorerClicked);
             // 
             // exportToCloudBerryExplorerToolStripMenuItem
             // 
             this.exportToCloudBerryExplorerToolStripMenuItem.Name = "exportToCloudBerryExplorerToolStripMenuItem";
-            this.exportToCloudBerryExplorerToolStripMenuItem.Size = new System.Drawing.Size(251, 22);
+            this.exportToCloudBerryExplorerToolStripMenuItem.Size = new System.Drawing.Size(276, 22);
             this.exportToCloudBerryExplorerToolStripMenuItem.Text = "Export to CloudBerry Explorer...";
             this.exportToCloudBerryExplorerToolStripMenuItem.Click += new System.EventHandler(this.HandleExportToCloudBerryExplorerClicked);
             // 
@@ -649,11 +660,13 @@
             this.Controls.Add(this.statusStrip1);
             this.Controls.Add(this.mainPanel);
             this.Controls.Add(this.menuStrip1);
+            this.KeyPreview = true;
             this.MainMenuStrip = this.menuStrip1;
             this.Margin = new System.Windows.Forms.Padding(2);
             this.Name = "MainForm";
             this.Text = "AzureLogViewer";
             this.FormClosed += new System.Windows.Forms.FormClosedEventHandler(this.HandleFormClosed);
+            this.KeyDown += new System.Windows.Forms.KeyEventHandler(this.OnKeyDown);
             this.ctxMenuPopup.ResumeLayout(false);
             this.ctxPresets.ResumeLayout(false);
             this.mainPanel.ResumeLayout(false);
@@ -733,6 +746,7 @@
         private System.Windows.Forms.ToolStripSeparator toolStripSeparator2;
         private System.Windows.Forms.ToolStripMenuItem useKarellPartitionKey;
         private System.Windows.Forms.ToolStripMenuItem useKarellRowKey;
+        private System.Windows.Forms.ToolStripMenuItem removeUnavailableStorageAccountsToolStripMenuItem;
     }
 }
 

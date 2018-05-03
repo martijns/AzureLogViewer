@@ -26,6 +26,8 @@ namespace Ms.Azure.Logging.Fetcher
             Properties = new Dictionary<string, string>();
         }
 
+        public long LineNumber { get; set; }
+
         public long EventTickCount { get { return Properties.ContainsKey("EventTickCount") ? long.Parse(Properties["EventTickCount"], CultureInfo.InvariantCulture) : 0L; } set { Properties["EventTickCount"] = value.ToString(); } }
         public string DeploymentId { get { return Properties.ContainsKey("DeploymentId") ? Properties["DeploymentId"] : null; } set { Properties["DeploymentId"] = value.ToString(); } }
         public string Role { get { return Properties.ContainsKey("Role") ? Properties["Role"] : null; } set { Properties["Role"] = value.ToString(); } }
@@ -34,7 +36,30 @@ namespace Ms.Azure.Logging.Fetcher
         public string EventId { get { return Properties.ContainsKey("EventId") ? Properties["EventId"] : null; } set { Properties["EventId"] = value.ToString(); } }
         public string Pid { get { return Properties.ContainsKey("Pid") ? Properties["Pid"] : null; } set { Properties["Pid"] = value.ToString(); } }
         public string Tid { get { return Properties.ContainsKey("Tid") ? Properties["Tid"] : null; } set { Properties["Tid"] = value.ToString(); } }
-        public string Message { get { return Properties.ContainsKey("Message") ? Properties["Message"] : null; } set { Properties["Message"] = value.ToString(); } }
+        public string Message { get { return Properties.ContainsKey("Message") ? GetMessage() : null; } set { Properties["Message"] = value.ToString(); } }
+
+        private string GetMessage()
+        {
+            var message = Properties["Message"];
+
+            return RemoveAnnoyingNewLineCharacterAtTheEndOfTheMessageWhenNeeded(message);
+        }
+        
+        private static string RemoveAnnoyingNewLineCharacterAtTheEndOfTheMessageWhenNeeded(string message)
+        {
+            if (message?.Length >= 2)
+            {
+                var substring = message.Substring(message.Length - 2, 1);
+                if (substring.Contains("\n"))
+                {
+                    var cleanedMessage = message.Remove(message.Length - 2, 1);
+
+                    return cleanedMessage;
+                }
+            }
+
+            return message;
+        }
 
         public Dictionary<string, string> Properties { get; set; }
 
