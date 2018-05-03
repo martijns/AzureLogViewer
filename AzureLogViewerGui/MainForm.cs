@@ -261,6 +261,10 @@ namespace AzureLogViewerGui
                         break;
                 }
 
+                var index = 0;
+                foreach (var item in entities)
+                    item.LineNumber = index++;
+
                 // If there are no entities at all, add a dummy "no results" entity
                 if (entities == null || entities.Count == 0)
                 {

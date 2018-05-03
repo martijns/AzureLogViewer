@@ -147,14 +147,6 @@ namespace Ms.Azure.Logging.Fetcher
                 token = segment.ContinuationToken;
                 items.AddRange(segment.Results);
             } while (token != null && !Interrupt);
-
-
-            var index = 0;
-            foreach (var item in items.OrderByDescending(entity => entity.EventTickCount))
-            {
-                item.LineNumber = index++;
-            }
-
             return items;
         }
 
