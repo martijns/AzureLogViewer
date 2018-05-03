@@ -72,7 +72,7 @@
             this.removeMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.toolStripSeparator1 = new System.Windows.Forms.ToolStripSeparator();
             this.scrapeForStorageAccountsToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.removeUnavliableStorageAccountsToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.removeUnavailableStorageAccountsToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.exportToAzureStorageExplorerToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.exportToCloudBerryExplorerToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.extraToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
@@ -475,7 +475,7 @@
             this.removeMenuItem,
             this.toolStripSeparator1,
             this.scrapeForStorageAccountsToolStripMenuItem,
-            this.removeUnavliableStorageAccountsToolStripMenuItem,
+            this.removeUnavailableStorageAccountsToolStripMenuItem,
             this.exportToAzureStorageExplorerToolStripMenuItem,
             this.exportToCloudBerryExplorerToolStripMenuItem});
             this.accountsToolStripMenuItem.Name = "accountsToolStripMenuItem";
@@ -515,12 +515,12 @@
             this.scrapeForStorageAccountsToolStripMenuItem.Text = "Scrape for storage accounts...";
             this.scrapeForStorageAccountsToolStripMenuItem.Click += new System.EventHandler(this.HandleScrapeForStorageAccountsClicked);
             // 
-            // removeUnavliableStorageAccountsToolStripMenuItem
+            // removeUnavailableStorageAccountsToolStripMenuItem
             // 
-            this.removeUnavliableStorageAccountsToolStripMenuItem.Name = "removeUnavliableStorageAccountsToolStripMenuItem";
-            this.removeUnavliableStorageAccountsToolStripMenuItem.Size = new System.Drawing.Size(276, 22);
-            this.removeUnavliableStorageAccountsToolStripMenuItem.Text = "Remove unavliable storage accounts...";
-            this.removeUnavliableStorageAccountsToolStripMenuItem.Click += new System.EventHandler(this.removeUnavliableStorageAccountsToolStripMenuItem_Click);
+            this.removeUnavailableStorageAccountsToolStripMenuItem.Name = "removeUnavailableStorageAccountsToolStripMenuItem";
+            this.removeUnavailableStorageAccountsToolStripMenuItem.Size = new System.Drawing.Size(276, 22);
+            this.removeUnavailableStorageAccountsToolStripMenuItem.Text = "Remove unavailable storage accounts...";
+            this.removeUnavailableStorageAccountsToolStripMenuItem.Click += new System.EventHandler(this.removeUnavailableStorageAccountsToolStripMenuItem_Click);
             // 
             // exportToAzureStorageExplorerToolStripMenuItem
             // 
@@ -746,7 +746,7 @@
         private System.Windows.Forms.ToolStripSeparator toolStripSeparator2;
         private System.Windows.Forms.ToolStripMenuItem useKarellPartitionKey;
         private System.Windows.Forms.ToolStripMenuItem useKarellRowKey;
-        private System.Windows.Forms.ToolStripMenuItem removeUnavliableStorageAccountsToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem removeUnavailableStorageAccountsToolStripMenuItem;
     }
 }
 

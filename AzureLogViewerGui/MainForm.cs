@@ -961,7 +961,7 @@ namespace AzureLogViewerGui
             Configuration.Instance.Save();
         }
 
-        private void removeUnavliableStorageAccountsToolStripMenuItem_Click(object sender, EventArgs e)
+        private void removeUnavailableStorageAccountsToolStripMenuItem_Click(object sender, EventArgs e)
         {
             var removedAccounts = new List<string>();
 
@@ -986,26 +986,32 @@ namespace AzureLogViewerGui
                             removedAccounts.Add(accountname);
                     }
                 });
-
-                foreach (var removedAccount in removedAccounts)
-                {
-                    if (Configuration.Instance.Accounts.ContainsKey(removedAccount))
-                        Configuration.Instance.Accounts.Remove(removedAccount);
-                }
-
-                Configuration.Instance.Save();
             }
             finally
             {
                 Cursor.Current = currentCursor;
             }
 
-            UpdateAccountSelection();
-
             if (removedAccounts.Any())
-                MessageBox.Show(this, string.Join(Environment.NewLine, removedAccounts.OrderBy(account => account)), "Removed the following storage accounts");
+            {
+                var messageBoxMessage = $"Remove the following storage account(s)?:{Environment.NewLine}{Environment.NewLine}{string.Join(Environment.NewLine, removedAccounts.OrderBy(account => account).Select(account => $"- {account}"))}";
+                var dialogResult = MessageBox.Show(this, messageBoxMessage, "Remove unavailable storage accounts...", MessageBoxButtons.YesNo, MessageBoxIcon.Question);
+                if (dialogResult == DialogResult.Yes)
+                {
+                    foreach (var removedAccount in removedAccounts)
+                    {
+                        if (Configuration.Instance.Accounts.ContainsKey(removedAccount))
+                            Configuration.Instance.Accounts.Remove(removedAccount);
+                    }
+
+                    Configuration.Instance.Save();
+
+                    UpdateAccountSelection();
+                }
+            }
             else
-                MessageBox.Show(this, "Nothing removed.", "Removed the following storage accounts");
+                MessageBox.Show(this, "Nothing removed.", "Remove unavailable storage accounts...", MessageBoxButtons.OK, MessageBoxIcon.Information);
+
         }
 
         public void OnKeyDown(object sender, KeyEventArgs eventArgs)
