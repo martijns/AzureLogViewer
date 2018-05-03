@@ -283,8 +283,8 @@ namespace AzureLogViewerGui
                     propertyNames.Contains("EventTickCount") &&
                     propertyNames.Contains("Message"))
                 {
-                    _loadedColumns = new string[] { "DeploymentId", "RoleInstance", "EventTickCount", "Message" };
-                    _loadedRows = (from i in entities select new[] { i.DeploymentId, i.RoleInstance, new DateTime(i.EventTickCount).ToString("yyyy-MM-dd HH:mm:ss.fff"), i.Message }).ToArray();
+                    _loadedColumns = new string[] { "", "DeploymentId", "RoleInstance", "EventTickCount", "Message" };
+                    _loadedRows = (from i in entities select new[] { i.LineNumber.ToString(), i.DeploymentId, i.RoleInstance, new DateTime(i.EventTickCount).ToString("yyyy-MM-dd HH:mm:ss.fff"), i.Message }).ToArray();
                     _filteredRows = _loadedRows;
                 }
                 else if ("WADPerformanceCountersTable".Equals(table) &&
@@ -1000,6 +1000,51 @@ namespace AzureLogViewerGui
 
             MessageBox.Show(this, string.Join(Environment.NewLine, removedAccounts.OrderBy(account => account)), "Removed the following storage accounts");
 
+        }
+
+        public void OnKeyDown(object sender, KeyEventArgs eventArgs)
+        {
+            if (eventArgs.Control && eventArgs.KeyCode == Keys.G)
+            {
+                GoToLine();
+            }
+        }
+
+        private void GoToLine()
+        {
+            if (dataGridView1.Rows.Count > 0)
+            {
+                var startValue = Convert.ToInt32(dataGridView1[0, 0].Value);
+                var endValue = Convert.ToInt32(dataGridView1[0, dataGridView1.RowCount - 1].Value);
+
+                using (var goToLineForm = new GoToLineForm(startValue, endValue))
+                {
+                    var dialogResult = goToLineForm.ShowDialog();
+
+                    if (dialogResult == DialogResult.OK)
+                    {
+                        var rowIndex = GetRowIndexByIndexValue(goToLineForm.LineNumber);
+
+                        if (rowIndex != null)
+                            dataGridView1.CurrentCell = dataGridView1.Rows[rowIndex.Value].Cells[0];
+                    }
+                }
+            }
+        }
+
+        private int? GetRowIndexByIndexValue(string indexValue)
+        {
+            for (var rowIndex = 0; rowIndex < dataGridView1.RowCount; rowIndex++)
+            {
+                var rowIndexValue = dataGridView1[0, rowIndex].Value.ToString();
+
+                if (rowIndexValue == indexValue)
+                {
+                    return rowIndex;
+                }
+            }
+
+            return null;
         }
     }
 }

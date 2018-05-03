@@ -141,6 +141,12 @@
       <SubType>Form</SubType>
     </Compile>
     <Compile Include="Configuration.cs" />
+    <Compile Include="GoToLineForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="GoToLineForm.Designer.cs">
+      <DependentUpon>GoToLineForm.cs</DependentUpon>
+    </Compile>
     <Compile Include="MainForm.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -166,6 +172,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="BaseForm.resx">
       <DependentUpon>BaseForm.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="GoToLineForm.resx">
+      <DependentUpon>GoToLineForm.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="MainForm.resx">
       <DependentUpon>MainForm.cs</DependentUpon>

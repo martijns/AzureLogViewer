@@ -26,6 +26,8 @@ namespace Ms.Azure.Logging.Fetcher
             Properties = new Dictionary<string, string>();
         }
 
+        public long LineNumber { get; set; }
+
         public long EventTickCount { get { return Properties.ContainsKey("EventTickCount") ? long.Parse(Properties["EventTickCount"], CultureInfo.InvariantCulture) : 0L; } set { Properties["EventTickCount"] = value.ToString(); } }
         public string DeploymentId { get { return Properties.ContainsKey("DeploymentId") ? Properties["DeploymentId"] : null; } set { Properties["DeploymentId"] = value.ToString(); } }
         public string Role { get { return Properties.ContainsKey("Role") ? Properties["Role"] : null; } set { Properties["Role"] = value.ToString(); } }
@@ -40,14 +42,19 @@ namespace Ms.Azure.Logging.Fetcher
         {
             var message = Properties["Message"];
 
-            if (message != null)
+            return RemoveAnnoyingNewLineCharacterAtTheEndOfTheMessageWhenNeeded(message);
+        }
+        
+        private static string RemoveAnnoyingNewLineCharacterAtTheEndOfTheMessageWhenNeeded(string message)
+        {
+            if (message?.Length >= 2)
             {
                 var substring = message.Substring(message.Length - 2, 1);
-
                 if (substring.Contains("\n"))
                 {
-                    var remove = message.Remove(message.Length - 2, 1);
-                    return remove;
+                    var cleanedMessage = message.Remove(message.Length - 2, 1);
+
+                    return cleanedMessage;
                 }
             }
 
