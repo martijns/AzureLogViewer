@@ -29,7 +29,7 @@
     <PublisherName>Tikkie</PublisherName>
     <CreateWebPageOnPublish>true</CreateWebPageOnPublish>
     <WebPage>publish.htm</WebPage>
-    <ApplicationRevision>49</ApplicationRevision>
+    <ApplicationRevision>51</ApplicationRevision>
     <ApplicationVersion>1.0.0.%2a</ApplicationVersion>
     <UseApplicationTrust>false</UseApplicationTrust>
     <CreateDesktopShortcut>true</CreateDesktopShortcut>
@@ -253,8 +253,11 @@
   <!-- Martijn Stolk - Custom target to sign the assembly after compile -->
   <Target Name="MySigning" AfterTargets="AfterCompile" Condition="Exists('martijn_stolk_codesigning.pfx')">
     <PropertyGroup>
+      <WindowsSdkDir Condition="'$(WindowsSdkDir)'==''">C:\Program Files (x86)\Windows Kits\10\</WindowsSdkDir>
       <SignToolPath Condition=" Exists('$(WindowsSDK80Path)bin\x86\signtool.exe') and '$(SignToolPath)'=='' and '$(PROCESSOR_ARCHITECTURE)'=='x86' ">$(WindowsSDK80Path)bin\x86\signtool.exe</SignToolPath>
       <SignToolPath Condition=" Exists('$(WindowsSDK80Path)bin\x64\signtool.exe') and '$(SignToolPath)'=='' and '$(PROCESSOR_ARCHITECTURE)'=='AMD64' ">$(WindowsSDK80Path)bin\x64\signtool.exe</SignToolPath>
+      <SignToolPath Condition=" Exists('$(WindowsSdkDir)\bin\x86\signtool.exe') and '$(SignToolPath)'=='' and '$(PROCESSOR_ARCHITECTURE)'=='x86' ">$(WindowsSdkDir)\bin\x86\signtool.exe</SignToolPath>
+      <SignToolPath Condition=" Exists('$(WindowsSdkDir)\bin\x64\signtool.exe') and '$(SignToolPath)'=='' and '$(PROCESSOR_ARCHITECTURE)'=='AMD64' ">$(WindowsSdkDir)\bin\x64\signtool.exe</SignToolPath>
     </PropertyGroup>
     <Message Text="Signing assembly post-compile..." />
     <!-- On AfterCompile we need to sign the executable that is in the obj/ dir, not the bin/ dir -->
