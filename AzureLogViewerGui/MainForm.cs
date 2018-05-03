@@ -1002,8 +1002,10 @@ namespace AzureLogViewerGui
 
             UpdateAccountSelection();
 
-            MessageBox.Show(this, string.Join(Environment.NewLine, removedAccounts.OrderBy(account => account)), "Removed the following storage accounts");
-
+            if (removedAccounts.Any())
+                MessageBox.Show(this, string.Join(Environment.NewLine, removedAccounts.OrderBy(account => account)), "Removed the following storage accounts");
+            else
+                MessageBox.Show(this, "Nothing removed.", "Removed the following storage accounts");
         }
 
         public void OnKeyDown(object sender, KeyEventArgs eventArgs)
