@@ -268,7 +268,8 @@
             // 
             // accountSelection
             // 
-            this.accountSelection.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+            this.accountSelection.AutoCompleteMode = System.Windows.Forms.AutoCompleteMode.SuggestAppend;
+            this.accountSelection.AutoCompleteSource = System.Windows.Forms.AutoCompleteSource.ListItems;
             this.accountSelection.FormattingEnabled = true;
             this.accountSelection.Location = new System.Drawing.Point(10, 10);
             this.accountSelection.Margin = new System.Windows.Forms.Padding(2);
