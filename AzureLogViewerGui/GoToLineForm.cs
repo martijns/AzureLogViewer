@@ -50,7 +50,7 @@ namespace AzureLogViewerGui
         private void textBoxLineNumber_KeyPress(object sender, KeyPressEventArgs e)
         {
             //Make sure only numbers can be enterd and reacts on ENTER key
-            if (!char.IsDigit(e.KeyChar) && char.IsControl(e.KeyChar))
+            if (!char.IsDigit(e.KeyChar) && !char.IsControl(e.KeyChar))
             {
                 e.Handled = true;
             }
