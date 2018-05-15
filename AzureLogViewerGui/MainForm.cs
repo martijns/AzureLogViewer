@@ -1024,22 +1024,34 @@ namespace AzureLogViewerGui
 
         private void GoToLine()
         {
-            if (dataGridView1.Rows.Count > 0)
+            if (dataGridView1.Rows.Count <= 0)
+                return;
+
+            int startValue;
+            int endValue;
+
+            if (!int.TryParse(dataGridView1[0, 0].Value as string, out startValue))
             {
-                var startValue = Convert.ToInt32(dataGridView1[0, 0].Value);
-                var endValue = Convert.ToInt32(dataGridView1[0, dataGridView1.RowCount - 1].Value);
+                MessageBox.Show(this, "Only table WADLogsTable supports GoToLine.", $"I'm sorry, {Environment.UserName}. I'm afraid I can't do that.", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                return;
+            }
 
-                using (var goToLineForm = new GoToLineForm(startValue, endValue))
+            if (!int.TryParse(dataGridView1[0, dataGridView1.RowCount - 1].Value as string, out endValue))
+            {
+                MessageBox.Show(this, "Only table WADLogsTable supports GoToLine.", $"I'm sorry, {Environment.UserName}. I'm afraid I can't do that.", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                return;
+            }
+
+            using (var goToLineForm = new GoToLineForm(startValue, endValue))
+            {
+                var dialogResult = goToLineForm.ShowDialog();
+
+                if (dialogResult == DialogResult.OK)
                 {
-                    var dialogResult = goToLineForm.ShowDialog();
+                    var rowIndex = GetRowIndexByIndexValue(goToLineForm.LineNumber);
 
-                    if (dialogResult == DialogResult.OK)
-                    {
-                        var rowIndex = GetRowIndexByIndexValue(goToLineForm.LineNumber);
-
-                        if (rowIndex != null)
-                            dataGridView1.CurrentCell = dataGridView1.Rows[rowIndex.Value].Cells[0];
-                    }
+                    if (rowIndex != null)
+                        dataGridView1.CurrentCell = dataGridView1.Rows[rowIndex.Value].Cells[0];
                 }
             }
         }
