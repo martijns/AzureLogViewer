@@ -35,6 +35,8 @@ namespace AzureLogViewerGui
 
         private Action<object, EventArgs> _lastPresetAction = null;
 
+        private Timer delayedFilterTextChangedTimer;
+
         public MainForm()
         {
             InitializeComponent();
@@ -98,6 +100,10 @@ namespace AzureLogViewerGui
             useKarellPartitionKey.Checked = Configuration.Instance.UseKarellPartitionKey;
             useKarellRowKey.Checked = Configuration.Instance.UseKarellRowKey;
 
+            delayedFilterTextChangedTimer = new Timer();
+            delayedFilterTextChangedTimer.Interval = 500;
+            delayedFilterTextChangedTimer.Tick += DelayedFilterTextChangedTimerTick;
+
             // New version check
             AppVersion.CheckForUpdateAsync();
         }
@@ -136,6 +142,18 @@ namespace AzureLogViewerGui
 
         void HandleFilterKeyup(object sender, EventArgs e)
         {
+            delayedFilterTextChangedTimer.Stop();
+            delayedFilterTextChangedTimer.Start();
+        }
+
+        private void DelayedFilterTextChangedTimerTick(object sender, EventArgs e)
+        {
+            delayedFilterTextChangedTimer.Stop();
+            HandleFilter();
+        }
+
+        private void HandleFilter()
+        {
             if (resultPanel.Controls.Contains(_performanceCountersControl))
             {
                 _performanceCountersControl.SetFilter(GetFilterTextSearchTerms());
@@ -157,15 +175,15 @@ namespace AzureLogViewerGui
             {
                 searchterms = searchterms.Where(s => !s.StartsWith("#")).ToArray(); // niet filteren op highlight terms
                 _filteredRows = (from row in _loadedRows
-                                 where searchterms.Where(s => !s.StartsWith("!")).All(s => row.Any(r => r.ToLower().Contains(s))) &&
-                                       searchterms.Where(s => s.StartsWith("!")).All(s => row.All(r => !r.ToLower().Contains(s.TrimStart('!'))))
-                                 select row).ToArray();
+                    where searchterms.Where(s => !s.StartsWith("!")).All(s => row.Any(r => r.ToLower().Contains(s))) &&
+                          searchterms.Where(s => s.StartsWith("!")).All(s => row.All(r => !r.ToLower().Contains(s.TrimStart('!'))))
+                    select row).ToArray();
             }
 
             // Always show at least one record. When there are no results, add a dummy. If we don't do this, the
             // grid won't be usable anymore.
             if (_filteredRows.Length == 0)
-                _filteredRows = new string[][] { Enumerable.Repeat("No result", _loadedColumns.Length).ToArray() };
+                _filteredRows = new string[][] {Enumerable.Repeat("No result", _loadedColumns.Length).ToArray()};
 
             // Only update the rowcount if it changes, as this is a fairly expensive operation
             if (_filteredRows.Length != dataGridView1.RowCount)

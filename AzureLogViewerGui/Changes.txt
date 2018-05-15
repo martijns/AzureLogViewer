@@ -1,5 +1,6 @@
 ﻿2018-05-15:
 - FIX: Handle GoToLine errors if a table without line number is selected.
+- NEW: The filter TextBox starts searching with a delay of 500ms. When typing the filtering will not begin after you finished typing your input.
 
 2018-05-03:
 - FIX: Window resizing in StorageAccountScraperForm
