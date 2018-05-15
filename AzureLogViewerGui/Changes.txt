@@ -1,4 +1,7 @@
-﻿2018-05-03:
+﻿2018-05-15:
+- FIX: Handle GoToLine errors if a table without line number is selected.
+
+2018-05-03:
 - FIX: Window resizing in StorageAccountScraperForm
 - CHG: Removed the annoying '\n' at the end of each message. This makes it easier to copy into a text editor.
 - NEW: Added 'remove unavailable storage accounts...' menu item. This gathers a list of storage accounts that doesn't exist anymore and asks for confirmation. (No fancy UI involved)
