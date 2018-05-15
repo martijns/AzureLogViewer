@@ -1,6 +1,7 @@
 ﻿2018-05-15:
 - FIX: Handle GoToLine errors if a table without line number is selected.
 - NEW: The filter TextBox starts searching with a delay of 500ms. When typing the filtering will not begin after you finished typing your input.
+- NEW: When 'Use optimized queries for WAD tables' is enabled, fetching the log entries will be multi threaded.
 
 2018-05-09:
 - FIX: Key filter in GoToLine form

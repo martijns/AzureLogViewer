@@ -6,9 +6,11 @@ using Microsoft.WindowsAzure.Storage.Table.DataServices;
 using System;
 using System.Collections.Generic;
 using System.Data.Services.Client;
+using System.Diagnostics;
 using System.Linq;
 using System.Net;
 using System.Text;
+using System.Threading.Tasks;
 using System.Xml.Linq;
 
 namespace Ms.Azure.Logging.Fetcher
@@ -18,6 +20,8 @@ namespace Ms.Azure.Logging.Fetcher
         private static readonly ILog logger = LogManager.GetLogger(typeof(LogFetcher));
 
         private CloudTableClient _client;
+        private int count = 0;
+        private object syncObject = new object();
 
         #region RetrievedPageEvent
 
@@ -82,6 +86,43 @@ namespace Ms.Azure.Logging.Fetcher
 
         public IList<WadTableEntity> FetchLogs(string tableName, DateTime start, DateTime end)
         {
+            if (!UseWADPerformanceOptimization)
+                return FetchLogsInternal(tableName, start, end);
+
+            var parts = RetrieveDateTimeParts(start, end, Environment.ProcessorCount);
+
+            var allLogEntities = new List<WadTableEntity>();
+            Parallel.ForEach(parts, part =>
+            {
+                var logs = FetchLogsInternal(tableName, part.Key, part.Value);
+
+                lock (allLogEntities)
+                    allLogEntities.AddRange(logs);
+            });
+
+            return allLogEntities;
+        }
+
+        private static Dictionary<DateTime, DateTime> RetrieveDateTimeParts(DateTime start, DateTime end, int divisor)
+        {
+            var span = end - start;
+            var spanPart = new TimeSpan(span.Ticks / divisor);
+
+            var parts = new Dictionary<DateTime, DateTime>();
+            var index = start;
+            while (index <= end)
+            {
+                var newEnd = index.Add(spanPart);
+                parts.Add(index, newEnd);
+
+                index = newEnd;
+            }
+
+            return parts;
+        }
+
+        public IList<WadTableEntity> FetchLogsInternal(string tableName, DateTime start, DateTime end)
+        {
             var table = _client.GetTableReference(tableName);
             var query = new TableQuery<WadTableEntity>();
             if (UseKarellPartitionKey)
@@ -125,7 +166,7 @@ namespace Ms.Azure.Logging.Fetcher
                 query = query.Where(TableQuery.CombineFilters(
                     TableQuery.GenerateFilterCondition("PartitionKey", QueryComparisons.GreaterThanOrEqual, start.Ticks.ToString("D19")),
                     TableOperators.And,
-                    TableQuery.GenerateFilterCondition("PartitionKey", QueryComparisons.LessThanOrEqual, end.Ticks.ToString("D19"))));
+                    TableQuery.GenerateFilterCondition("PartitionKey", QueryComparisons.LessThan, end.Ticks.ToString("D19"))));
             }
             else
             {
@@ -137,15 +178,18 @@ namespace Ms.Azure.Logging.Fetcher
 
             List<WadTableEntity> items = new List<WadTableEntity>();
             TableContinuationToken token = null;
-            int count = 0;
-            Interrupt = false;
+
             do
             {
-                count++;
+                lock (syncObject)
+                    count++;
+
                 OnRetrievedPage(count);
+
                 var segment = table.ExecuteQuerySegmented(query, token);
                 token = segment.ContinuationToken;
                 items.AddRange(segment.Results);
+
             } while (token != null && !Interrupt);
             return items;
         }
