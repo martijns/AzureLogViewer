@@ -2,6 +2,10 @@
 - FIX: Handle GoToLine errors if a table without line number is selected.
 - NEW: The filter TextBox starts searching with a delay of 500ms. When typing the filtering will not begin after you finished typing your input.
 
+2018-05-09:
+- FIX: Key filter in GoToLine form
+- CHG: Increased width of comboxes accountSelection and tableSelection to 180
+
 2018-05-03:
 - FIX: Window resizing in StorageAccountScraperForm
 - CHG: Removed the annoying '\n' at the end of each message. This makes it easier to copy into a text editor.
